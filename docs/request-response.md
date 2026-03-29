@@ -8,20 +8,23 @@ All data operations use one endpoint:
 
 ## Request Body
 
+```json
 {
   "table": "<table_name>",
   "action": "select|insert|update|delete|upsert",
-  "payload": { ... }
+  "payload": {}
 }
+```
 
 ## Response Body (Success)
 
+```json
 {
   "ok": true,
   "data": {
     "table": "...",
     "action": "...",
-    "rows": [ ... ],
+    "rows": [],
     "rowCount": 0,
     "pagination": {
       "limit": 50,
@@ -34,9 +37,11 @@ All data operations use one endpoint:
     "timestamp": "ISO_DATE"
   }
 }
+```
 
 ## Response Body (Error)
 
+```json
 {
   "ok": false,
   "error": {
@@ -45,11 +50,13 @@ All data operations use one endpoint:
     "details": null
   }
 }
+```
 
 ## Action Payload Shapes
 
 ### select
 
+```json
 {
   "columns": ["*"],
   "filter": {
@@ -63,18 +70,22 @@ All data operations use one endpoint:
   "limit": 50,
   "offset": 0
 }
+```
 
 ### insert
 
+```json
 {
   "rows": [
     { "name": "Example" }
   ],
   "returning": ["*"]
 }
+```
 
 ### update
 
+```json
 {
   "set": {
     "is_active": false
@@ -86,9 +97,11 @@ All data operations use one endpoint:
   },
   "returning": ["*"]
 }
+```
 
 ### delete
 
+```json
 {
   "filter": {
     "field": "id",
@@ -97,9 +110,11 @@ All data operations use one endpoint:
   },
   "returning": ["id"]
 }
+```
 
 ### upsert
 
+```json
 {
   "rows": [
     { "email": "user@example.com", "first_name": "A" }
@@ -108,6 +123,7 @@ All data operations use one endpoint:
   "updateColumns": ["first_name"],
   "returning": ["*"]
 }
+```
 
 ## Filter Operators
 
@@ -129,6 +145,6 @@ Supported operators:
 
 Use group operators:
 
-- { "and": [ ... ] }
-- { "or": [ ... ] }
-- { "not": { ... } }
+- `{"and": [ ... ]}`
+- `{"or": [ ... ]}`
+- `{"not": { ... }}`
