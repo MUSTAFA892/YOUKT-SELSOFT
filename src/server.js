@@ -8,6 +8,7 @@ import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { healthRouter } from "./routes/health.js";
 import { dataRouter } from "./routes/data.js";
 import { metaRouter } from "./routes/meta.js";
+import { requisitionRouter } from "./routes/requisitions.js";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", healthRouter);
 app.use("/api/v1", dataRouter);
 app.use("/api/v1", metaRouter);
+app.use("/api/v1/jobs", requisitionRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
