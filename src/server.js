@@ -23,6 +23,12 @@ app.use((req, res, next) => {
 
 app.use(apiKeyAuth);
 
+// Debug middleware to log ALL incoming requests
+app.use((req, res, next) => {
+  console.log(`DEBUG: ${req.method} ${req.url}`);
+  next();
+});
+
 app.get("/", (req, res) => {
   res.status(200).json({
     ok: true,

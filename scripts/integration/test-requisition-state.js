@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { Pool } from "pg";
+import { URL } from "node:url";
 
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 4000;
@@ -12,13 +13,33 @@ if (!API_KEY) {
   process.exit(2);
 }
 
+// Parse Supabase connection string
+const parseDbUrl = (connectionString) => {
+  try {
+    const url = new URL(connectionString);
+    return {
+      host: url.hostname,
+      port: Number(url.port) || 5432,
+      database: url.pathname.slice(1),
+      user: url.username,
+      password: url.password,
+      ssl: { rejectUnauthorized: false }
+    };
+  } catch (err) {
+    console.error("Failed to parse connection string:", err);
+    process.exit(1);
+  }
+};
+
+const dbUrl = process.env.SUPABASE_DB_URL || process.env.DATABASE_URL;
+if (!dbUrl) {
+  console.error("ERROR: Set SUPABASE_DB_URL in .env");
+  process.exit(2);
+}
+
 const pool = new Pool({
-  host: process.env.DB_HOST || "localhost",
-  port: Number(process.env.DB_PORT) || 5432,
-  database: process.env.DB_NAME || "youkt",
-  user: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "",
-  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
+  ...parseDbUrl(dbUrl),
+  family: 4  // Force IPv4
 });
 
 const randomEmail = () => `test+${Date.now()}@example.com`;
@@ -37,7 +58,7 @@ const run = async () => {
     // 1) Create a temporary user
     const userRes = await client.query(
       `INSERT INTO public.users (email, auth_provider, first_name, last_name)
-       VALUES ($1, 'local', 'IT', 'Test')
+       VALUES ($1, 'local', 'TestUser', 'Integration')
        RETURNING id`,
       [randomEmail()]
     );

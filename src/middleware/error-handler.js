@@ -11,6 +11,9 @@ export const notFoundHandler = (req, res) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
+  // eslint-disable-next-line no-console
+  console.error("DEBUG: Express error caught:", err);
+
   if (isAppError(err)) {
     return res.status(err.status).json({
       ok: false,
@@ -26,7 +29,8 @@ export const errorHandler = (err, req, res, next) => {
     ok: false,
     error: {
       code: "INTERNAL_SERVER_ERROR",
-      message: "Unexpected server error"
+      message: err.message || "Unexpected server error",
+      stack: process.env.NODE_ENV === "production" ? undefined : err.stack
     }
   });
 };

@@ -51,25 +51,41 @@ requisitionRouter.post("/requisitions/:id/state", async (req, res, next) => {
     }
 
     // 3. Update the requisition state
-    const updateSql = `
-      UPDATE public.job_requisitions 
-      SET 
-        state = $1, 
-        is_locked = CASE WHEN $2 = TRUE THEN TRUE ELSE is_locked END,
-        approved_at = CASE WHEN $1 = 'approved' THEN $3 ELSE approved_at END,
-        updated_at = NOW()
-      WHERE id = $4
-      RETURNING *
-    `;
-    const updateRes = await client.query(updateSql, [to_state, shouldLock, approvedAt, id]);
+    let updateRes;
+    const states = ['draft', 'pending', 'approved', 'on_hold', 'closed', 'archived'];
+    if (!states.includes(to_state)) {
+        throw new AppError(`Invalid state: ${to_state}`, 400);
+    }
+
+    if (to_state === "approved") {
+        updateRes = await client.query({
+          text: `UPDATE public.job_requisitions 
+                 SET state = '${to_state}', 
+                     is_locked = TRUE, 
+                     approved_at = $1, 
+                     updated_at = NOW() 
+                 WHERE id = $2 
+                 RETURNING *`,
+          values: [approvedAt, id]
+        });
+    } else {
+        updateRes = await client.query({
+          text: `UPDATE public.job_requisitions 
+                 SET state = '${to_state}', 
+                     updated_at = NOW() 
+                 WHERE id = $1 
+                 RETURNING *`,
+          values: [id]
+        });
+    }
 
     // 4. Record History
-    await client.query(
-      `INSERT INTO public.requisition_state_history 
-       (requisition_id, from_state, to_state, changed_by, reason) 
-       VALUES ($1, $2, $3, $4, $5)`,
-      [id, from_state, to_state, changed_by || null, reason || null]
-    );
+    await client.query({
+      text: `INSERT INTO public.requisition_state_history 
+             (requisition_id, from_state, to_state, changed_by, reason) 
+             VALUES ($1, '${from_state}', '${to_state}', $2, $3)`,
+      values: [id, changed_by || null, reason || null]
+    });
 
     await client.query("COMMIT");
 
