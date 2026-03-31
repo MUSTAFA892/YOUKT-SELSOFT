@@ -38,10 +38,13 @@ WHERE company_id IS NULL;
 UPDATE public.roles r
 SET company_id = src.company_id
 FROM (
-  SELECT u.role_id, min(u.company_id) AS company_id
+  SELECT DISTINCT ON (u.role_id)
+    u.role_id,
+    u.company_id
   FROM public.users u
   WHERE u.role_id IS NOT NULL
-  GROUP BY u.role_id
+    AND u.company_id IS NOT NULL
+  ORDER BY u.role_id, u.company_id
 ) src
 WHERE r.id = src.role_id
   AND r.company_id IS NULL;
