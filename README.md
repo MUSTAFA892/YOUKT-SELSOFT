@@ -1,6 +1,6 @@
 # YOUKT Express Gateway
 
-This project provides a schema-aware Express + PostgreSQL gateway for your YOUKT database.
+This project provides a schema-aware Express + Supabase Postgres gateway for your YOUKT database.
 
 It supports CRUD for all tables in your SQL schema through a single, consistent JSON API format.
 
@@ -17,7 +17,7 @@ It supports CRUD for all tables in your SQL schema through a single, consistent 
 
 - Node.js (ES Modules)
 - Express
-- PostgreSQL (pg)
+- Supabase Postgres (pg)
 
 ## Project Structure
 
@@ -43,9 +43,9 @@ npm install
 
 cp .env.example .env
 
-3. Ensure PostgreSQL has your schema loaded
+3. Ensure Supabase Postgres has your schema loaded
 
-psql -d <db_name> -f data.sql
+psql "<SUPABASE_DB_URL>" -f data.sql
 
 4. Generate docs from schema
 
@@ -62,11 +62,9 @@ npm run dev
 ## Environment Variables
 
 - PORT: API port (default: 4000)
-- DB_HOST: PostgreSQL host
-- DB_PORT: PostgreSQL port
-- DB_NAME: PostgreSQL database name
-- DB_USER: PostgreSQL user
-- DB_PASSWORD: PostgreSQL password
+- SUPABASE_DB_URL: Supabase Postgres connection string
+- SUPABASE_URL: Supabase project URL (for clients)
+- SUPABASE_ANON_KEY: Supabase anon key (for clients)
 - DB_SSL: true/false
 - DB_SCHEMA: schema name (default: public)
 - API_KEY: optional shared API key

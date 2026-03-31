@@ -15,13 +15,13 @@ const toInt = (value, fallback) => {
 export const config = {
   port: toInt(process.env.PORT, 4000),
   db: {
-    host: process.env.DB_HOST || "localhost",
-    port: toInt(process.env.DB_PORT, 5432),
-    database: process.env.DB_NAME || "youkt",
-    user: process.env.DB_USER || "postgres",
-    password: process.env.DB_PASSWORD || "",
-    ssl: parseBoolean(process.env.DB_SSL, false) ? { rejectUnauthorized: false } : false,
+    url: process.env.SUPABASE_DB_URL || "",
+    ssl: parseBoolean(process.env.DB_SSL, true) ? { rejectUnauthorized: false } : false,
     schema: process.env.DB_SCHEMA || "public"
+  },
+  supabase: {
+    url: process.env.SUPABASE_URL || "",
+    anonKey: process.env.SUPABASE_ANON_KEY || ""
   },
   apiKey: process.env.API_KEY || "",
   maxLimit: toInt(process.env.MAX_LIMIT, 200)

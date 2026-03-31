@@ -4,10 +4,6 @@ import { config } from "../config.js";
 const { Pool } = pg;
 
 export const pool = new Pool({
-  host: config.db.host,
-  port: config.db.port,
-  database: config.db.database,
-  user: config.db.user,
-  password: config.db.password,
+  connectionString: config.db.url,
   ssl: config.db.ssl
 });

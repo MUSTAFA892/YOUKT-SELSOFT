@@ -1,7 +1,7 @@
 {
   "name": "youkt-express-gateway",
   "version": "1.0.0",
-  "description": "Express PostgreSQL gateway for YOUKT schema",
+  "description": "Express Supabase Postgres gateway for YOUKT schema",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -12,6 +12,7 @@
   },
   "keywords": [
     "express",
+    "supabase",
     "postgres",
     "gateway",
     "crud"
