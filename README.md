@@ -76,11 +76,15 @@ npm run dev
 - GET /api/v1/meta/tables
 - POST /api/v1/meta/reload
 - POST /api/v1/data
+ - POST /api/v1/auth/login
+ - POST /api/v1/auth/provider
+ - GET  /api/v1/auth/me
 
 ## Core Request Format
 
 POST /api/v1/data
 
+```json
 {
   "table": "users",
   "action": "select",
@@ -98,6 +102,16 @@ POST /api/v1/data
     "offset": 0
   }
 }
+```
+
+## Authentication
+
+The gateway supports two authentication methods:
+
+- API key: set header `x-api-key` to the shared key (set `API_KEY` in .env).
+- Bearer JWT: obtain a token with `POST /api/v1/auth/login` (email + password) or `POST /api/v1/auth/provider` (provider info) and include `Authorization: Bearer <token>` in requests.
+
+The provider endpoint will find-or-create a user record for the given `auth_provider` and `auth_provider_id`.
 
 ## Action Payloads
 

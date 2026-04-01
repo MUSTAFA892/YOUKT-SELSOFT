@@ -16,6 +16,15 @@ All data operations use one endpoint:
 }
 ```
 
+## Authentication
+
+The gateway supports two authentication methods:
+
+- API key: set `x-api-key` header to the shared key (if configured).
+- Bearer JWT: set `Authorization: Bearer <token>` header. Use `/api/v1/auth/login` to obtain a JWT.
+
+Successful responses include `ok: true` and `data`. For protected endpoints, include the token.
+
 ## Response Body (Success)
 
 ```json

@@ -3,11 +3,12 @@ import express from "express";
 import helmet from "helmet";
 import { config } from "./config.js";
 import { loadSchemaCache } from "./db/schema-cache.js";
-import { apiKeyAuth } from "./middleware/auth.js";
+import { apiAuth } from "./middleware/auth.js";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler.js";
 import { healthRouter } from "./routes/health.js";
 import { dataRouter } from "./routes/data.js";
 import { metaRouter } from "./routes/meta.js";
+import { authRouter } from "./routes/auth.js";
 import { requisitionRouter } from "./routes/requisitions.js";
 
 const app = express();
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(apiKeyAuth);
+app.use(apiAuth);
 
 // Debug middleware to log ALL incoming requests
 app.use((req, res, next) => {
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1", healthRouter);
 app.use("/api/v1", dataRouter);
 app.use("/api/v1", metaRouter);
+app.use("/api/v1", authRouter);
 app.use("/api/v1/jobs", requisitionRouter);
 
 app.use(notFoundHandler);

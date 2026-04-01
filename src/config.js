@@ -26,3 +26,7 @@ export const config = {
   apiKey: process.env.API_KEY || "",
   maxLimit: toInt(process.env.MAX_LIMIT, 200)
 };
+
+config.jwtSecret = process.env.JWT_SECRET || "replace-this-secret-in-production";
+config.jwtExpiry = process.env.JWT_EXPIRY || "12h";
+config.bcryptRounds = toInt(process.env.BCRYPT_ROUNDS, 10);
