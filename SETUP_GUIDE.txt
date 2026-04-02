@@ -1,0 +1,333 @@
+# 🚀 Coding Test Platform — Backend Setup Guide
+# Complete step-by-step guide to run & test in Postman
+
+=======================================================
+STEP 1 — INSTALL REQUIRED SOFTWARE (One-time setup)
+=======================================================
+
+1. Install Node.js
+   → Go to: https://nodejs.org
+   → Download the "LTS" version (Long Term Support)
+   → Install it (just click Next → Next → Finish)
+   → Verify: open terminal and type:
+      node --version      ← should print v18.x.x or higher
+      npm --version       ← should print 9.x.x or higher
+
+2. Install NestJS CLI (Command Line tool to run NestJS projects)
+   → Open terminal and run:
+      npm install -g @nestjs/cli
+   → Verify:
+      nest --version      ← should print 10.x.x
+
+3. Install Postman
+   → Go to: https://www.postman.com/downloads/
+   → Download and install (free)
+
+=======================================================
+STEP 2 — GET YOUR JUDGE0 API KEY (Free)
+=======================================================
+
+Judge0 is the service that safely runs user code.
+You need a free API key to use it.
+
+1. Go to: https://rapidapi.com
+2. Click "Sign Up" → Create a free account
+3. After login, search for: "Judge0 CE"
+4. Click on "Judge0 CE" in results
+5. Click "Subscribe to Test" → Choose "Basic" plan (FREE)
+6. On the left sidebar, click "Endpoints"
+7. Look for "X-RapidAPI-Key" in the Header Parameters
+8. Copy that key — it looks like: a1b2c3d4e5f6...
+
+=======================================================
+STEP 3 — PROJECT FOLDER STRUCTURE
+=======================================================
+
+Your backend folder should look exactly like this:
+
+coding-platform/
+└── backend/
+    ├── .env                    ← YOU CREATE THIS (Step 4)
+    ├── .env.example            ← Template showing what .env needs
+    ├── package.json            ← Lists all dependencies
+    ├── tsconfig.json           ← TypeScript configuration
+    ├── nest-cli.json           ← NestJS configuration
+    └── src/
+        ├── main.ts             ← Entry point (starts the server)
+        ├── app.module.ts       ← Root module (connects everything)
+        ├── problems/
+        │   ├── problems.module.ts
+        │   ├── problems.controller.ts
+        │   └── problems.service.ts   ← Contains all 3 problems
+        └── submissions/
+            ├── submissions.module.ts
+            ├── submissions.controller.ts
+            └── submissions.service.ts  ← Calls Judge0 API
+
+=======================================================
+STEP 4 — CREATE YOUR .env FILE
+=======================================================
+
+Inside the "backend" folder, create a new file called ".env"
+(just the dot and "env", no other extension)
+
+Paste this inside it:
+
+---
+JUDGE0_API_KEY=paste_your_rapidapi_key_here
+JUDGE0_API_HOST=judge0-ce.p.rapidapi.com
+PORT=3001
+---
+
+Replace "paste_your_rapidapi_key_here" with the key you copied in Step 2.
+
+⚠️  IMPORTANT: The .env file MUST be inside the "backend" folder,
+    at the same level as package.json
+
+=======================================================
+STEP 5 — INSTALL DEPENDENCIES & START THE SERVER
+=======================================================
+
+Open your terminal. Navigate to the backend folder:
+
+    cd coding-platform/backend
+
+Install all packages:
+
+    npm install
+
+This downloads all the libraries listed in package.json.
+It creates a "node_modules" folder. Takes 1-2 minutes.
+
+Start the server in development mode:
+
+    npm run start:dev
+
+You should see this in your terminal:
+    ========================================
+    ✅  Server running on http://localhost:3001
+    
+    📌  Endpoints to test in Postman:
+        GET  http://localhost:3001/api/problems
+        GET  http://localhost:3001/api/problems/1
+        ...
+    ========================================
+
+If you see this — YOUR BACKEND IS RUNNING! 🎉
+
+"start:dev" mode automatically restarts when you save any file.
+You don't need to restart manually during development.
+
+=======================================================
+STEP 6 — TESTING IN POSTMAN (The fun part!)
+=======================================================
+
+Open Postman. You'll test 5 endpoints:
+
+-------------------------------------------------------
+TEST 1 — Get All Problems
+-------------------------------------------------------
+Method:  GET
+URL:     http://localhost:3001/api/problems
+Body:    (none)
+
+Click "Send"
+
+Expected Response (200 OK):
+[
+  {
+    "id": "1",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "description": "Given an array...",
+    ...
+  },
+  {
+    "id": "2",
+    "title": "Reverse a String",
+    ...
+  },
+  {
+    "id": "3",
+    "title": "FizzBuzz",
+    ...
+  }
+]
+
+-------------------------------------------------------
+TEST 2 — Get Single Problem
+-------------------------------------------------------
+Method:  GET
+URL:     http://localhost:3001/api/problems/1
+
+Expected Response:
+{
+  "id": "1",
+  "title": "Two Sum",
+  "difficulty": "Easy",
+  "description": "...",
+  "examples": [...],
+  "starterCode": {
+    "python": "def two_sum(nums, target):\n    pass",
+    "javascript": "function twoSum(nums, target) {\n\n}"
+  }
+}
+
+Try also:
+  GET http://localhost:3001/api/problems/2   ← Reverse String
+  GET http://localhost:3001/api/problems/3   ← FizzBuzz
+
+-------------------------------------------------------
+TEST 3 — Submit CORRECT Python Code (should PASS all tests)
+-------------------------------------------------------
+Method:  POST
+URL:     http://localhost:3001/api/submissions
+Headers: Content-Type: application/json
+Body (raw → JSON):
+
+{
+  "problemId": "1",
+  "language": "python",
+  "code": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i"
+}
+
+Expected Response:
+{
+  "problemId": "1",
+  "language": "python",
+  "totalTests": 3,
+  "passed": 3,
+  "failed": 0,
+  "allPassed": true,
+  "results": [
+    {
+      "testCase": 1,
+      "description": "Basic case",
+      "status": "pass",
+      "input": "[2,7,11,15], 9",
+      "expectedOutput": "[0,1]",
+      "actualOutput": "[0, 1]"
+    },
+    ...
+  ]
+}
+
+-------------------------------------------------------
+TEST 4 — Submit WRONG Code (should FAIL tests)
+-------------------------------------------------------
+Method:  POST
+URL:     http://localhost:3001/api/submissions
+Body:
+
+{
+  "problemId": "1",
+  "language": "python",
+  "code": "def two_sum(nums, target):\n    return [0, 0]"
+}
+
+Expected: status = "fail" for most test cases
+
+-------------------------------------------------------
+TEST 5 — Submit JavaScript Code
+-------------------------------------------------------
+Method:  POST
+URL:     http://localhost:3001/api/submissions
+Body:
+
+{
+  "problemId": "2",
+  "language": "javascript",
+  "code": "function reverseString(s) {\n    return s.split('').reverse().join('');\n}"
+}
+
+Expected: allPassed = true
+
+-------------------------------------------------------
+TEST 6 — Test FizzBuzz in Python
+-------------------------------------------------------
+{
+  "problemId": "3",
+  "language": "python",
+  "code": "def fizz_buzz(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            result.append('FizzBuzz')\n        elif i % 3 == 0:\n            result.append('Fizz')\n        elif i % 5 == 0:\n            result.append('Buzz')\n        else:\n            result.append(str(i))\n    return result"
+}
+
+=======================================================
+STEP 7 — HOW TO SET HEADERS IN POSTMAN
+=======================================================
+
+For POST requests, you MUST set the Content-Type header:
+
+1. Click on your POST request
+2. Click the "Headers" tab (next to Params)
+3. Add:
+   KEY:   Content-Type
+   VALUE: application/json
+4. Then click "Body" tab → select "raw" → select "JSON" from dropdown
+5. Paste your JSON body
+6. Click Send
+
+=======================================================
+STEP 8 — COMMON ERRORS & FIXES
+=======================================================
+
+❌ Error: "Cannot GET /api/problems"
+   Fix: Make sure server is running (npm run start:dev)
+        and you're using the correct URL with /api/ prefix
+
+❌ Error: "EADDRINUSE: address already in use 3001"
+   Fix: Another process is using port 3001
+        Run: npx kill-port 3001
+        Then: npm run start:dev again
+
+❌ Error: "JUDGE0_API_KEY environment variable is not set"
+   Fix: Create your .env file in the backend folder
+        Add: JUDGE0_API_KEY=your_actual_key
+
+❌ Error: "401 Unauthorized" from Judge0
+   Fix: Your API key is wrong or expired
+        Get a new one from RapidAPI
+
+❌ Error: "Cannot find module 'dotenv'"
+   Fix: Run npm install again in the backend folder
+
+❌ Submissions take too long (>30 seconds)
+   Fix: Normal! Judge0 free tier can be slow.
+        Each submission polls Judge0 up to 10 times with 1s delay.
+
+=======================================================
+STEP 9 — WHAT TO SHOW YOUR MANAGER
+=======================================================
+
+Share your screen and demonstrate in this order:
+
+1. Show the running terminal (npm run start:dev output)
+   → "The backend server is live on port 3001"
+
+2. Postman: GET /api/problems
+   → "These are our 3 predefined problems with descriptions"
+
+3. Postman: GET /api/problems/1
+   → "Each problem has a title, description, difficulty, examples"
+
+4. Postman: POST /api/submissions with CORRECT code
+   → "The platform runs code against test cases and shows Pass/Fail"
+
+5. Postman: POST /api/submissions with WRONG code
+   → "It correctly identifies when a solution is wrong"
+
+That's a COMPLETE backend demo covering all POC requirements! ✅
+
+=======================================================
+SUMMARY — COMMANDS TO REMEMBER
+=======================================================
+
+# Install everything (first time only)
+npm install
+
+# Start the server (run this every time you work)
+npm run start:dev
+
+# Stop the server
+Ctrl + C  (in the terminal)
+
+=======================================================
