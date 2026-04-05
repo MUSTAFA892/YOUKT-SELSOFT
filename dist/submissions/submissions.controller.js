@@ -22,6 +22,12 @@ let SubmissionsController = class SubmissionsController {
     async create(dto) {
         return this.submissionsService.runSubmission(dto);
     }
+    async createCustom(dto) {
+        return this.submissionsService.runCustomSubmission(dto);
+    }
+    async createChallenge(dto) {
+        return this.submissionsService.runChallengeSubmission(dto);
+    }
 };
 exports.SubmissionsController = SubmissionsController;
 __decorate([
@@ -31,6 +37,20 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], SubmissionsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('custom'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SubmissionsController.prototype, "createCustom", null);
+__decorate([
+    (0, common_1.Post)('challenge'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SubmissionsController.prototype, "createChallenge", null);
 exports.SubmissionsController = SubmissionsController = __decorate([
     (0, common_1.Controller)('submissions'),
     __metadata("design:paramtypes", [submissions_service_1.SubmissionsService])

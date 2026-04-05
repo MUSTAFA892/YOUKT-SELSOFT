@@ -1,0 +1,103 @@
+[
+  {
+    "id": "849d3b66-be62-4abf-b752-868eaa97ddee",
+    "title": "Two Sum",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n",
+        "expectedOutput": "[0, 1]"
+      }
+    ]
+  },
+  {
+    "id": "279bb9be-c5b7-43d4-8eca-eee13d946bfb",
+    "title": "Custom Algorithm Challenge",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n",
+        "expectedOutput": "[0, 1]"
+      }
+    ]
+  },
+  {
+    "id": "6eea37b0-4cb2-4862-9802-9e3594ee5686",
+    "title": "Custom Algorithm Challenge",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+        "expectedOutput": "[0, 1]"
+      }
+    ]
+  },
+  {
+    "id": "0cc59d24-9e1f-4447-9fa4-5132afdb167b",
+    "title": "Custom Algorithm Challenge",
+    "description": "\nGiven an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order\n",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n",
+        "expectedOutput": "Output:\n[0, 1]"
+      }
+    ]
+  },
+  {
+    "id": "7283066b-5304-49b1-b4a3-a05da4e66c50",
+    "title": "Custom Algorithm Challenge",
+    "description": "iven an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order\n",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n",
+        "expectedOutput": "[0, 1]"
+      }
+    ]
+  },
+  {
+    "id": "48c60ff1-e80a-4da3-a7c5-3200ff40e4d7",
+    "title": "Custom Algorithm Challenge",
+    "description": "\nGiven an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order\n",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n\n",
+        "expectedOutput": "[0, 1]"
+      }
+    ],
+    "starterCode": {
+      "python": "def two_sum(nums, target):\r\n    # write your code here\r\n    pass\r\n",
+      "javascript": "",
+      "java": "",
+      "c": ""
+    },
+    "wrapperCode": {
+      "python": "import sys\r\n{user_code}\r\n\r\ninput_data = \"\"\"{input}\"\"\".strip().splitlines()\r\nif len(input_data) >= 2:\r\n    nums = list(map(int, input_data[0].split()))\r\n    target = int(input_data[1])\r\n    print(two_sum(nums, target))\r\n",
+      "javascript": "",
+      "java": "",
+      "c": ""
+    }
+  },
+  {
+    "id": "042f3a53-c741-4f77-8643-118df4373177",
+    "title": "Custom Algorithm Challenge",
+    "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nEach input has exactly one solution\nYou cannot use the same element twice\nReturn the answer in any order\n",
+    "testCases": [
+      {
+        "input": "nums = [2, 7, 11, 15]\ntarget = 9\n",
+        "expectedOutput": "[0, 1]"
+      }
+    ],
+    "starterCode": {
+      "python": "",
+      "javascript": "",
+      "java": "",
+      "c": ""
+    },
+    "wrapperCode": {
+      "python": "",
+      "javascript": "",
+      "java": "",
+      "c": ""
+    }
+  }
+]

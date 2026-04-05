@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const submissions_controller_1 = require("./submissions.controller");
 const submissions_service_1 = require("./submissions.service");
 const problems_module_1 = require("../problems/problems.module");
+const challenges_module_1 = require("../challenges/challenges.module");
 let SubmissionsModule = class SubmissionsModule {
 };
 exports.SubmissionsModule = SubmissionsModule;
 exports.SubmissionsModule = SubmissionsModule = __decorate([
     (0, common_1.Module)({
-        imports: [problems_module_1.ProblemsModule],
+        imports: [problems_module_1.ProblemsModule, challenges_module_1.ChallengesModule],
         controllers: [submissions_controller_1.SubmissionsController],
         providers: [submissions_service_1.SubmissionsService],
     })

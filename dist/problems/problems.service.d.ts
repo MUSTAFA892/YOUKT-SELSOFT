@@ -20,10 +20,14 @@ export interface Problem {
     starterCode: {
         python: string;
         javascript: string;
+        java: string;
+        c: string;
     };
     wrapperCode: {
         python: string;
         javascript: string;
+        java: string;
+        c: string;
     };
 }
 export declare class ProblemsService {

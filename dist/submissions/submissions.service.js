@@ -11,45 +11,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubmissionsService = void 0;
 const common_1 = require("@nestjs/common");
-const axios_1 = require("axios");
+const child_process_1 = require("child_process");
+const promises_1 = require("fs/promises");
+const path_1 = require("path");
+const util_1 = require("util");
+const os_1 = require("os");
 const problems_service_1 = require("../problems/problems.service");
-const LANGUAGE_IDS = {
-    python: 71,
-    javascript: 63,
-};
-const JUDGE0_STATUS = {
-    IN_QUEUE: 1,
-    PROCESSING: 2,
-    ACCEPTED: 3,
-    WRONG_ANSWER: 4,
-    TIME_LIMIT: 5,
-    COMPILATION_ERROR: 6,
-    RUNTIME_ERROR_SIGSEGV: 7,
-    RUNTIME_ERROR_SIGXFSZ: 8,
-    RUNTIME_ERROR_SIGFPE: 9,
-    RUNTIME_ERROR_SIGABRT: 10,
-    RUNTIME_ERROR_NZEC: 11,
-    RUNTIME_ERROR_OTHER: 12,
-    INTERNAL_ERROR: 13,
-    EXEC_FORMAT_ERROR: 14,
-};
+const challenges_service_1 = require("../challenges/challenges.service");
+const execAsync = (0, util_1.promisify)(child_process_1.exec);
+const SUPPORTED_LANGUAGES = ['python', 'javascript', 'java', 'c'];
 let SubmissionsService = class SubmissionsService {
-    constructor(problemsService) {
+    constructor(problemsService, challengesService) {
         this.problemsService = problemsService;
+        this.challengesService = challengesService;
     }
     async runSubmission(dto) {
-        const problem = this.problemsService.findOneWithTestCases(dto.problemId);
-        if (!['python', 'javascript'].includes(dto.language)) {
-            throw new common_1.BadRequestException('Unsupported language. Use "python" or "javascript"');
+        if (!SUPPORTED_LANGUAGES.includes(dto.language)) {
+            throw new common_1.BadRequestException(`Unsupported language "${dto.language}". Use: ${SUPPORTED_LANGUAGES.join(', ')}`);
         }
+        const problem = this.problemsService.findOneWithTestCases(dto.problemId);
         const wrapperTemplate = problem.wrapperCode[dto.language];
+        if (!wrapperTemplate) {
+            throw new common_1.BadRequestException(`Problem "${dto.problemId}" does not support language "${dto.language}" yet.`);
+        }
         const results = [];
         for (let i = 0; i < problem.testCases.length; i++) {
             const testCase = problem.testCases[i];
             const fullCode = wrapperTemplate
                 .replace('{user_code}', dto.code)
                 .replace('{input}', testCase.input);
-            const result = await this.executeCode(fullCode, dto.language, i + 1, testCase.description, testCase.input, testCase.expectedOutput);
+            const result = await this.executeLocally(fullCode, dto.language, i + 1, testCase.description, testCase.input, testCase.expectedOutput);
             results.push(result);
         }
         const passed = results.filter(r => r.status === 'pass').length;
@@ -63,83 +54,253 @@ let SubmissionsService = class SubmissionsService {
             allPassed: passed === problem.testCases.length,
         };
     }
-    async executeCode(code, language, testCaseNum, description, input, expectedOutput) {
-        const apiKey = process.env.JUDGE0_API_KEY;
-        const apiHost = process.env.JUDGE0_API_HOST || 'judge0-ce.p.rapidapi.com';
-        if (!apiKey) {
-            throw new Error('JUDGE0_API_KEY environment variable is not set');
+    async runCustomSubmission(dto) {
+        if (!SUPPORTED_LANGUAGES.includes(dto.language)) {
+            throw new common_1.BadRequestException(`Unsupported language "${dto.language}". Use: ${SUPPORTED_LANGUAGES.join(', ')}`);
         }
-        try {
-            const submitResponse = await axios_1.default.post(`https://${apiHost}/submissions`, {
-                source_code: Buffer.from(code).toString('base64'),
-                language_id: LANGUAGE_IDS[language],
-                stdin: '',
-                base64_encoded: true,
-                wait: false,
-            }, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-RapidAPI-Key': apiKey,
-                    'X-RapidAPI-Host': apiHost,
-                },
-            });
-            const token = submitResponse.data.token;
-            let judgingResult = null;
-            let attempts = 0;
-            const maxAttempts = 10;
-            while (attempts < maxAttempts) {
-                await this.sleep(1000);
-                const resultResponse = await axios_1.default.get(`https://${apiHost}/submissions/${token}`, {
-                    params: { base64_encoded: true, fields: 'stdout,stderr,status,compile_output' },
-                    headers: {
-                        'X-RapidAPI-Key': apiKey,
-                        'X-RapidAPI-Host': apiHost,
-                    },
-                });
-                const statusId = resultResponse.data.status?.id;
-                if (statusId === JUDGE0_STATUS.IN_QUEUE || statusId === JUDGE0_STATUS.PROCESSING) {
-                    attempts++;
-                    continue;
+        const results = [];
+        for (let i = 0; i < dto.testCases.length; i++) {
+            const testCase = dto.testCases[i];
+            const result = await this.executeRawLocally(dto.code, dto.language, i + 1, `Custom Test ${i + 1}`, testCase.input, testCase.expectedOutput);
+            results.push(result);
+        }
+        const passed = results.filter(r => r.status === 'pass').length;
+        return {
+            problemId: 'custom',
+            language: dto.language,
+            totalTests: dto.testCases.length,
+            passed,
+            failed: dto.testCases.length - passed,
+            results,
+            allPassed: passed === dto.testCases.length,
+        };
+    }
+    async runChallengeSubmission(dto) {
+        if (!SUPPORTED_LANGUAGES.includes(dto.language)) {
+            throw new common_1.BadRequestException(`Unsupported language "${dto.language}". Use: ${SUPPORTED_LANGUAGES.join(', ')}`);
+        }
+        const challenge = await this.challengesService.getChallengeById(dto.challengeId);
+        const results = [];
+        for (let i = 0; i < challenge.testCases.length; i++) {
+            const testCase = challenge.testCases[i];
+            const wrapperTemplate = challenge.wrapperCode?.[dto.language];
+            let result;
+            if (wrapperTemplate) {
+                const fullCode = wrapperTemplate
+                    .replace('{user_code}', dto.code)
+                    .replace('{input}', testCase.input);
+                result = await this.executeLocally(fullCode, dto.language, i + 1, `Test Case ${i + 1}`, testCase.input, testCase.expectedOutput);
+            }
+            else {
+                result = await this.executeRawLocally(dto.code, dto.language, i + 1, `Test Case ${i + 1}`, testCase.input, testCase.expectedOutput);
+            }
+            results.push(result);
+        }
+        const passed = results.filter(r => r.status === 'pass').length;
+        return {
+            problemId: dto.challengeId,
+            language: dto.language,
+            totalTests: challenge.testCases.length,
+            passed,
+            failed: challenge.testCases.length - passed,
+            results,
+            allPassed: passed === challenge.testCases.length,
+        };
+    }
+    async executeLocally(code, language, testCaseNum, description, input, expectedOutput) {
+        const tmp = (0, os_1.tmpdir)();
+        const uid = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        if (language === 'python') {
+            const filePath = (0, path_1.join)(tmp, `sol_${uid}.py`);
+            try {
+                await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                const { stdout, stderr } = await execAsync(`python "${filePath}"`, { timeout: 5000 });
+                if (stderr?.trim())
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+            }
+            catch (e) {
+                return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+            }
+            finally {
+                await this.safeDelete(filePath);
+            }
+        }
+        if (language === 'javascript') {
+            const filePath = (0, path_1.join)(tmp, `sol_${uid}.js`);
+            try {
+                await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                const { stdout, stderr } = await execAsync(`node "${filePath}"`, { timeout: 5000 });
+                if (stderr?.trim())
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+            }
+            catch (e) {
+                return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+            }
+            finally {
+                await this.safeDelete(filePath);
+            }
+        }
+        if (language === 'java') {
+            const javaDir = (0, path_1.join)(tmp, `java_${uid}`);
+            const javaFile = (0, path_1.join)(javaDir, 'Solution.java');
+            const classDir = javaDir;
+            try {
+                await execAsync(`mkdir "${javaDir}"`);
+                await (0, promises_1.writeFile)(javaFile, code, 'utf8');
+                const compile = await execAsync(`javac "${javaFile}"`, { timeout: 10000 });
+                if (compile.stderr?.trim()) {
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
                 }
-                judgingResult = resultResponse.data;
-                break;
+                const { stdout, stderr } = await execAsync(`java -cp "${classDir}" Solution`, { timeout: 5000 });
+                if (stderr?.trim())
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
             }
-            if (!judgingResult) {
-                return this.createResult(testCaseNum, description, input, expectedOutput, 'timeout', '', 'Execution timed out');
+            catch (e) {
+                return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
             }
-            const statusId = judgingResult.status?.id;
-            if (statusId === JUDGE0_STATUS.COMPILATION_ERROR) {
-                const errorMsg = judgingResult.compile_output
-                    ? Buffer.from(judgingResult.compile_output, 'base64').toString()
-                    : 'Compilation error';
-                return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', errorMsg);
+            finally {
+                await execAsync(`rmdir /s /q "${javaDir}"`).catch(() => execAsync(`rm -rf "${javaDir}"`).catch(() => { }));
             }
-            if (statusId >= JUDGE0_STATUS.RUNTIME_ERROR_SIGSEGV && statusId <= JUDGE0_STATUS.RUNTIME_ERROR_OTHER) {
-                const errorMsg = judgingResult.stderr
-                    ? Buffer.from(judgingResult.stderr, 'base64').toString()
-                    : 'Runtime error';
-                return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', errorMsg);
-            }
-            if (statusId === JUDGE0_STATUS.TIME_LIMIT) {
-                return this.createResult(testCaseNum, description, input, expectedOutput, 'timeout', '', 'Time limit exceeded');
-            }
-            const rawOutput = judgingResult.stdout
-                ? Buffer.from(judgingResult.stdout, 'base64').toString()
-                : '';
-            const actualOutput = rawOutput.trim();
-            const normalizedActual = this.normalize(actualOutput);
-            const normalizedExpected = this.normalize(expectedOutput);
-            const passed = normalizedActual === normalizedExpected;
-            return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actualOutput);
         }
-        catch (error) {
-            const msg = error?.response?.data?.message || error.message || 'Unknown error';
-            return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', msg);
+        if (language === 'c') {
+            const cFile = (0, path_1.join)(tmp, `sol_${uid}.c`);
+            const outFile = (0, path_1.join)(tmp, `sol_${uid}_out`);
+            try {
+                await (0, promises_1.writeFile)(cFile, code, 'utf8');
+                const compile = await execAsync(`gcc "${cFile}" -o "${outFile}"`, { timeout: 10000 });
+                if (compile.stderr?.trim()) {
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
+                }
+                const runCmd = process.platform === 'win32'
+                    ? `"${outFile}.exe"`
+                    : `"${outFile}"`;
+                const { stdout, stderr } = await execAsync(runCmd, { timeout: 5000 });
+                if (stderr?.trim())
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+            }
+            catch (e) {
+                return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+            }
+            finally {
+                await this.safeDelete(cFile);
+                await this.safeDelete(outFile);
+                await this.safeDelete(outFile + '.exe');
+            }
+        }
+        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'Unknown language');
+    }
+    async executeRawLocally(code, language, testCaseNum, description, input, expectedOutput) {
+        const tmp = (0, os_1.tmpdir)();
+        const uid = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const inputFilePath = (0, path_1.join)(tmp, `in_${uid}.txt`);
+        try {
+            await (0, promises_1.writeFile)(inputFilePath, input, 'utf8');
+            if (language === 'python') {
+                const filePath = (0, path_1.join)(tmp, `sol_${uid}.py`);
+                try {
+                    await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                    const { stdout, stderr } = await execAsync(`python "${filePath}" < "${inputFilePath}"`, { timeout: 5000 });
+                    if (stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                    return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                }
+                catch (e) {
+                    return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+                }
+                finally {
+                    await this.safeDelete(filePath);
+                }
+            }
+            if (language === 'javascript') {
+                const filePath = (0, path_1.join)(tmp, `sol_${uid}.js`);
+                try {
+                    await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                    const { stdout, stderr } = await execAsync(`node "${filePath}" < "${inputFilePath}"`, { timeout: 5000 });
+                    if (stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                    return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                }
+                catch (e) {
+                    return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+                }
+                finally {
+                    await this.safeDelete(filePath);
+                }
+            }
+            if (language === 'java') {
+                const javaDir = (0, path_1.join)(tmp, `java_${uid}`);
+                const javaFile = (0, path_1.join)(javaDir, 'Solution.java');
+                try {
+                    await execAsync(`mkdir "${javaDir}"`);
+                    await (0, promises_1.writeFile)(javaFile, code, 'utf8');
+                    const compile = await execAsync(`javac "${javaFile}"`, { timeout: 10000 });
+                    if (compile.stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
+                    const { stdout, stderr } = await execAsync(`java -cp "${javaDir}" Solution < "${inputFilePath}"`, { timeout: 5000 });
+                    if (stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                    return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                }
+                catch (e) {
+                    return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+                }
+                finally {
+                    await execAsync(`rmdir /s /q "${javaDir}"`).catch(() => execAsync(`rm -rf "${javaDir}"`).catch(() => { }));
+                }
+            }
+            if (language === 'c') {
+                const cFile = (0, path_1.join)(tmp, `sol_${uid}.c`);
+                const outFile = (0, path_1.join)(tmp, `sol_${uid}_out`);
+                try {
+                    await (0, promises_1.writeFile)(cFile, code, 'utf8');
+                    const compile = await execAsync(`gcc "${cFile}" -o "${outFile}"`, { timeout: 10000 });
+                    if (compile.stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
+                    const runCmd = process.platform === 'win32' ? `"${outFile}.exe"` : `"${outFile}"`;
+                    const { stdout, stderr } = await execAsync(`${runCmd} < "${inputFilePath}"`, { timeout: 5000 });
+                    if (stderr?.trim())
+                        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
+                    return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                }
+                catch (e) {
+                    return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+                }
+                finally {
+                    await this.safeDelete(cFile);
+                    await this.safeDelete(outFile);
+                    await this.safeDelete(outFile + '.exe');
+                }
+            }
+            return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'Unknown language');
+        }
+        finally {
+            await this.safeDelete(inputFilePath);
         }
     }
+    compareOutput(testCaseNum, description, input, expectedOutput, stdout) {
+        const actual = (stdout || '').trim();
+        const passed = this.normalize(actual) === this.normalize(expectedOutput);
+        return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual);
+    }
+    handleExecError(error, testCaseNum, description, input, expectedOutput) {
+        if (error.killed || error.signal === 'SIGTERM') {
+            return this.createResult(testCaseNum, description, input, expectedOutput, 'timeout', '', 'Time limit exceeded (5 seconds). Check for infinite loops.');
+        }
+        const msg = error.stderr?.trim() || error.message || 'Unknown error';
+        return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', msg);
+    }
+    async safeDelete(path) {
+        try {
+            await (0, promises_1.unlink)(path);
+        }
+        catch { }
+    }
     normalize(str) {
-        return str
-            .trim()
+        return str.trim()
             .replace(/\s*,\s*/g, ',')
             .replace(/\[\s*/g, '[')
             .replace(/\s*\]/g, ']')
@@ -148,13 +309,11 @@ let SubmissionsService = class SubmissionsService {
     createResult(testCase, description, input, expectedOutput, status, actualOutput, errorMessage) {
         return { testCase, description, status, input, expectedOutput, actualOutput, errorMessage };
     }
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 };
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [problems_service_1.ProblemsService])
+    __metadata("design:paramtypes", [problems_service_1.ProblemsService,
+        challenges_service_1.ChallengesService])
 ], SubmissionsService);
 //# sourceMappingURL=submissions.service.js.map

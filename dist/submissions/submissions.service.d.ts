@@ -1,7 +1,23 @@
 import { ProblemsService } from '../problems/problems.service';
+import { ChallengesService } from '../challenges/challenges.service';
+export type SupportedLanguage = 'python' | 'javascript' | 'java' | 'c';
 export interface SubmissionDto {
     problemId: string;
-    language: 'python' | 'javascript';
+    language: SupportedLanguage;
+    code: string;
+}
+export interface CustomTestCase {
+    input: string;
+    expectedOutput: string;
+}
+export interface CustomSubmissionDto {
+    language: SupportedLanguage;
+    code: string;
+    testCases: CustomTestCase[];
+}
+export interface ChallengeSubmissionDto {
+    challengeId: string;
+    language: SupportedLanguage;
     code: string;
 }
 export interface TestResult {
@@ -24,10 +40,16 @@ export interface SubmissionResult {
 }
 export declare class SubmissionsService {
     private readonly problemsService;
-    constructor(problemsService: ProblemsService);
+    private readonly challengesService;
+    constructor(problemsService: ProblemsService, challengesService: ChallengesService);
     runSubmission(dto: SubmissionDto): Promise<SubmissionResult>;
-    private executeCode;
+    runCustomSubmission(dto: CustomSubmissionDto): Promise<SubmissionResult>;
+    runChallengeSubmission(dto: ChallengeSubmissionDto): Promise<SubmissionResult>;
+    private executeLocally;
+    private executeRawLocally;
+    private compareOutput;
+    private handleExecError;
+    private safeDelete;
     private normalize;
     private createResult;
-    private sleep;
 }

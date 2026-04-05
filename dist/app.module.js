@@ -10,6 +10,7 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const problems_module_1 = require("./problems/problems.module");
 const submissions_module_1 = require("./submissions/submissions.module");
+const challenges_module_1 = require("./challenges/challenges.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -18,6 +19,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             problems_module_1.ProblemsModule,
             submissions_module_1.SubmissionsModule,
+            challenges_module_1.ChallengesModule,
         ],
     })
 ], AppModule);
