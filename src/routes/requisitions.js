@@ -52,7 +52,7 @@ requisitionRouter.post("/requisitions/:id/state", async (req, res, next) => {
 
     // 3. Update the requisition state
     let updateRes;
-    const states = ['draft', 'pending', 'approved', 'on_hold', 'closed', 'archived'];
+    const states = ['draft', 'pending_approval', 'approved', 'rejected', 'on_hold', 'closed', 'archived'];
     if (!states.includes(to_state)) {
         throw new AppError(`Invalid state: ${to_state}`, 400);
     }
@@ -67,6 +67,16 @@ requisitionRouter.post("/requisitions/:id/state", async (req, res, next) => {
                  WHERE id = $2 
                  RETURNING *`,
           values: [approvedAt, id]
+        });
+    } else if (to_state === "rejected") {
+        updateRes = await client.query({
+          text: `UPDATE public.job_requisitions 
+                 SET state = '${to_state}', 
+                     rejected_at = NOW(),
+                     updated_at = NOW() 
+                 WHERE id = $1 
+                 RETURNING *`,
+          values: [id]
         });
     } else {
         updateRes = await client.query({
