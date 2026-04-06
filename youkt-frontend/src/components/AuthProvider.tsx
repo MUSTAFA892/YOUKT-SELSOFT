@@ -9,7 +9,6 @@ export type User = {
 };
 
 export const DUMMY_USERS: User[] = [
-  { id: "recruiter1", name: "Recruiter Admin", role: "recruiter" },
   { id: "c1", name: "Alice Smith", role: "candidate" },
   { id: "c2", name: "Bob Jones", role: "candidate" },
   { id: "c3", name: "Charlie Brown", role: "candidate" },

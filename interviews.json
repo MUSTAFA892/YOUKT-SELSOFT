@@ -1,0 +1,242 @@
+[
+  {
+    "id": "d7dac331-154c-4cb2-bbb7-dbb5df9c2289",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "f6cf7272-1f7d-4531-9d3a-20946135371d"
+      }
+    ],
+    "createdAt": "2026-04-05T20:55:42.569Z"
+  },
+  {
+    "id": "ac1376a1-5cf8-4a8f-a8e8-4408363003b5",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "def two_sum(nums, target):\r\n    # Write your algorithmic solution here!\r\n    # Remember to return the exact list of two indices (e.g. return [0, 1])\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "import sys\r\nimport ast\r\n\r\n{user_code}\r\n\r\ndef run_tests():\r\n    raw_input = sys.stdin.read().strip().split('\\n')\r\n    if len(raw_input) < 2: return\r\n    \r\n    nums_str = raw_input[0].split('=')[1].strip()\r\n    nums = ast.literal_eval(nums_str)\r\n    \r\n    target_str = raw_input[1].split('=')[1].strip()\r\n    target = int(target_str)\r\n    \r\n    # Automatically run the Candidate's beautiful function\r\n    ans = two_sum(nums, target)\r\n    print(ans)\r\n\r\nrun_tests()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "ca923d99-1290-48f6-aee5-6aed6f50f1f9"
+      }
+    ],
+    "createdAt": "2026-04-05T21:03:21.883Z"
+  },
+  {
+    "id": "1ebeca73-8806-4fb1-a715-f6be11c2f7d7",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "def two_sum(nums, target):\r\n    # Write your algorithmic solution here!\r\n    # Remember to return the exact list of two indices (e.g. return [0, 1])\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "import ast\r\n\r\n# The backend will inject the candidate's code here\r\n{user_code}\r\n\r\ndef run_tests():\r\n    # The backend will inject the literal test case string right here!\r\n    raw_input_text = \"\"\"{input}\"\"\"\r\n    \r\n    lines = raw_input_text.strip().split('\\n')\r\n    if len(lines) < 2: return\r\n    \r\n    nums_str = lines[0].split('=')[1].strip()\r\n    nums = ast.literal_eval(nums_str)\r\n    \r\n    target_str = lines[1].split('=')[1].strip()\r\n    target = int(target_str)\r\n    \r\n    # Automatically run the Candidate's function\r\n    ans = two_sum(nums, target)\r\n    print(ans)\r\n\r\nrun_tests()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "5a663e23-d12e-4889-858f-24bbb02ce1ad"
+      }
+    ],
+    "createdAt": "2026-04-05T21:06:35.534Z"
+  },
+  {
+    "id": "7f1067b3-8dba-45fe-954c-3511b54da3d0",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "def two_sum(nums, target):\r\n    # Write your algorithmic solution here!\r\n    # Remember to return the exact list of two indices (e.g. return [0, 1])\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "import ast\r\n\r\n# The backend will inject the candidate's code here\r\n{user_code}\r\n\r\ndef run_tests():\r\n    # The backend will inject the literal test case string right here!\r\n    raw_input_text = \"\"\"{input}\"\"\"\r\n    \r\n    lines = raw_input_text.strip().split('\\n')\r\n    if len(lines) < 2: return\r\n    \r\n    nums_str = lines[0].split('=')[1].strip()\r\n    nums = ast.literal_eval(nums_str)\r\n    \r\n    target_str = lines[1].split('=')[1].strip()\r\n    target = int(target_str)\r\n    \r\n    # Automatically run the Candidate's function\r\n    ans = two_sum(nums, target)\r\n    print(ans)\r\n\r\nrun_tests()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "a4c24194-abaf-47db-819e-f6e0c4e5951b"
+      }
+    ],
+    "createdAt": "2026-04-05T21:06:42.467Z"
+  },
+  {
+    "id": "d485307b-0f3e-450e-9655-43522c9a970c",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "def two_sum(nums, target):\r\n    # Write your algorithmic solution here!\r\n    # Remember to return the exact list of two indices (e.g. return [0, 1])\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "import ast\r\n\r\n# The backend will inject the candidate's code here\r\n{user_code}\r\n\r\ndef run_tests():\r\n    # The backend will inject the literal test case string right here!\r\n    raw_input_text = \"\"\"{input}\"\"\"\r\n    \r\n    lines = raw_input_text.strip().split('\\n')\r\n    if len(lines) < 2: return\r\n    \r\n    nums_str = lines[0].split('=')[1].strip()\r\n    nums = ast.literal_eval(nums_str)\r\n    \r\n    target_str = lines[1].split('=')[1].strip()\r\n    target = int(target_str)\r\n    \r\n    # Automatically run the Candidate's function\r\n    ans = two_sum(nums, target)\r\n    print(ans)\r\n\r\nrun_tests()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "6d75bfad-88a1-4e86-be6a-be1c2b6b269e"
+      },
+      {
+        "title": "Algorithm Question 2",
+        "description": "Given a number N, print the Nth Fibonacci number.\nF(0) = 0, F(1) = 1, F(N) = F(N-1) + F(N-2)\n",
+        "testCases": [
+          {
+            "input": "6",
+            "expectedOutput": "8"
+          },
+          {
+            "input": "10",
+            "expectedOutput": "55"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "fbd5887c-31bd-4ed7-b047-1bd389094def"
+      }
+    ],
+    "createdAt": "2026-04-06T07:40:26.503Z"
+  },
+  {
+    "id": "8cfc1e4d-8c41-4d2a-828a-343d2b08e775",
+    "candidateId": "c5",
+    "candidateName": "Eve Miller",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given an array of integers nums and an integer target, return the indices of the two numbers such that they add up to target.\n\nRules:\n\nEach input has exactly one solution.\nYou may not use the same element twice.\nReturn the answer in any order.",
+        "testCases": [
+          {
+            "input": "nums = [2, 7, 11, 15]\ntarget = 9",
+            "expectedOutput": "[0, 1]"
+          }
+        ],
+        "starterCode": {
+          "python": "def two_sum(nums, target):\r\n    # Write your algorithmic solution here!\r\n    # Remember to return the exact list of two indices (e.g. return [0, 1])\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "import ast\r\n\r\n# The backend will inject the candidate's code here\r\n{user_code}\r\n\r\ndef run_tests():\r\n    # The backend will inject the literal test case string right here!\r\n    raw_input_text = \"\"\"{input}\"\"\"\r\n    \r\n    lines = raw_input_text.strip().split('\\n')\r\n    if len(lines) < 2: return\r\n    \r\n    nums_str = lines[0].split('=')[1].strip()\r\n    nums = ast.literal_eval(nums_str)\r\n    \r\n    target_str = lines[1].split('=')[1].strip()\r\n    target = int(target_str)\r\n    \r\n    # Automatically run the Candidate's function\r\n    ans = two_sum(nums, target)\r\n    print(ans)\r\n\r\nrun_tests()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "7f70c3fc-3b30-4c73-b2fb-d18f47d33add"
+      },
+      {
+        "title": "Algorithm Question 2",
+        "description": "Given a number N, print the Nth Fibonacci number.\nF(0) = 0, F(1) = 1, F(N) = F(N-1) + F(N-2)\n",
+        "testCases": [
+          {
+            "input": "6",
+            "expectedOutput": "8"
+          },
+          {
+            "input": "10",
+            "expectedOutput": "55"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "ee10ecfa-ae8d-4804-86cd-f0050d9b8bd4"
+      }
+    ],
+    "createdAt": "2026-04-06T07:40:33.176Z"
+  }
+]

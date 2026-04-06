@@ -7,6 +7,37 @@ import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, ArrowRight
 import { useAuth } from "@/components/AuthProvider";
 import Link from "next/link";
 
+type Lang = "python" | "javascript" | "java" | "c";
+
+const DEFAULT_TEMPLATES: Record<Lang, string> = {
+  python: "# Write your solution here\n",
+  javascript: "// Write your solution here\n",
+  java: `import java.util.*;
+import java.io.*;
+
+public class Solution {
+    // Write your solution here
+    public static void main(String[] args) throws Exception {
+        // Read input, compute, and print output
+    }
+}`,
+  c: `#include <stdio.h>
+#include <stdlib.h>
+
+// Write your solution here
+int main() {
+    // Read input, compute, and print output
+    return 0;
+}`,
+};
+
+function getAvailableLangs(q: Question | null): Lang[] {
+  const all: Lang[] = ["python", "javascript", "java", "c"];
+  if (!q?.wrapperCode) return all;
+  const withWrapper = all.filter(l => q.wrapperCode![l]?.trim());
+  return withWrapper.length > 0 ? withWrapper : all;
+}
+
 export default function CandidateInterviewPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const interviewId = resolvedParams.id;
@@ -18,8 +49,8 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [language, setLanguage] = useState<"python" | "javascript" | "java" | "c">("javascript");
-  const [code, setCode] = useState("// Write your solution here\n");
+  const [language, setLanguage] = useState<Lang>("python");
+  const [code, setCode] = useState(DEFAULT_TEMPLATES.python);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<SubmissionResult | null>(null);
@@ -33,7 +64,10 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
           return;
         }
         setInterview(data);
-        initializeEditor(data.questions[0], "javascript");
+        // Pick the best starting language: prefer wrapper langs, then python
+        const bestLang = getAvailableLangs(data.questions[0])[0];
+        setLanguage(bestLang);
+        initializeEditor(data.questions[0], bestLang);
       } catch (err: any) {
         setError("Error loading interview. It might be invalid or not found.");
       } finally {
@@ -43,15 +77,15 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
     fetchInterview();
   }, [interviewId, currentUser]);
 
-  const initializeEditor = (q: Question, lang: "python" | "javascript" | "java" | "c") => {
+  const initializeEditor = (q: Question, lang: Lang) => {
     if (q.starterCode && q.starterCode[lang]) {
       setCode(q.starterCode[lang]!);
     } else {
-      setCode("// Write your solution here\n");
+      setCode(DEFAULT_TEMPLATES[lang]);
     }
   };
 
-  const handleLanguageChange = (lang: "python" | "javascript" | "java" | "c") => {
+  const handleLanguageChange = (lang: Lang) => {
     setLanguage(lang);
     if (interview?.questions[questionIndex]) {
       initializeEditor(interview.questions[questionIndex], lang);
@@ -77,7 +111,10 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
     const nextIdx = questionIndex + 1;
     setQuestionIndex(nextIdx);
     setResult(null);
-    initializeEditor(interview!.questions[nextIdx], language);
+    const nextQ = interview!.questions[nextIdx];
+    const bestLang = getAvailableLangs(nextQ)[0];
+    setLanguage(bestLang);
+    initializeEditor(nextQ, bestLang);
   };
 
   const isCompleted = interview && questionIndex >= interview.questions.length;
@@ -110,6 +147,9 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
   }
 
   const currentQ = interview.questions[questionIndex];
+  const availableLangs = getAvailableLangs(currentQ);
+  const isLocked = availableLangs.length < 4;
+  const LANG_LABELS: Record<Lang, string> = { python: "Python", javascript: "JavaScript", java: "Java", c: "C" };
 
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)] w-full overflow-hidden bg-neutral-950">
@@ -185,16 +225,22 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
           
           {/* Editor Toolbar */}
           <div className="flex items-center justify-between px-4 h-12 border-b border-neutral-800 shrink-0 bg-neutral-900/60">
-            <select 
-              value={language}
-              onChange={(e) => handleLanguageChange(e.target.value as any)}
-              className="bg-neutral-800 text-sm text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500 font-medium"
-            >
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-              <option value="java">Java</option>
-              <option value="c">C</option>
-            </select>
+            <div className="flex items-center gap-2">
+              <select 
+                value={language}
+                onChange={(e) => handleLanguageChange(e.target.value as Lang)}
+                className="bg-neutral-800 text-sm text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500 font-medium"
+              >
+                {availableLangs.map(lang => (
+                  <option key={lang} value={lang}>{LANG_LABELS[lang]}</option>
+                ))}
+              </select>
+              {isLocked && (
+                <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full uppercase tracking-wide">
+                  🔒 Wrapper only
+                </span>
+              )}
+            </div>
             
             <button 
               onClick={runCode}
@@ -230,56 +276,98 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
               {!result ? (
                 <div className="flex items-center justify-center h-full text-neutral-600 text-sm italic font-medium">Click "Submit Code" to evaluate your solution.</div>
               ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 mb-4 pb-4 border-b border-neutral-800">
+                <div className="space-y-3">
+                  {/* Summary Bar */}
+                  <div className="flex items-center gap-3 mb-4 pb-4 border-b border-neutral-800">
                     {result.allPassed ? (
-                      <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full font-bold">
-                        <CheckCircle2 className="w-5 h-5" /> Success!
+                      <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full font-bold text-sm">
+                        <CheckCircle2 className="w-4 h-4" /> All {result.totalTests} test cases passed!
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full font-bold">
-                        <XCircle className="w-5 h-5" /> Failed ({result.passed}/{result.totalTests} passed)
+                      <div className="flex items-center gap-2 text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full font-bold text-sm">
+                        <XCircle className="w-4 h-4" /> {result.passed}/{result.totalTests} test cases passed
                       </div>
                     )}
+                    <span className="text-xs text-neutral-500 ml-auto">{result.language}</span>
                   </div>
 
+                  {/* Per Test Case Cards */}
                   {result.results.map((r, i) => (
-                    <div key={i} className={`p-4 rounded border ${r.status === 'pass' ? 'border-emerald-900/50 bg-emerald-950/20' : 'border-rose-900/50 bg-rose-950/20'}`}>
-                      <div className="flex items-center gap-2 font-bold mb-2">
-                        {r.status === 'pass' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-rose-500" />}
-                        <span className={r.status === 'pass' ? 'text-emerald-400' : 'text-rose-400'}>{r.description}: {r.status}</span>
-                      </div>
-                      
-                      {r.status !== 'pass' && (
-                        <div className="space-y-2 mt-3 text-sm font-mono overflow-auto scrollbar-thin bg-black/40 p-3 rounded border border-neutral-800/50">
-                          {r.status === 'error' ? (
-                            <div className="text-rose-300 py-1">{r.errorMessage}</div>
-                          ) : (
-                            <>
-                              <div className="py-1">
-                                <span className="text-neutral-500">Input:</span><br/>
-                                {(currentQ.wrapperCode && currentQ.wrapperCode[language]) ? 
-                                  <span className="text-indigo-400/50 italic">Handled internally</span> : 
-                                  <span className="text-indigo-300">{r.input}</span>
-                                }
-                              </div>
-                              <div className="py-1">
-                                <span className="text-neutral-500">Expected:</span><br/>
-                                <span className="text-emerald-300">{r.expectedOutput || '""'}</span>
-                              </div>
-                              <div className="py-1">
-                                <span className="text-neutral-500">Your Output:</span><br/>
-                                <span className="text-rose-300 break-all">{r.actualOutput || '""'}</span>
-                              </div>
-                            </>
-                          )}
+                    <div key={i}
+                      className={`rounded-lg border overflow-hidden ${
+                        r.status === 'pass'
+                          ? 'border-emerald-800/60 bg-emerald-950/20'
+                          : r.status === 'timeout'
+                          ? 'border-yellow-800/60 bg-yellow-950/20'
+                          : 'border-rose-800/60 bg-rose-950/20'
+                      }`}
+                    >
+                      {/* Card Header */}
+                      <div className={`flex items-center justify-between px-4 py-2 border-b ${
+                        r.status === 'pass' ? 'border-emerald-800/40 bg-emerald-950/40' :
+                        r.status === 'timeout' ? 'border-yellow-800/40 bg-yellow-950/40' :
+                        'border-rose-800/40 bg-rose-950/40'
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          {r.status === 'pass'    && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                          {r.status === 'fail'    && <XCircle className="w-4 h-4 text-rose-400" />}
+                          {r.status === 'error'   && <AlertCircle className="w-4 h-4 text-orange-400" />}
+                          {r.status === 'timeout' && <AlertCircle className="w-4 h-4 text-yellow-400" />}
+                          <span className={`text-sm font-bold ${
+                            r.status === 'pass' ? 'text-emerald-300' :
+                            r.status === 'timeout' ? 'text-yellow-300' : 'text-rose-300'
+                          }`}>
+                            Test Case {i + 1}
+                          </span>
                         </div>
-                      )}
+                        <span className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                          r.status === 'pass'    ? 'text-emerald-300 bg-emerald-500/15' :
+                          r.status === 'timeout' ? 'text-yellow-300 bg-yellow-500/15' :
+                          r.status === 'error'   ? 'text-orange-300 bg-orange-500/15' :
+                                                    'text-rose-300 bg-rose-500/15'
+                        }`}>{r.status}</span>
+                      </div>
+
+                      {/* Card Body */}
+                      <div className="p-3 grid grid-cols-3 gap-3 text-xs font-mono">
+                        {/* Input */}
+                        <div>
+                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Input</div>
+                          <div className="bg-black/40 rounded p-2 text-indigo-300 whitespace-pre-wrap break-all min-h-[40px]">
+                            {(currentQ.wrapperCode && currentQ.wrapperCode[language])
+                              ? <span className="text-neutral-600 italic">Handled by wrapper</span>
+                              : (r.input || '—')}
+                          </div>
+                        </div>
+
+                        {/* Expected Output */}
+                        <div>
+                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Expected</div>
+                          <div className="bg-black/40 rounded p-2 text-emerald-300 whitespace-pre-wrap break-all min-h-[40px]">
+                            {r.expectedOutput || '""'}
+                          </div>
+                        </div>
+
+                        {/* Actual Output */}
+                        <div>
+                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Your Output</div>
+                          <div className={`bg-black/40 rounded p-2 whitespace-pre-wrap break-all min-h-[40px] ${
+                            r.status === 'pass' ? 'text-emerald-300' :
+                            r.status === 'timeout' ? 'text-yellow-300' :
+                            r.status === 'error' ? 'text-orange-300' : 'text-rose-300'
+                          }`}>
+                            {r.status === 'error'   ? (r.errorMessage || 'Runtime Error') :
+                             r.status === 'timeout' ? 'Time Limit Exceeded' :
+                             (r.actualOutput || '""')}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </div>

@@ -42,7 +42,6 @@ export default function RootLayout({
                 <a href="/" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Problems</a>
                 <a href="/ide" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Custom IDE</a>
                 <a href="/interviews" className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">Interviews</a>
-                <a href="/recruiter" className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">Recruiter Portal</a>
                 <AccountSwitcher />
               </div>
             </div>

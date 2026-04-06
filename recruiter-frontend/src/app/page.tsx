@@ -9,6 +9,7 @@ import { DUMMY_USERS, useAuth } from "@/components/AuthProvider";
 
 type EditingQuestion = Omit<Question, 'id'> & {
   activeLang: "python" | "javascript" | "java" | "c";
+  isAdvancedOpen?: boolean;
 };
 
 export default function RecruiterPortal() {
@@ -22,7 +23,8 @@ export default function RecruiterPortal() {
     testCases: [{ input: "", expectedOutput: "" }],
     starterCode: { python: "", javascript: "", java: "", c: "" },
     wrapperCode: { python: "", javascript: "", java: "", c: "" },
-    activeLang: "python"
+    activeLang: "python",
+    isAdvancedOpen: false
   }]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +39,8 @@ export default function RecruiterPortal() {
         testCases: [{ input: "", expectedOutput: "" }],
         starterCode: { python: "", javascript: "", java: "", c: "" },
         wrapperCode: { python: "", javascript: "", java: "", c: "" },
-        activeLang: "python"
+        activeLang: "python",
+        isAdvancedOpen: false
       }
     ]);
   };
@@ -70,9 +73,13 @@ export default function RecruiterPortal() {
     setIsSubmitting(true);
     try {
       const candidateUser = DUMMY_USERS.find(u => u.id === candidateId);
-      const payloadQuestions = questions.map(({ activeLang, ...q }) => q); // remove UI only property
+      const payloadQuestions = questions.map(({ activeLang, isAdvancedOpen, ...q }) => q as any); // remove UI only property
       const interview = await createInterview(candidateId, candidateUser?.name || "Unknown Candidate", payloadQuestions);
-      const url = `${window.location.origin}/interview/${interview.id}`;
+      // Always link to the Candidate Portal (port 3000), not the Recruiter app
+      const candidateOrigin = window.location.hostname === 'localhost'
+        ? 'http://localhost:3000'
+        : window.location.origin.replace(':3002', ':3000');
+      const url = `${candidateOrigin}/interview/${interview.id}`;
       setGeneratedLink(url);
     } catch (err: any) {
       alert("Error creating interview: " + err.message);
@@ -232,49 +239,60 @@ export default function RecruiterPortal() {
                 </div>
 
                 <div className="pt-4 border-t border-neutral-800">
-                  <div className="flex items-center justify-between mb-4">
-                    <label className="text-sm font-semibold text-white flex items-center gap-2"><Code2 className="w-4 h-4"/> Advanced Code Configuration</label>
-                    <select 
-                      value={q.activeLang}
-                      onChange={(e) => updateQuestion(qIndex, { activeLang: e.target.value as any })}
-                      className="bg-neutral-950 text-xs text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500"
-                    >
-                      <option value="python">Python</option>
-                      <option value="javascript">JavaScript</option>
-                      <option value="java">Java</option>
-                      <option value="c">C</option>
-                    </select>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-64">
-                    <div className="flex flex-col">
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Starter Code</label>
-                      <div className="flex-1 rounded border border-neutral-800 relative bg-[#1e1e1e]">
-                        <Editor
-                          language={q.activeLang} theme="vs-dark"
-                          value={q.starterCode?.[q.activeLang] || ""}
-                          onChange={(val) => {
-                            const newStarter = { ...q.starterCode, [q.activeLang]: val || "" };
-                            updateQuestion(qIndex, { starterCode: newStarter });
-                          }}
-                          options={{ minimap: { enabled: false } }}
-                        />
+                  <button 
+                    onClick={() => updateQuestion(qIndex, { isAdvancedOpen: !q.isAdvancedOpen })}
+                    className="w-full flex items-center justify-between mb-4 text-sm font-semibold text-neutral-400 hover:text-white transition-colors"
+                  >
+                    <span className="flex items-center gap-2"><Code2 className="w-4 h-4"/> Advanced Code Configuration (Optional)</span>
+                    <span className="text-xs decoration-dashed underline underline-offset-4">{q.isAdvancedOpen ? 'Hide' : 'Show'} Configuration</span>
+                  </button>
+
+                  {q.isAdvancedOpen && (
+                    <>
+                      <div className="flex justify-end mb-4">
+                        <select 
+                          value={q.activeLang}
+                          onChange={(e) => updateQuestion(qIndex, { activeLang: e.target.value as any })}
+                          className="bg-neutral-950 text-xs text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500"
+                        >
+                          <option value="python">Python</option>
+                          <option value="javascript">JavaScript</option>
+                          <option value="java">Java</option>
+                          <option value="c">C</option>
+                        </select>
                       </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Wrapper Code</label>
-                      <div className="flex-1 rounded border border-neutral-800 relative bg-[#1e1e1e]">
-                        <Editor
-                          language={q.activeLang} theme="vs-dark"
-                          value={q.wrapperCode?.[q.activeLang] || ""}
-                          onChange={(val) => {
-                            const newWrapper = { ...q.wrapperCode, [q.activeLang]: val || "" };
-                            updateQuestion(qIndex, { wrapperCode: newWrapper });
-                          }}
-                          options={{ minimap: { enabled: false } }}
-                        />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-64">
+                        <div className="flex flex-col">
+                          <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Starter Code</label>
+                          <div className="flex-1 rounded border border-neutral-800 relative bg-[#1e1e1e]">
+                            <Editor
+                              language={q.activeLang} theme="vs-dark"
+                              value={q.starterCode?.[q.activeLang] || ""}
+                              onChange={(val) => {
+                                const newStarter = { ...q.starterCode, [q.activeLang]: val || "" };
+                                updateQuestion(qIndex, { starterCode: newStarter });
+                              }}
+                              options={{ minimap: { enabled: false } }}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Wrapper Code</label>
+                          <div className="flex-1 rounded border border-neutral-800 relative bg-[#1e1e1e]">
+                            <Editor
+                              language={q.activeLang} theme="vs-dark"
+                              value={q.wrapperCode?.[q.activeLang] || ""}
+                              onChange={(val) => {
+                                const newWrapper = { ...q.wrapperCode, [q.activeLang]: val || "" };
+                                updateQuestion(qIndex, { wrapperCode: newWrapper });
+                              }}
+                              options={{ minimap: { enabled: false } }}
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
 
               </div>
