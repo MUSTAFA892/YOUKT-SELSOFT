@@ -4,11 +4,18 @@ interface CreateInterviewDto {
     candidateName: string;
     questions: Omit<Question, 'id'>[];
 }
+interface NextQuestionDto {
+    questionId: string;
+    passed: boolean;
+    timeMs: number;
+}
 export declare class InterviewsController {
     private readonly interviewsService;
     constructor(interviewsService: InterviewsService);
     create(dto: CreateInterviewDto): Promise<import("./interviews.service").Interview>;
+    getAll(): Promise<import("./interviews.service").Interview[]>;
     getByCandidate(candidateId: string): Promise<import("./interviews.service").Interview[]>;
     getOne(id: string): Promise<import("./interviews.service").Interview>;
+    getNextQuestion(id: string, dto: NextQuestionDto): Promise<import("./interviews.service").Interview>;
 }
 export {};

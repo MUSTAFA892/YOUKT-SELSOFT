@@ -12,6 +12,8 @@ import { join }                            from 'path';
 import { promisify }                       from 'util';
 import { tmpdir }                          from 'os';
 import { ProblemsService }                 from '../problems/problems.service';
+import { ProblemSessionService }           from '../problems/problem-session.service';
+import { ValidationService }               from './validation.service';
 import { ChallengesService }               from '../challenges/challenges.service';
 import { InterviewsService }               from '../interviews/interviews.service';
 
@@ -25,6 +27,8 @@ export interface SubmissionDto {
   problemId: string;
   language: SupportedLanguage;
   code: string;
+  sessionId?: string; // For dynamic test case validation
+  candidateId?: string; // For session lookup
 }
 
 export interface CustomTestCase {
@@ -59,6 +63,7 @@ export interface TestResult {
   expectedOutput: string;
   actualOutput: string;
   errorMessage?: string;
+  executionTimeMs?: number;
 }
 
 export interface SubmissionResult {
@@ -69,6 +74,7 @@ export interface SubmissionResult {
   failed: number;
   results: TestResult[];
   allPassed: boolean;
+  averageTimeMs?: number;
 }
 
 const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['python', 'javascript', 'java', 'c'];
@@ -78,6 +84,8 @@ export class SubmissionsService {
 
   constructor(
     private readonly problemsService: ProblemsService,
+    private readonly sessionService: ProblemSessionService,
+    private readonly validationService: ValidationService,
     private readonly challengesService: ChallengesService,
     private readonly interviewsService: InterviewsService
   ) {}
@@ -99,14 +107,21 @@ export class SubmissionsService {
       );
     }
 
+    // Get test cases: if sessionId provided, use hidden test cases; otherwise use defaults
+    let testCasesToValidate = problem.testCases;
+    if (dto.sessionId) {
+      const validationCases = this.sessionService.getValidationTestCases(dto.sessionId);
+      if (validationCases.length > 0) {
+        testCasesToValidate = validationCases;
+      }
+    }
+
     const results: TestResult[] = [];
 
-    for (let i = 0; i < problem.testCases.length; i++) {
-      const testCase = problem.testCases[i];
+    for (let i = 0; i < testCasesToValidate.length; i++) {
+      const testCase = testCasesToValidate[i];
 
-      const fullCode = wrapperTemplate
-        .replace('{user_code}', dto.code)
-        .replace('{input}', testCase.input);
+      const fullCode = this.prepareFullCode(wrapperTemplate, dto.code, testCase.input, dto.language);
 
       const result = await this.executeLocally(
         fullCode,
@@ -115,21 +130,26 @@ export class SubmissionsService {
         testCase.description,
         testCase.input,
         testCase.expectedOutput,
+        dto.problemId
       );
 
       results.push(result);
     }
 
     const passed = results.filter(r => r.status === 'pass').length;
+    const avgTime = results.length > 0
+      ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+      : 0;
 
     return {
       problemId:  dto.problemId,
       language:   dto.language,
-      totalTests: problem.testCases.length,
+      totalTests: testCasesToValidate.length,
       passed,
-      failed:     problem.testCases.length - passed,
+      failed:     testCasesToValidate.length - passed,
       results,
-      allPassed:  passed === problem.testCases.length,
+      allPassed:  passed === testCasesToValidate.length,
+      averageTimeMs: parseFloat(avgTime.toFixed(2)),
     };
   }
 
@@ -156,6 +176,9 @@ export class SubmissionsService {
     }
 
     const passed = results.filter(r => r.status === 'pass').length;
+    const avgTime = results.length > 0
+      ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+      : 0;
 
     return {
       problemId:  'custom',
@@ -165,6 +188,7 @@ export class SubmissionsService {
       failed:     dto.testCases.length - passed,
       results,
       allPassed:  passed === dto.testCases.length,
+      averageTimeMs: parseFloat(avgTime.toFixed(2)),
     };
   }
 
@@ -184,9 +208,10 @@ export class SubmissionsService {
       let result: TestResult;
 
       if (wrapperTemplate) {
+        const safeInput = testCase.input.trimEnd() + '\n';
         const fullCode = wrapperTemplate
           .replace('{user_code}', dto.code)
-          .replace('{input}', testCase.input);
+          .replace('{input}', safeInput);
           
         result = await this.executeLocally(
           fullCode,
@@ -210,6 +235,9 @@ export class SubmissionsService {
     }
 
     const passed = results.filter(r => r.status === 'pass').length;
+    const avgTime = results.length > 0
+      ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+      : 0;
 
     return {
       problemId:  dto.challengeId,
@@ -219,6 +247,7 @@ export class SubmissionsService {
       failed:     challenge.testCases.length - passed,
       results,
       allPassed:  passed === challenge.testCases.length,
+      averageTimeMs: parseFloat(avgTime.toFixed(2)),
     };
   }
 
@@ -243,9 +272,10 @@ export class SubmissionsService {
       let result: TestResult;
 
       if (wrapperTemplate) {
+        const safeInput = testCase.input.trimEnd() + '\n';
         const fullCode = wrapperTemplate
           .replace('{user_code}', dto.code)
-          .replace('{input}', testCase.input);
+          .replace('{input}', safeInput);
           
         result = await this.executeLocally(
           fullCode,
@@ -269,6 +299,9 @@ export class SubmissionsService {
     }
 
     const passed = results.filter(r => r.status === 'pass').length;
+    const avgTime = results.length > 0
+      ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+      : 0;
 
     return {
       problemId:  dto.questionId,
@@ -278,7 +311,43 @@ export class SubmissionsService {
       failed:     question.testCases.length - passed,
       results,
       allPassed:  passed === question.testCases.length,
+      averageTimeMs: parseFloat(avgTime.toFixed(2)),
     };
+  }
+
+  private prepareFullCode(template: string, userCode: string, input: string, language: string): string {
+    let result = template.replace('{user_code}', userCode);
+    
+    // Support Python's triple-quote safety with a trailing newline
+    const safeInput = input.trimEnd() + '\n';
+    result = result.replace(/{input}/g, safeInput);
+
+    // Advanced substitution for Java/C templates that use split placeholders
+    // Pattern: "[1,2,3], 10" -> java_nums: "1,2,3", java_target: "10"
+    if (input.includes('[') && input.includes(']')) {
+      const arrayMatch = input.match(/\[(.*?)\]/);
+      if (arrayMatch) {
+         const numsStr = arrayMatch[1].trim();
+         result = result.replace(/{java_nums}/g, numsStr);
+         result = result.replace(/{c_nums}/g, numsStr);
+         
+         const afterArray = input.substring(input.indexOf(']') + 1).trim();
+         if (afterArray.startsWith(',')) {
+            const targetChar = afterArray.substring(1).trim();
+            result = result.replace(/{java_target}/g, targetChar);
+            result = result.replace(/{c_target}/g, targetChar);
+         }
+      }
+    }
+
+    // Pattern: "hello" -> java_str: ""hello"", c_str: ""hello""
+    if (input.trim().startsWith('"')) {
+       const strContent = input.trim();
+       result = result.replace(/{java_str}/g, strContent);
+       result = result.replace(/{c_str}/g, strContent);
+    }
+
+    return result;
   }
 
   // ===== LOCAL EXECUTION (handles all 4 languages) =====
@@ -289,6 +358,7 @@ export class SubmissionsService {
     description: string,
     input: string,
     expectedOutput: string,
+    problemId?: string
   ): Promise<TestResult> {
 
     const tmp = tmpdir();
@@ -299,9 +369,13 @@ export class SubmissionsService {
       const filePath = join(tmp, `sol_${uid}.py`);
       try {
         await writeFile(filePath, code, 'utf8');
+        const start = process.hrtime();
         const { stdout, stderr } = await execAsync(`python "${filePath}"`, { timeout: 5000 });
-        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+        const [s, ns] = process.hrtime(start);
+        const timeMs = s * 1000 + ns / 1e6;
+
+        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
       } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
       finally { await this.safeDelete(filePath); }
     }
@@ -311,9 +385,13 @@ export class SubmissionsService {
       const filePath = join(tmp, `sol_${uid}.js`);
       try {
         await writeFile(filePath, code, 'utf8');
+        const start = process.hrtime();
         const { stdout, stderr } = await execAsync(`node "${filePath}"`, { timeout: 5000 });
-        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+        const [s, ns] = process.hrtime(start);
+        const timeMs = s * 1000 + ns / 1e6;
+
+        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
       } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
       finally { await this.safeDelete(filePath); }
     }
@@ -345,7 +423,7 @@ export class SubmissionsService {
           `java -cp "${classDir}" Solution`, { timeout: 5000 }
         );
         if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
 
       } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
       finally {
@@ -382,7 +460,7 @@ export class SubmissionsService {
 
         const { stdout, stderr } = await execAsync(runCmd, { timeout: 5000 });
         if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
 
       } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
       finally {
@@ -484,10 +562,19 @@ export class SubmissionsService {
 
   // ===== HELPERS =====
 
-  private compareOutput(testCaseNum: number, description: string, input: string, expectedOutput: string, stdout: string): TestResult {
+  private compareOutput(testCaseNum: number, description: string, input: string, expectedOutput: string, stdout: string, timeMs?: number, problemId?: string): TestResult {
     const actual   = (stdout || '').trim();
+    
+    // Use problem-specific validation if available
+    if (problemId) {
+      const validationResult = this.validationService.validateOutput(problemId, input, expectedOutput, actual);
+      const passed = validationResult.passed;
+      return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, validationResult.message, timeMs);
+    }
+    
+    // Fallback to string normalization
     const passed   = this.normalize(actual) === this.normalize(expectedOutput);
-    return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual);
+    return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, undefined, timeMs);
   }
 
   private handleExecError(error: any, testCaseNum: number, description: string, input: string, expectedOutput: string): TestResult {
@@ -510,7 +597,7 @@ export class SubmissionsService {
       .toLowerCase();
   }
 
-  private createResult(testCase: number, description: string, input: string, expectedOutput: string, status: 'pass' | 'fail' | 'error' | 'timeout', actualOutput: string, errorMessage?: string): TestResult {
-    return { testCase, description, status, input, expectedOutput, actualOutput, errorMessage };
+  private createResult(testCase: number, description: string, input: string, expectedOutput: string, status: 'pass' | 'fail' | 'error' | 'timeout', actualOutput: string, errorMessage?: string, executionTimeMs?: number): TestResult {
+    return { testCase, description, status, input, expectedOutput, actualOutput, errorMessage, executionTimeMs };
   }
 }

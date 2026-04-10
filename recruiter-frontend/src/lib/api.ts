@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
 export interface Example {
   input: string;
@@ -141,6 +141,12 @@ export async function getCandidateInterviews(candidateId: string): Promise<Inter
   return res.json();
 }
 
+export async function getAllInterviews(): Promise<Interview[]> {
+  const res = await fetch(`${API_BASE_URL}/interviews`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch all interviews");
+  return res.json();
+}
+
 export async function submitInterviewCode(
   interviewId: string,
   questionId: string,
@@ -153,5 +159,60 @@ export async function submitInterviewCode(
     body: JSON.stringify({ interviewId, questionId, language, code }),
   });
   if (!res.ok) throw new Error("Interview code submission failed");
+  return res.json();
+}
+
+export interface ActivityLog {
+  id: string;
+  candidateId: string;
+  candidateName: string;
+  problemId: string;
+  problemTitle: string;
+  language: string;
+  passed: number;
+  totalTests: number;
+  allPassed: boolean;
+  timeSpentSeconds: number;
+  submittedAt: string;
+}
+
+export async function getAllActivityLogs(): Promise<ActivityLog[]> {
+  const res = await fetch(`${API_BASE_URL}/activity-logs`);
+  if (!res.ok) throw new Error("Failed to fetch activity logs");
+  return res.json();
+}
+
+export interface TabSwitchIncident {
+  id: string;
+  candidateId: string;
+  candidateName: string;
+  problemId: string;
+  problemTitle: string;
+  switchCount: number;
+  maxAllowed: number;
+  status: 'warning' | 'terminated';
+  details: {
+    firstSwitchAt: string;
+    lastSwitchAt: string;
+    totalSwitches: number;
+  };
+  recordedAt: string;
+}
+
+export async function getTabSwitchIncidents(): Promise<TabSwitchIncident[]> {
+  const res = await fetch(`${API_BASE_URL}/tab-switch`);
+  if (!res.ok) throw new Error("Failed to fetch tab switch incidents");
+  return res.json();
+}
+
+export async function getCandidateTabSwitchIncidents(candidateId: string): Promise<TabSwitchIncident[]> {
+  const res = await fetch(`${API_BASE_URL}/tab-switch/candidate/${candidateId}`);
+  if (!res.ok) throw new Error("Failed to fetch candidate tab switch incidents");
+  return res.json();
+}
+
+export async function getTerminatedSessions(): Promise<TabSwitchIncident[]> {
+  const res = await fetch(`${API_BASE_URL}/tab-switch/terminated`);
+  if (!res.ok) throw new Error("Failed to fetch terminated sessions");
   return res.json();
 }

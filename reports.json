@@ -1,0 +1,202 @@
+[
+  {
+    "interviewId": "037e4294-a24c-44bd-9dcb-6524a233720b",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 2,
+    "questionsAttempted": 2,
+    "totalTestsPassed": 2,
+    "totalTestsAvailable": 4,
+    "scorePercent": 50,
+    "questions": [
+      {
+        "questionId": "8f1e0301-0fad-408d-888a-87e2b041d9a7",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "60def203-cc8d-48c4-a183-ee50ed92f618",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "java"
+      }
+    ],
+    "id": "462b5a33-14ab-45bb-a1e8-6926de5658d8",
+    "finishedAt": "2026-04-07T05:25:11.039Z"
+  },
+  {
+    "interviewId": "6bd82729-c11b-4443-b566-865da71ec8e0",
+    "candidateId": "id-07",
+    "candidateName": "Abishek S",
+    "totalQuestions": 2,
+    "questionsAttempted": 2,
+    "totalTestsPassed": 4,
+    "totalTestsAvailable": 4,
+    "scorePercent": 100,
+    "questions": [
+      {
+        "questionId": "a0b4f62b-2b22-4c24-a4c7-efc028a3137d",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "python"
+      },
+      {
+        "questionId": "3467ecf8-0727-4f0d-8072-56f2574b0763",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "java"
+      }
+    ],
+    "id": "38e0d907-4e92-4028-bd45-01bc6a165ef4",
+    "finishedAt": "2026-04-07T06:13:45.363Z"
+  },
+  {
+    "interviewId": "134271a4-83d2-462b-b7a1-5951f199a624",
+    "candidateId": "Abinav",
+    "candidateName": "id -08",
+    "totalQuestions": 2,
+    "questionsAttempted": 2,
+    "totalTestsPassed": 2,
+    "totalTestsAvailable": 4,
+    "scorePercent": 50,
+    "questions": [
+      {
+        "questionId": "1af300fa-3534-428f-b72d-48574baf422e",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "python"
+      },
+      {
+        "questionId": "5cca439d-8aa4-4980-b217-a0df2277a3a8",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "id": "124d0c62-7ed4-4910-ad23-f799ad4a3e4d",
+    "finishedAt": "2026-04-07T12:39:35.308Z"
+  },
+  {
+    "interviewId": "18647a15-0dc2-4f0b-ae30-824e3d4fcd31",
+    "candidateId": "c5",
+    "candidateName": "Eve Miller",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "0cb18028-2264-4cea-9eb7-253962cc33f4",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "d9a1ecd8-e875-486a-8553-e4480cbc2554",
+    "finishedAt": "2026-04-08T09:24:59.562Z"
+  },
+  {
+    "interviewId": "7ed33003-2d3b-4b4e-816f-d54891cdb679",
+    "candidateId": "Ronik",
+    "candidateName": "id-09",
+    "totalQuestions": 1,
+    "questionsAttempted": 1,
+    "totalTestsPassed": 2,
+    "totalTestsAvailable": 2,
+    "scorePercent": 100,
+    "questions": [
+      {
+        "questionId": "8d2bf933-5af7-4a02-a5f4-34a6ef135e36",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "python"
+      }
+    ],
+    "id": "cef6a7cd-8147-4c3a-90b7-722f9ba32e06",
+    "finishedAt": "2026-04-08T09:45:00.656Z"
+  },
+  {
+    "interviewId": "b9cbb544-3c93-4975-83d9-cab903d31a30",
+    "candidateId": "id-11",
+    "candidateName": "Morgan",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "984af4a9-d607-4da8-a41c-597f7321c874",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "78d5c3b6-f3bd-4654-8a4d-73408a9dbe90",
+    "finishedAt": "2026-04-08T12:48:14.227Z"
+  },
+  {
+    "interviewId": "f7923a07-2978-497c-9a20-a4c74b11d8e8",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "286e88d2-86d9-44d3-8329-11714cb9f659",
+        "questionTitle": "Sum of Array",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "1d7100ea-470f-48e8-b460-617f5d9f0ed7",
+    "finishedAt": "2026-04-08T13:06:45.202Z"
+  }
+]

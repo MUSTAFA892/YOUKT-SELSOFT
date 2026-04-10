@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { createInterview, type Question, type CodeTemplates } from "@/lib/api";
-import { Plus, Trash2, Link as LinkIcon, Loader2, Code2, Users } from "lucide-react";
+import { Plus, Trash2, Link as LinkIcon, Loader2, Code2, Users, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Editor from "@monaco-editor/react";
-import { DUMMY_USERS, useAuth } from "@/components/AuthProvider";
+import { useAuth } from "@/components/AuthProvider";
+import QuestionLibraryBrowser from "@/components/QuestionLibraryBrowser";
 
 type EditingQuestion = Omit<Question, 'id'> & {
   activeLang: "python" | "javascript" | "java" | "c";
@@ -13,9 +14,19 @@ type EditingQuestion = Omit<Question, 'id'> & {
 };
 
 export default function RecruiterPortal() {
-  const { currentUser } = useAuth();
+  const { currentUser, allCandidates, registerCandidate, getRecruiterCandidates } = useAuth();
   
+  // Get only candidates for current recruiter
+  const recruiterCandidates = currentUser.role === "recruiter" 
+    ? getRecruiterCandidates(currentUser.id) 
+    : allCandidates;
+  
+  const [questionCreationMode, setQuestionCreationMode] = useState<"manual" | "library">("manual");
+  const [candidateMode, setCandidateMode] = useState<"existing" | "new" | "multiple">("existing");
   const [candidateId, setCandidateId] = useState<string>("");
+  const [customCandidateId, setCustomCandidateId] = useState<string>("");
+  const [customCandidateName, setCustomCandidateName] = useState<string>("");
+  const [selectedCandidates, setSelectedCandidates] = useState<Set<string>>(new Set());
   
   const [questions, setQuestions] = useState<EditingQuestion[]>([{
     title: "Algorithm Question 1",
@@ -29,6 +40,8 @@ export default function RecruiterPortal() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
+  const [generatedLinks, setGeneratedLinks] = useState<Array<{id: string; name: string; link: string}>>([]);
+
 
   const addQuestion = () => {
     setQuestions([
@@ -59,10 +72,35 @@ export default function RecruiterPortal() {
   };
 
   const generateLink = async () => {
-    if (!candidateId) {
-      alert("Please select a candidate parameter.");
-      return;
+    // Determine which candidates to create interviews for
+    let targetCandidates: Array<{ id: string; name: string }> = [];
+    
+    if (candidateMode === "existing") {
+      if (!candidateId) {
+        alert("Please select a candidate.");
+        return;
+      }
+      targetCandidates = [{ id: candidateId, name: recruiterCandidates.find(u => u.id === candidateId)?.name || "Unknown" }];
+    } else if (candidateMode === "new") {
+      const effectiveId = customCandidateId.trim();
+      const effectiveName = customCandidateName.trim() || "External Candidate";
+      if (!effectiveId) {
+        alert("Please enter a Candidate ID.");
+        return;
+      }
+      targetCandidates = [{ id: effectiveId, name: effectiveName }];
+    } else if (candidateMode === "multiple") {
+      if (selectedCandidates.size === 0) {
+        alert("Please select at least one candidate.");
+        return;
+      }
+      targetCandidates = Array.from(selectedCandidates).map(id => ({
+        id,
+        name: recruiterCandidates.find(u => u.id === id)?.name || "Unknown"
+      }));
     }
+
+    // Validate questions
     for (const q of questions) {
       if (!q.description.trim()) {
         alert("Please ensure all questions have a description.");
@@ -72,20 +110,53 @@ export default function RecruiterPortal() {
     
     setIsSubmitting(true);
     try {
-      const candidateUser = DUMMY_USERS.find(u => u.id === candidateId);
-      const payloadQuestions = questions.map(({ activeLang, isAdvancedOpen, ...q }) => q as any); // remove UI only property
-      const interview = await createInterview(candidateId, candidateUser?.name || "Unknown Candidate", payloadQuestions);
-      // Always link to the Candidate Portal (port 3000), not the Recruiter app
-      const candidateOrigin = window.location.hostname === 'localhost'
-        ? 'http://localhost:3000'
-        : window.location.origin.replace(':3002', ':3000');
-      const url = `${candidateOrigin}/interview/${interview.id}`;
-      setGeneratedLink(url);
+      const payloadQuestions = questions.map(({ activeLang, isAdvancedOpen, ...q }) => q as any);
+      const links: Array<{id: string; name: string; link: string}> = [];
+
+      // Create interview for each target candidate
+      for (const candidate of targetCandidates) {
+        // Register new candidate if creating for a new candidate
+        if (candidateMode === "new") {
+          registerCandidate(candidate.id, candidate.name);
+        }
+        
+        const interview = await createInterview(candidate.id, candidate.name, payloadQuestions);
+        
+        // Use NEXT_PUBLIC_CANDIDATE_APP_URL if set, otherwise intelligently derive it
+        let candidateOrigin = process.env.NEXT_PUBLIC_CANDIDATE_APP_URL || '';
+        
+        if (!candidateOrigin) {
+          // Fallback: if not configured via env var, derive from current origin
+          candidateOrigin = window.location.origin.replace(':3002', ':3000');
+        }
+        
+        const url = `${candidateOrigin}/interview/${interview.id}`;
+        links.push({ id: candidate.id, name: candidate.name, link: url });
+      }
+
+      if (candidateMode === "multiple") {
+        setGeneratedLinks(links);
+        setGeneratedLink(null);
+      } else {
+        setGeneratedLink(links[0].link);
+        setGeneratedLinks([]);
+      }
     } catch (err: any) {
+      console.error("Full error:", err);
       alert("Error creating interview: " + err.message);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const toggleCandidateSelection = (id: string) => {
+    const newSelected = new Set(selectedCandidates);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedCandidates(newSelected);
   };
 
   if (currentUser.role !== "recruiter") {
@@ -98,13 +169,71 @@ export default function RecruiterPortal() {
     );
   }
 
-  const candidateUsers = DUMMY_USERS.filter(u => u.role === "candidate");
+  const candidateUsers = recruiterCandidates;
 
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)] w-full overflow-y-auto bg-neutral-950 text-neutral-200">
       <div className="p-8 pb-32 max-w-5xl mx-auto w-full">
         <h1 className="text-3xl font-bold text-white mb-2">Recruiter Portal: Build Assessment</h1>
-        <p className="text-neutral-400 mb-8">Author a multi-question algorithmic interview and assign it directly to a candidate.</p>
+        <p className="text-neutral-400 mb-6">Author a multi-question algorithmic interview and assign it directly to a candidate.</p>
+        
+        {/* Question Creation Mode Tabs */}
+        <div className="mb-8 flex gap-3">
+          <button
+            onClick={() => setQuestionCreationMode("manual")}
+            className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+              questionCreationMode === "manual"
+                ? "bg-indigo-600 text-white"
+                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+            }`}
+          >
+            ✏️ Manual Creation
+          </button>
+          <button
+            onClick={() => setQuestionCreationMode("library")}
+            className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+              questionCreationMode === "library"
+                ? "bg-indigo-600 text-white"
+                : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+            }`}
+          >
+            📚 Question Library
+          </button>
+        </div>
+
+        {/* Question Library Browser */}
+        {questionCreationMode === "library" && (
+          <div className="mb-8 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 border border-indigo-500/20 rounded-xl p-6">
+            <h2 className="text-xl font-bold text-white mb-4">Browse Pre-Built Questions</h2>
+            <QuestionLibraryBrowser 
+              userId={currentUser?.id || ""}
+              onSelectQuestion={(question) => {
+                // Add selected question to questions array
+                const newQuestion: EditingQuestion = {
+                  title: question.title,
+                  description: question.description,
+                  testCases: question.testCases || [],
+                  starterCode: { 
+                    python: question.starterCode || "",
+                    javascript: question.starterCode || "",
+                    java: question.starterCode || "",
+                    c: question.starterCode || ""
+                  },
+                  wrapperCode: {
+                    python: question.wrapperCode || "",
+                    javascript: question.wrapperCode || "",
+                    java: question.wrapperCode || "",
+                    c: question.wrapperCode || ""
+                  },
+                  activeLang: "python",
+                  isAdvancedOpen: false
+                };
+                setQuestions([...questions, newQuestion]);
+                alert(`✅ "${question.title}" added to your interview!`);
+              }}
+            />
+          </div>
+        )}
         
         {generatedLink && (
           <div className="mb-8 p-6 border border-emerald-500/30 bg-emerald-500/10 rounded-xl flex flex-col gap-3">
@@ -129,13 +258,96 @@ export default function RecruiterPortal() {
           </div>
         )}
 
-        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 mb-8 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0">
-            <Users className="w-6 h-6" />
+        {generatedLinks.length > 0 && (
+          <div className="mb-8 p-6 border border-emerald-500/30 bg-emerald-500/10 rounded-xl flex flex-col gap-4">
+            <h3 className="text-emerald-400 font-semibold flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5" /> {generatedLinks.length} Interviews Created Successfully!
+            </h3>
+            <p className="text-sm text-neutral-300">Each candidate has received a unique link:</p>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {generatedLinks.map((item, idx) => (
+                <div key={idx} className="bg-black/50 border border-emerald-500/20 rounded p-3">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <p className="text-sm font-semibold text-emerald-200">{item.name}</p>
+                      <p className="text-xs text-neutral-500">{item.id}</p>
+                    </div>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(item.link)}
+                      className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold transition-colors"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    readOnly
+                    value={item.link}
+                    className="w-full bg-black/30 border border-emerald-500/10 rounded p-2 text-emerald-300 text-xs font-mono focus:outline-none"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex-1">
-            <label className="text-sm font-semibold text-white block mb-1">Assign to Candidate</label>
-            <p className="text-xs text-neutral-400 mb-2">Select the candidate profile that will receive this interview.</p>
+        )}
+
+        {/* Candidate Assignment Section */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-400 shrink-0">
+              <Users className="w-5 h-5" />
+            </div>
+            <div>
+              <label className="text-sm font-semibold text-white block">Assign to Candidate</label>
+              <p className="text-xs text-neutral-400">Select an existing test account or add a new candidate manually.</p>
+            </div>
+          </div>
+
+          {/* Mode Tabs */}
+          {/* Mode Tabs */}
+          <div className="flex gap-1 bg-neutral-950 rounded-lg p-1 mb-4 w-fit flex-wrap">
+            <button
+              onClick={() => {
+                setCandidateMode("existing");
+                setSelectedCandidates(new Set());
+              }}
+              className={`px-4 py-1.5 rounded text-sm font-semibold transition-colors ${
+                candidateMode === "existing"
+                  ? "bg-indigo-600 text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              Existing Account
+            </button>
+            <button
+              onClick={() => {
+                setCandidateMode("new");
+                setSelectedCandidates(new Set());
+              }}
+              className={`px-4 py-1.5 rounded text-sm font-semibold transition-colors ${
+                candidateMode === "new"
+                  ? "bg-indigo-600 text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              + New Candidate
+            </button>
+            <button
+              onClick={() => {
+                setCandidateMode("multiple");
+                setCandidateId("");
+              }}
+              className={`px-4 py-1.5 rounded text-sm font-semibold transition-colors ${
+                candidateMode === "multiple"
+                  ? "bg-indigo-600 text-white"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              📋 Multiple Candidates
+            </button>
+          </div>
+
+          {candidateMode === "existing" ? (
             <select 
               value={candidateId}
               onChange={(e) => setCandidateId(e.target.value)}
@@ -146,9 +358,67 @@ export default function RecruiterPortal() {
                 <option key={c.id} value={c.id}>{c.name} (ID: {c.id})</option>
               ))}
             </select>
-          </div>
+          ) : candidateMode === "new" ? (
+            <div className="flex flex-col sm:flex-row gap-3 max-w-2xl">
+              <div className="flex-1">
+                <label className="text-xs font-semibold text-neutral-400 block mb-1">Candidate ID <span className="text-rose-400">*</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. cand_001 or john@example.com"
+                  value={customCandidateId}
+                  onChange={e => setCustomCandidateId(e.target.value)}
+                  className="w-full bg-[#1e1e1e] border border-neutral-700/50 rounded p-2.5 text-neutral-200 text-sm focus:border-indigo-500 focus:outline-none placeholder:text-neutral-600"
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-xs font-semibold text-neutral-400 block mb-1">Candidate Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. John Smith"
+                  value={customCandidateName}
+                  onChange={e => setCustomCandidateName(e.target.value)}
+                  className="w-full bg-[#1e1e1e] border border-neutral-700/50 rounded p-2.5 text-neutral-200 text-sm focus:border-indigo-500 focus:outline-none placeholder:text-neutral-600"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 max-w-2xl max-h-64 overflow-y-auto border border-neutral-700/50 rounded p-3 bg-[#1e1e1e]">
+              {candidateUsers.length === 0 ? (
+                <p className="text-neutral-500 text-sm">No candidates available</p>
+              ) : (
+                candidateUsers.map(c => (
+                  <label key={c.id} className="flex items-center gap-3 p-2 hover:bg-neutral-900 rounded cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedCandidates.has(c.id)}
+                      onChange={() => toggleCandidateSelection(c.id)}
+                      className="w-4 h-4 rounded border-neutral-600 bg-neutral-900 cursor-pointer"
+                    />
+                    <span className="text-neutral-200 text-sm flex-1">{c.name}</span>
+                    <span className="text-neutral-500 text-xs">{c.id}</span>
+                  </label>
+                ))
+              )}
+            </div>
+          )}
+
+          {candidateMode === "new" && (
+            <p className="text-xs text-amber-400/80 mt-3 flex items-start gap-1.5">
+              <span className="mt-0.5">⚠️</span>
+              When the candidate opens the link, they should switch their account to the ID you entered above to submit their report correctly.
+            </p>
+          )}
+
+          {candidateMode === "multiple" && selectedCandidates.size > 0 && (
+            <p className="text-xs text-indigo-400/80 mt-3 flex items-start gap-1.5">
+              <span className="mt-0.5">ℹ️</span>
+              {selectedCandidates.size} candidate{selectedCandidates.size !== 1 ? "s" : ""} selected. Each will receive a unique interview link.
+            </p>
+          )}
         </div>
 
+        {/* Manual Question Creation Section */}
+        {questionCreationMode === "manual" && (
         <div className="space-y-8">
           {questions.map((q, qIndex) => (
             <div key={qIndex} className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 relative">
@@ -299,8 +569,11 @@ export default function RecruiterPortal() {
             </div>
           ))}
         </div>
+        )}
 
-        <div className="mt-8 flex items-center justify-between">
+        {/* Add Question Button (Manual Mode) */}
+        {questionCreationMode === "manual" && (
+        <div className="mt-8 flex items-center justify-between gap-4">
           <button 
             onClick={addQuestion}
             className="flex items-center gap-2 px-6 py-3 border-2 border-dashed border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-500 rounded-xl font-bold transition-all"
@@ -308,26 +581,43 @@ export default function RecruiterPortal() {
             <Plus className="w-5 h-5" /> Add Another Question
           </button>
           
-          <button
-            onClick={generateLink}
-            disabled={isSubmitting || !candidateId}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-neutral-800 disabled:text-neutral-500 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-all"
-          >
-            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <LinkIcon className="w-5 h-5" />}
-            Generate & Assign Interview
-          </button>
+          <div className="flex flex-col items-end gap-2">
+            {/* Inline validation hints */}
+            {(() => {
+              const missing: string[] = [];
+              if (candidateMode === "existing" && !candidateId)
+                missing.push("select a candidate");
+              if (candidateMode === "new" && !customCandidateId.trim())
+                missing.push("enter a Candidate ID");
+              if (candidateMode === "multiple" && selectedCandidates.size === 0)
+                missing.push("select at least one candidate");
+              const emptyQs = questions.filter(q => !q.description.trim()).length;
+              if (emptyQs > 0)
+                missing.push(`fill description for ${emptyQs} question${emptyQs > 1 ? "s" : ""}`);
+              return missing.length > 0 ? (
+                <p className="text-xs text-amber-400 text-right">
+                  ⚠ Please {missing.join(" and ")} to generate a link.
+                </p>
+              ) : null;
+            })()}
+
+            <button
+              onClick={generateLink}
+              disabled={isSubmitting || (
+                candidateMode === "existing" ? !candidateId : 
+                candidateMode === "new" ? !customCandidateId.trim() : 
+                selectedCandidates.size === 0
+              )}
+              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-neutral-800 disabled:text-neutral-500 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-all"
+            >
+              {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <LinkIcon className="w-5 h-5" />}
+              {candidateMode === "multiple" ? `Generate (${selectedCandidates.size}) Interviews` : "Generate & Assign Interview"}
+            </button>
+          </div>
         </div>
+        )}
 
       </div>
     </div>
-  );
-}
-
-function CheckCircle2(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
   );
 }

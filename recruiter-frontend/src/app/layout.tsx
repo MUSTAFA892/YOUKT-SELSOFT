@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-neutral-950 text-neutral-50 selection:bg-indigo-500/30 flex flex-col`}
       >
@@ -38,8 +38,10 @@ export default function RootLayout({
                 </div>
                 <span className="font-bold tracking-tight text-lg text-white">YOUKT</span>
               </a>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 <a href="/" className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">Build Assessment</a>
+                <a href="/reports" className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">Reports</a>
+                <a href="/candidates" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Candidates</a>
                 <AccountSwitcher />
               </div>
             </div>

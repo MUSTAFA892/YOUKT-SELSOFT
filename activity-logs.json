@@ -1,0 +1,93 @@
+[
+  {
+    "candidateId": "id-07",
+    "candidateName": "Abishek S",
+    "problemId": "1",
+    "problemTitle": "Two Sum",
+    "language": "python",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 12,
+    "id": "2ac7d47a-6c68-4fe3-be9b-3c240b409b77",
+    "submittedAt": "2026-04-07T06:57:11.474Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "1",
+    "problemTitle": "Two Sum",
+    "language": "python",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 83,
+    "id": "da8f1c10-e01b-4033-bf1e-b5767f438650",
+    "submittedAt": "2026-04-10T09:16:04.026Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5",
+    "problemTitle": "Fibonacci Number",
+    "language": "python",
+    "passed": 0,
+    "totalTests": 2,
+    "allPassed": false,
+    "timeSpentSeconds": 133,
+    "id": "2956a275-061e-46ef-bd95-6ccac1830d33",
+    "submittedAt": "2026-04-08T04:08:17.723Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "7",
+    "problemTitle": "Longest Substring",
+    "language": "python",
+    "passed": 4,
+    "totalTests": 4,
+    "allPassed": true,
+    "timeSpentSeconds": 510,
+    "id": "c3492f61-d977-45cb-9da4-56870f370b71",
+    "submittedAt": "2026-04-08T04:26:58.956Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "8",
+    "problemTitle": "Group Anagrams",
+    "language": "python",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 22,
+    "id": "0f0b2054-be52-4581-b946-c0305d0e656f",
+    "submittedAt": "2026-04-08T05:18:56.500Z"
+  },
+  {
+    "candidateId": "id-07",
+    "candidateName": "Abishek S",
+    "problemId": "8",
+    "problemTitle": "Group Anagrams",
+    "language": "javascript",
+    "passed": 2,
+    "totalTests": 3,
+    "allPassed": false,
+    "timeSpentSeconds": 28,
+    "id": "aeae111d-842b-4e22-8b42-051a8d655512",
+    "submittedAt": "2026-04-08T04:31:41.417Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "9",
+    "problemTitle": "Median of Two Arrays",
+    "language": "javascript",
+    "passed": 0,
+    "totalTests": 1,
+    "allPassed": false,
+    "timeSpentSeconds": 19,
+    "id": "ea482450-d4a0-41c0-ad1a-8c6978caa7a8",
+    "submittedAt": "2026-04-08T05:19:21.557Z"
+  }
+]

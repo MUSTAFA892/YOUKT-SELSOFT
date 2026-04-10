@@ -72,8 +72,9 @@ export default function CandidateDashboard() {
                   <span className="text-xs font-bold px-2 py-1 bg-amber-500/10 text-amber-400 rounded">
                     Assessment #{index + 1}
                   </span>
-                  <span className="text-xs text-neutral-500 font-mono">
-                    {new Date(interview.createdAt).toLocaleDateString()}
+                  <span className="text-xs text-neutral-500 font-mono flex flex-col items-end gap-0.5">
+                    <span>{new Date(interview.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                    <span className="text-neutral-600">{new Date(interview.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}</span>
                   </span>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Technical Interview</h3>

@@ -1,6 +1,10 @@
 import { fetchProblems } from "@/lib/api";
 import { Code2, ChevronRight, TerminalSquare, BrainCircuit } from "lucide-react";
 import Link from "next/link";
+import LanguageProgress from "@/components/LanguageProgress";
+
+// Mark this route as dynamic since activity logs change with each submission
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const problems = await fetchProblems();
@@ -22,6 +26,9 @@ export default async function Home() {
           and climb the leaderboard with our lightning-fast code evaluation engine.
         </p>
       </section>
+
+      {/* Language Progress Section */}
+      <LanguageProgress />
 
       {/* Problem List */}
       <section className="w-full max-w-5xl px-6 pb-24">

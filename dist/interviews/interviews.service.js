@@ -14,8 +14,10 @@ const common_1 = require("@nestjs/common");
 const fs_1 = require("fs");
 const path_1 = require("path");
 const crypto = require("crypto");
+const problems_service_1 = require("../problems/problems.service");
 let InterviewsService = class InterviewsService {
-    constructor() {
+    constructor(problemsService) {
+        this.problemsService = problemsService;
         this.dbFilePath = (0, path_1.join)(process.cwd(), 'interviews.json');
         this.interviews = [];
         this.loadFromDisk();
@@ -38,12 +40,28 @@ let InterviewsService = class InterviewsService {
         }
     }
     async createInterview(candidateId, candidateName, questions) {
+        const enrichedQuestions = questions.map(q => {
+            const p = this.problemsService.findAllWithTestCases().find(ap => ap.title === q.title);
+            return {
+                ...q,
+                id: crypto.randomUUID(),
+                difficulty: p?.difficulty || 'Easy',
+                timeLimit: p?.timeLimit || 300,
+                inputFormat: p?.inputFormat || '',
+                outputFormat: p?.outputFormat || '',
+                examples: p?.examples || [],
+            };
+        });
         const newInterview = {
             id: crypto.randomUUID(),
             candidateId,
             candidateName,
-            questions: questions.map(q => ({ ...q, id: crypto.randomUUID() })),
+            questions: enrichedQuestions,
+            history: [],
+            completedCount: 0,
+            currentQuestionStartedAt: null,
             createdAt: new Date().toISOString(),
+            isComplete: false,
         };
         this.interviews.push(newInterview);
         await this.saveToDisk();
@@ -55,16 +73,90 @@ let InterviewsService = class InterviewsService {
         if (!interview) {
             throw new common_1.NotFoundException(`Interview with ID "${id}" not found.`);
         }
+        if (!interview.isComplete && interview.questions.length > 0 && !interview.currentQuestionStartedAt) {
+            interview.currentQuestionStartedAt = new Date().toISOString();
+            await this.saveToDisk();
+        }
         return interview;
     }
     async getInterviewsByCandidate(candidateId) {
         await this.loadFromDisk();
         return this.interviews.filter(c => c.candidateId === candidateId);
     }
+    async getAllInterviews() {
+        await this.loadFromDisk();
+        return this.interviews;
+    }
+    async processQuestionResult(interviewId, questionId, passed, timeMs) {
+        const interview = await this.getInterviewById(interviewId);
+        if (interview.isComplete)
+            return interview;
+        const question = interview.questions.find(q => q.id === questionId);
+        if (!question)
+            throw new common_1.NotFoundException('Question not found');
+        const allProblems = this.problemsService.findAllWithTestCases();
+        const problem = allProblems.find(p => p.title === question.title || p.id === question.id);
+        const difficulty = (problem?.difficulty || question.difficulty || 'Easy');
+        interview.history.push({
+            questionId,
+            difficulty,
+            passed,
+            timeMs: Math.round(timeMs)
+        });
+        interview.completedCount++;
+        if (interview.completedCount >= 10) {
+            interview.isComplete = true;
+        }
+        else {
+            let nextDiff = difficulty;
+            if (passed) {
+                if (difficulty === 'Easy')
+                    nextDiff = 'Medium';
+                else if (difficulty === 'Medium' && timeMs < 500)
+                    nextDiff = 'Hard';
+            }
+            else {
+                if (difficulty === 'Hard')
+                    nextDiff = 'Medium';
+                else if (difficulty === 'Medium')
+                    nextDiff = 'Easy';
+            }
+            const seenIds = interview.history.map(h => {
+                const p = allProblems.find(ap => ap.id === h.questionId || ap.title === h.questionId);
+                return p?.id;
+            });
+            const pool = allProblems.filter(p => p.difficulty === nextDiff && !seenIds.includes(p.id));
+            const nextProblem = pool.length > 0
+                ? pool[Math.floor(Math.random() * pool.length)]
+                : allProblems.filter(p => !seenIds.includes(p.id))[0];
+            if (nextProblem) {
+                const newQ = {
+                    id: nextProblem.id,
+                    title: nextProblem.title,
+                    description: nextProblem.description,
+                    difficulty: nextProblem.difficulty,
+                    timeLimit: nextProblem.timeLimit,
+                    inputFormat: nextProblem.inputFormat,
+                    outputFormat: nextProblem.outputFormat,
+                    examples: nextProblem.examples,
+                    testCases: nextProblem.testCases.map(tc => ({ input: tc.input, expectedOutput: tc.expectedOutput })),
+                    starterCode: nextProblem.starterCode,
+                    wrapperCode: nextProblem.wrapperCode
+                };
+                interview.questions = [newQ];
+                interview.currentQuestionStartedAt = null;
+            }
+            else {
+                interview.isComplete = true;
+            }
+        }
+        await this.saveToDisk();
+        return interview;
+    }
 };
 exports.InterviewsService = InterviewsService;
 exports.InterviewsService = InterviewsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [problems_service_1.ProblemsService])
 ], InterviewsService);
 //# sourceMappingURL=interviews.service.js.map

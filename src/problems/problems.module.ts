@@ -5,10 +5,11 @@
 import { Module } from '@nestjs/common';
 import { ProblemsController } from './problems.controller';
 import { ProblemsService } from './problems.service';
+import { ProblemSessionService } from './problem-session.service';
 
 @Module({
   controllers: [ProblemsController], // Handle HTTP requests
-  providers: [ProblemsService],      // Business logic
-  exports: [ProblemsService],        // Export so SubmissionsModule can use it too
+  providers: [ProblemsService, ProblemSessionService], // Business logic
+  exports: [ProblemsService, ProblemSessionService], // Export so SubmissionsModule can use it
 })
 export class ProblemsModule {}

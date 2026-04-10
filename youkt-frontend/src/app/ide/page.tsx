@@ -4,8 +4,12 @@ import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { submitCustomCode, type SubmissionResult, type CustomTestCase } from "@/lib/api";
 import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Plus, Trash2 } from "lucide-react";
+import CodeReviewPanel from "@/components/CodeReviewPanel";
+import PlagiarismDetectionPanel from "@/components/PlagiarismDetectionPanel";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function CustomIDE() {
+  const { currentUser } = useAuth();
   const [language, setLanguage] = useState<"python" | "javascript" | "java" | "c">("javascript");
   const [code, setCode] = useState("// Write your solution here\n");
   const [problemStatement, setProblemStatement] = useState("");
@@ -13,6 +17,8 @@ export default function CustomIDE() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<SubmissionResult | null>(null);
+  const [analysisTab, setAnalysisTab] = useState<"console" | "review" | "plagiarism">("console");
+  const [submissionId] = useState<string>(`sub_${Date.now()}`);
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setLanguage(e.target.value as any);
@@ -161,12 +167,44 @@ export default function CustomIDE() {
 
         {/* Console Output */}
         <div className="h-64 shrink-0 flex flex-col border-t border-neutral-800 bg-neutral-900">
-          <div className="px-4 h-10 flex items-center border-b border-neutral-800 shrink-0 bg-neutral-950">
-            <div className="flex items-center gap-2 text-neutral-400 text-sm font-medium">
-              <Terminal className="w-4 h-4" />
-              Console
+          <div className="px-4 h-10 flex items-center border-b border-neutral-800 shrink-0 bg-neutral-950 gap-4">
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setAnalysisTab("console")}
+                className={`flex items-center gap-2 text-sm font-medium px-3 py-1 rounded transition-colors ${
+                  analysisTab === "console" 
+                    ? "text-indigo-400 bg-indigo-500/10" 
+                    : "text-neutral-400 hover:text-neutral-200"
+                }`}
+              >
+                <Terminal className="w-4 h-4" /> Console
+              </button>
+              {result && (
+                <>
+                  <button 
+                    onClick={() => setAnalysisTab("review")}
+                    className={`flex items-center gap-2 text-sm font-medium px-3 py-1 rounded transition-colors ${
+                      analysisTab === "review" 
+                        ? "text-indigo-400 bg-indigo-500/10" 
+                        : "text-neutral-400 hover:text-neutral-200"
+                    }`}
+                  >
+                    📊 Code Review
+                  </button>
+                  <button 
+                    onClick={() => setAnalysisTab("plagiarism")}
+                    className={`flex items-center gap-2 text-sm font-medium px-3 py-1 rounded transition-colors ${
+                      analysisTab === "plagiarism" 
+                        ? "text-indigo-400 bg-indigo-500/10" 
+                        : "text-neutral-400 hover:text-neutral-200"
+                    }`}
+                  >
+                    🔍 Plagiarism
+                  </button>
+                </>
+              )}
             </div>
-            {result && (
+            {result && analysisTab === "console" && (
               <div className="ml-auto flex items-center gap-2 text-xs font-semibold">
                 {result.allPassed ? (
                   <span className="text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> Accepted</span>
@@ -179,39 +217,66 @@ export default function CustomIDE() {
           </div>
           
           <div className="flex-1 overflow-y-auto p-4 font-mono text-sm bg-[#0a0a0a]">
-            {!result && !isSubmitting && (
-              <div className="text-neutral-600 italic">Configure test cases and run your raw code...</div>
+            {analysisTab === "console" && (
+              <>
+                {!result && !isSubmitting && (
+                  <div className="text-neutral-600 italic">Configure test cases and run your raw code...</div>
+                )}
+                {isSubmitting && (
+                  <div className="text-indigo-400 flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" /> Executing via STDIN...
+                  </div>
+                )}
+                {result && (
+                  <div className="space-y-4">
+                    {result.results.map((tr, i) => (
+                      <div key={i} className={`p-3 rounded border ${
+                        tr.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-200' :
+                        tr.status === 'timeout' ? 'bg-amber-500/5 border-amber-500/20 text-amber-200' :
+                        'bg-rose-500/5 border-rose-500/20 text-rose-200'
+                      }`}>
+                        <div className="flex items-center gap-2 mb-2 font-bold tracking-wide text-xs uppercase">
+                          {tr.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                          {tr.status === 'fail' && <XCircle className="w-4 h-4 text-rose-400" />}
+                          {(tr.status === 'error' || tr.status === 'timeout') && <AlertCircle className="w-4 h-4 text-rose-400" />}
+                          Test Case {tr.testCase}: {tr.status}
+                        </div>
+                        {tr.errorMessage ? (
+                          <div className="bg-black/50 p-2 rounded text-rose-400 whitespace-pre-wrap">{tr.errorMessage}</div>
+                        ) : (
+                          <div className="grid grid-cols-2 gap-4 text-xs opacity-80">
+                            <div><div className="font-semibold mb-1 opacity-50">Input:</div><div className="bg-black/30 p-1.5 rounded">{tr.input}</div></div>
+                            <div><div className="font-semibold mb-1 opacity-50">Expected:</div><div className="bg-black/30 p-1.5 rounded text-emerald-300">{tr.expectedOutput}</div></div>
+                            <div className="col-span-2"><div className="font-semibold mb-1 opacity-50">Your Output:</div><div className={`bg-black/30 p-1.5 rounded whitespace-pre-wrap ${tr.status === 'pass' ? 'text-emerald-300' : 'text-rose-300'}`}>{tr.actualOutput || '""'}</div></div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
-            {isSubmitting && (
-              <div className="text-indigo-400 flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin" /> Executing via STDIN...
+            {analysisTab === "review" && (
+              <div className="bg-neutral-950 rounded-lg border border-neutral-800 p-4">
+                <CodeReviewPanel 
+                  code={code}
+                  language={language}
+                  onReview={(review) => {
+                    console.log("Code review completed:", review);
+                  }}
+                />
               </div>
             )}
-            {result && (
-              <div className="space-y-4">
-                {result.results.map((tr, i) => (
-                  <div key={i} className={`p-3 rounded border ${
-                    tr.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-200' :
-                    tr.status === 'timeout' ? 'bg-amber-500/5 border-amber-500/20 text-amber-200' :
-                    'bg-rose-500/5 border-rose-500/20 text-rose-200'
-                  }`}>
-                    <div className="flex items-center gap-2 mb-2 font-bold tracking-wide text-xs uppercase">
-                      {tr.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-                      {tr.status === 'fail' && <XCircle className="w-4 h-4 text-rose-400" />}
-                      {(tr.status === 'error' || tr.status === 'timeout') && <AlertCircle className="w-4 h-4 text-rose-400" />}
-                      Test Case {tr.testCase}: {tr.status}
-                    </div>
-                    {tr.errorMessage ? (
-                      <div className="bg-black/50 p-2 rounded text-rose-400 whitespace-pre-wrap">{tr.errorMessage}</div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-4 text-xs opacity-80">
-                        <div><div className="font-semibold mb-1 opacity-50">Input:</div><div className="bg-black/30 p-1.5 rounded">{tr.input}</div></div>
-                        <div><div className="font-semibold mb-1 opacity-50">Expected:</div><div className="bg-black/30 p-1.5 rounded text-emerald-300">{tr.expectedOutput}</div></div>
-                        <div className="col-span-2"><div className="font-semibold mb-1 opacity-50">Your Output:</div><div className={`bg-black/30 p-1.5 rounded whitespace-pre-wrap ${tr.status === 'pass' ? 'text-emerald-300' : 'text-rose-300'}`}>{tr.actualOutput || '""'}</div></div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+            {analysisTab === "plagiarism" && (
+              <div className="bg-neutral-950 rounded-lg border border-neutral-800 p-4">
+                <PlagiarismDetectionPanel 
+                  code={code}
+                  candidateId={currentUser?.id || "custom_user"}
+                  interviewId="custom_ide"
+                  onCheck={(report) => {
+                    console.log("Plagiarism check completed:", report);
+                  }}
+                />
               </div>
             )}
           </div>

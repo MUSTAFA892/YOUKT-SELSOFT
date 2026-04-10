@@ -10,11 +10,13 @@ exports.InterviewsModule = void 0;
 const common_1 = require("@nestjs/common");
 const interviews_service_1 = require("./interviews.service");
 const interviews_controller_1 = require("./interviews.controller");
+const problems_module_1 = require("../problems/problems.module");
 let InterviewsModule = class InterviewsModule {
 };
 exports.InterviewsModule = InterviewsModule;
 exports.InterviewsModule = InterviewsModule = __decorate([
     (0, common_1.Module)({
+        imports: [problems_module_1.ProblemsModule],
         providers: [interviews_service_1.InterviewsService],
         controllers: [interviews_controller_1.InterviewsController],
         exports: [interviews_service_1.InterviewsService],

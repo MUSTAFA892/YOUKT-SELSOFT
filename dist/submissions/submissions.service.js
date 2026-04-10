@@ -17,13 +17,17 @@ const path_1 = require("path");
 const util_1 = require("util");
 const os_1 = require("os");
 const problems_service_1 = require("../problems/problems.service");
+const problem_session_service_1 = require("../problems/problem-session.service");
+const validation_service_1 = require("./validation.service");
 const challenges_service_1 = require("../challenges/challenges.service");
 const interviews_service_1 = require("../interviews/interviews.service");
 const execAsync = (0, util_1.promisify)(child_process_1.exec);
 const SUPPORTED_LANGUAGES = ['python', 'javascript', 'java', 'c'];
 let SubmissionsService = class SubmissionsService {
-    constructor(problemsService, challengesService, interviewsService) {
+    constructor(problemsService, sessionService, validationService, challengesService, interviewsService) {
         this.problemsService = problemsService;
+        this.sessionService = sessionService;
+        this.validationService = validationService;
         this.challengesService = challengesService;
         this.interviewsService = interviewsService;
     }
@@ -36,24 +40,33 @@ let SubmissionsService = class SubmissionsService {
         if (!wrapperTemplate) {
             throw new common_1.BadRequestException(`Problem "${dto.problemId}" does not support language "${dto.language}" yet.`);
         }
+        let testCasesToValidate = problem.testCases;
+        if (dto.sessionId) {
+            const validationCases = this.sessionService.getValidationTestCases(dto.sessionId);
+            if (validationCases.length > 0) {
+                testCasesToValidate = validationCases;
+            }
+        }
         const results = [];
-        for (let i = 0; i < problem.testCases.length; i++) {
-            const testCase = problem.testCases[i];
-            const fullCode = wrapperTemplate
-                .replace('{user_code}', dto.code)
-                .replace('{input}', testCase.input);
-            const result = await this.executeLocally(fullCode, dto.language, i + 1, testCase.description, testCase.input, testCase.expectedOutput);
+        for (let i = 0; i < testCasesToValidate.length; i++) {
+            const testCase = testCasesToValidate[i];
+            const fullCode = this.prepareFullCode(wrapperTemplate, dto.code, testCase.input, dto.language);
+            const result = await this.executeLocally(fullCode, dto.language, i + 1, testCase.description, testCase.input, testCase.expectedOutput, dto.problemId);
             results.push(result);
         }
         const passed = results.filter(r => r.status === 'pass').length;
+        const avgTime = results.length > 0
+            ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+            : 0;
         return {
             problemId: dto.problemId,
             language: dto.language,
-            totalTests: problem.testCases.length,
+            totalTests: testCasesToValidate.length,
             passed,
-            failed: problem.testCases.length - passed,
+            failed: testCasesToValidate.length - passed,
             results,
-            allPassed: passed === problem.testCases.length,
+            allPassed: passed === testCasesToValidate.length,
+            averageTimeMs: parseFloat(avgTime.toFixed(2)),
         };
     }
     async runCustomSubmission(dto) {
@@ -67,6 +80,9 @@ let SubmissionsService = class SubmissionsService {
             results.push(result);
         }
         const passed = results.filter(r => r.status === 'pass').length;
+        const avgTime = results.length > 0
+            ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+            : 0;
         return {
             problemId: 'custom',
             language: dto.language,
@@ -75,6 +91,7 @@ let SubmissionsService = class SubmissionsService {
             failed: dto.testCases.length - passed,
             results,
             allPassed: passed === dto.testCases.length,
+            averageTimeMs: parseFloat(avgTime.toFixed(2)),
         };
     }
     async runChallengeSubmission(dto) {
@@ -88,9 +105,10 @@ let SubmissionsService = class SubmissionsService {
             const wrapperTemplate = challenge.wrapperCode?.[dto.language];
             let result;
             if (wrapperTemplate) {
+                const safeInput = testCase.input.trimEnd() + '\n';
                 const fullCode = wrapperTemplate
                     .replace('{user_code}', dto.code)
-                    .replace('{input}', testCase.input);
+                    .replace('{input}', safeInput);
                 result = await this.executeLocally(fullCode, dto.language, i + 1, `Test Case ${i + 1}`, testCase.input, testCase.expectedOutput);
             }
             else {
@@ -99,6 +117,9 @@ let SubmissionsService = class SubmissionsService {
             results.push(result);
         }
         const passed = results.filter(r => r.status === 'pass').length;
+        const avgTime = results.length > 0
+            ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+            : 0;
         return {
             problemId: dto.challengeId,
             language: dto.language,
@@ -107,6 +128,7 @@ let SubmissionsService = class SubmissionsService {
             failed: challenge.testCases.length - passed,
             results,
             allPassed: passed === challenge.testCases.length,
+            averageTimeMs: parseFloat(avgTime.toFixed(2)),
         };
     }
     async runInterviewSubmission(dto) {
@@ -124,9 +146,10 @@ let SubmissionsService = class SubmissionsService {
             const wrapperTemplate = question.wrapperCode?.[dto.language];
             let result;
             if (wrapperTemplate) {
+                const safeInput = testCase.input.trimEnd() + '\n';
                 const fullCode = wrapperTemplate
                     .replace('{user_code}', dto.code)
-                    .replace('{input}', testCase.input);
+                    .replace('{input}', safeInput);
                 result = await this.executeLocally(fullCode, dto.language, i + 1, `Test Case ${i + 1}`, testCase.input, testCase.expectedOutput);
             }
             else {
@@ -135,6 +158,9 @@ let SubmissionsService = class SubmissionsService {
             results.push(result);
         }
         const passed = results.filter(r => r.status === 'pass').length;
+        const avgTime = results.length > 0
+            ? results.reduce((sum, r) => sum + (r.executionTimeMs || 0), 0) / results.length
+            : 0;
         return {
             problemId: dto.questionId,
             language: dto.language,
@@ -143,19 +169,48 @@ let SubmissionsService = class SubmissionsService {
             failed: question.testCases.length - passed,
             results,
             allPassed: passed === question.testCases.length,
+            averageTimeMs: parseFloat(avgTime.toFixed(2)),
         };
     }
-    async executeLocally(code, language, testCaseNum, description, input, expectedOutput) {
+    prepareFullCode(template, userCode, input, language) {
+        let result = template.replace('{user_code}', userCode);
+        const safeInput = input.trimEnd() + '\n';
+        result = result.replace(/{input}/g, safeInput);
+        if (input.includes('[') && input.includes(']')) {
+            const arrayMatch = input.match(/\[(.*?)\]/);
+            if (arrayMatch) {
+                const numsStr = arrayMatch[1].trim();
+                result = result.replace(/{java_nums}/g, numsStr);
+                result = result.replace(/{c_nums}/g, numsStr);
+                const afterArray = input.substring(input.indexOf(']') + 1).trim();
+                if (afterArray.startsWith(',')) {
+                    const targetChar = afterArray.substring(1).trim();
+                    result = result.replace(/{java_target}/g, targetChar);
+                    result = result.replace(/{c_target}/g, targetChar);
+                }
+            }
+        }
+        if (input.trim().startsWith('"')) {
+            const strContent = input.trim();
+            result = result.replace(/{java_str}/g, strContent);
+            result = result.replace(/{c_str}/g, strContent);
+        }
+        return result;
+    }
+    async executeLocally(code, language, testCaseNum, description, input, expectedOutput, problemId) {
         const tmp = (0, os_1.tmpdir)();
         const uid = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
         if (language === 'python') {
             const filePath = (0, path_1.join)(tmp, `sol_${uid}.py`);
             try {
                 await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                const start = process.hrtime();
                 const { stdout, stderr } = await execAsync(`python "${filePath}"`, { timeout: 5000 });
+                const [s, ns] = process.hrtime(start);
+                const timeMs = s * 1000 + ns / 1e6;
                 if (stderr?.trim())
-                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
             }
             catch (e) {
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
@@ -168,10 +223,13 @@ let SubmissionsService = class SubmissionsService {
             const filePath = (0, path_1.join)(tmp, `sol_${uid}.js`);
             try {
                 await (0, promises_1.writeFile)(filePath, code, 'utf8');
+                const start = process.hrtime();
                 const { stdout, stderr } = await execAsync(`node "${filePath}"`, { timeout: 5000 });
+                const [s, ns] = process.hrtime(start);
+                const timeMs = s * 1000 + ns / 1e6;
                 if (stderr?.trim())
-                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
             }
             catch (e) {
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
@@ -194,7 +252,7 @@ let SubmissionsService = class SubmissionsService {
                 const { stdout, stderr } = await execAsync(`java -cp "${classDir}" Solution`, { timeout: 5000 });
                 if (stderr?.trim())
                     return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
             }
             catch (e) {
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
@@ -218,7 +276,7 @@ let SubmissionsService = class SubmissionsService {
                 const { stdout, stderr } = await execAsync(runCmd, { timeout: 5000 });
                 if (stderr?.trim())
                     return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
             }
             catch (e) {
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
@@ -319,10 +377,15 @@ let SubmissionsService = class SubmissionsService {
             await this.safeDelete(inputFilePath);
         }
     }
-    compareOutput(testCaseNum, description, input, expectedOutput, stdout) {
+    compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId) {
         const actual = (stdout || '').trim();
+        if (problemId) {
+            const validationResult = this.validationService.validateOutput(problemId, input, expectedOutput, actual);
+            const passed = validationResult.passed;
+            return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, validationResult.message, timeMs);
+        }
         const passed = this.normalize(actual) === this.normalize(expectedOutput);
-        return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual);
+        return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, undefined, timeMs);
     }
     handleExecError(error, testCaseNum, description, input, expectedOutput) {
         if (error.killed || error.signal === 'SIGTERM') {
@@ -344,14 +407,16 @@ let SubmissionsService = class SubmissionsService {
             .replace(/\s*\]/g, ']')
             .toLowerCase();
     }
-    createResult(testCase, description, input, expectedOutput, status, actualOutput, errorMessage) {
-        return { testCase, description, status, input, expectedOutput, actualOutput, errorMessage };
+    createResult(testCase, description, input, expectedOutput, status, actualOutput, errorMessage, executionTimeMs) {
+        return { testCase, description, status, input, expectedOutput, actualOutput, errorMessage, executionTimeMs };
     }
 };
 exports.SubmissionsService = SubmissionsService;
 exports.SubmissionsService = SubmissionsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [problems_service_1.ProblemsService,
+        problem_session_service_1.ProblemSessionService,
+        validation_service_1.ValidationService,
         challenges_service_1.ChallengesService,
         interviews_service_1.InterviewsService])
 ], SubmissionsService);

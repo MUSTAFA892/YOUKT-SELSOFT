@@ -12,6 +12,10 @@ const problems_module_1 = require("./problems/problems.module");
 const submissions_module_1 = require("./submissions/submissions.module");
 const challenges_module_1 = require("./challenges/challenges.module");
 const interviews_module_1 = require("./interviews/interviews.module");
+const reports_module_1 = require("./reports/reports.module");
+const activity_logs_module_1 = require("./activity-logs/activity-logs.module");
+const tab_switch_module_1 = require("./tab-switch/tab-switch.module");
+const advanced_features_module_1 = require("./advanced-features/advanced-features.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,6 +26,10 @@ exports.AppModule = AppModule = __decorate([
             submissions_module_1.SubmissionsModule,
             challenges_module_1.ChallengesModule,
             interviews_module_1.InterviewsModule,
+            reports_module_1.ReportsModule,
+            activity_logs_module_1.ActivityLogsModule,
+            tab_switch_module_1.TabSwitchModule,
+            advanced_features_module_1.AdvancedFeaturesModule,
         ],
     })
 ], AppModule);

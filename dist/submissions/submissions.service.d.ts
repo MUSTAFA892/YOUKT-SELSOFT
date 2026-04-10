@@ -1,4 +1,6 @@
 import { ProblemsService } from '../problems/problems.service';
+import { ProblemSessionService } from '../problems/problem-session.service';
+import { ValidationService } from './validation.service';
 import { ChallengesService } from '../challenges/challenges.service';
 import { InterviewsService } from '../interviews/interviews.service';
 export type SupportedLanguage = 'python' | 'javascript' | 'java' | 'c';
@@ -6,6 +8,8 @@ export interface SubmissionDto {
     problemId: string;
     language: SupportedLanguage;
     code: string;
+    sessionId?: string;
+    candidateId?: string;
 }
 export interface CustomTestCase {
     input: string;
@@ -35,6 +39,7 @@ export interface TestResult {
     expectedOutput: string;
     actualOutput: string;
     errorMessage?: string;
+    executionTimeMs?: number;
 }
 export interface SubmissionResult {
     problemId: string;
@@ -44,16 +49,20 @@ export interface SubmissionResult {
     failed: number;
     results: TestResult[];
     allPassed: boolean;
+    averageTimeMs?: number;
 }
 export declare class SubmissionsService {
     private readonly problemsService;
+    private readonly sessionService;
+    private readonly validationService;
     private readonly challengesService;
     private readonly interviewsService;
-    constructor(problemsService: ProblemsService, challengesService: ChallengesService, interviewsService: InterviewsService);
+    constructor(problemsService: ProblemsService, sessionService: ProblemSessionService, validationService: ValidationService, challengesService: ChallengesService, interviewsService: InterviewsService);
     runSubmission(dto: SubmissionDto): Promise<SubmissionResult>;
     runCustomSubmission(dto: CustomSubmissionDto): Promise<SubmissionResult>;
     runChallengeSubmission(dto: ChallengeSubmissionDto): Promise<SubmissionResult>;
     runInterviewSubmission(dto: InterviewSubmissionDto): Promise<SubmissionResult>;
+    private prepareFullCode;
     private executeLocally;
     private executeRawLocally;
     private compareOutput;

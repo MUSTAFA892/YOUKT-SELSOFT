@@ -10,6 +10,7 @@ exports.SubmissionsModule = void 0;
 const common_1 = require("@nestjs/common");
 const submissions_controller_1 = require("./submissions.controller");
 const submissions_service_1 = require("./submissions.service");
+const validation_service_1 = require("./validation.service");
 const problems_module_1 = require("../problems/problems.module");
 const challenges_module_1 = require("../challenges/challenges.module");
 const interviews_module_1 = require("../interviews/interviews.module");
@@ -20,7 +21,7 @@ exports.SubmissionsModule = SubmissionsModule = __decorate([
     (0, common_1.Module)({
         imports: [problems_module_1.ProblemsModule, challenges_module_1.ChallengesModule, interviews_module_1.InterviewsModule],
         controllers: [submissions_controller_1.SubmissionsController],
-        providers: [submissions_service_1.SubmissionsService],
+        providers: [submissions_service_1.SubmissionsService, validation_service_1.ValidationService],
     })
 ], SubmissionsModule);
 //# sourceMappingURL=submissions.module.js.map

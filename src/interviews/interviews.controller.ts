@@ -7,6 +7,12 @@ interface CreateInterviewDto {
   questions: Omit<Question, 'id'>[];
 }
 
+interface NextQuestionDto {
+  questionId: string;
+  passed: boolean;
+  timeMs: number;
+}
+
 @Controller('interviews')
 export class InterviewsController {
   constructor(private readonly interviewsService: InterviewsService) {}
@@ -14,6 +20,11 @@ export class InterviewsController {
   @Post()
   async create(@Body() dto: CreateInterviewDto) {
     return this.interviewsService.createInterview(dto.candidateId, dto.candidateName, dto.questions);
+  }
+
+  @Get()
+  async getAll() {
+    return this.interviewsService.getAllInterviews();
   }
 
   @Get('candidate/:id')
@@ -24,5 +35,10 @@ export class InterviewsController {
   @Get(':id')
   async getOne(@Param('id') id: string) {
     return this.interviewsService.getInterviewById(id);
+  }
+
+  @Post(':id/next')
+  async getNextQuestion(@Param('id') id: string, @Body() dto: NextQuestionDto) {
+    return this.interviewsService.processQuestionResult(id, dto.questionId, dto.passed, dto.timeMs);
   }
 }

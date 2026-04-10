@@ -1,0 +1,226 @@
+[
+  {
+    "id": "342f6e46-77d5-4413-bd53-e9fdcfca4c92",
+    "candidateId": "c5",
+    "candidateName": "Eve Miller",
+    "problemId": "894fbc5b-569b-425f-8eb1-28a6fd018036",
+    "problemTitle": "Assignment: 894fbc5b-569b-425f-8eb1-28a6fd018036",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T09:19:13.897Z",
+      "lastSwitchAt": "2026-04-08T09:20:09.897Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-08T09:19:13.897Z"
+  },
+  {
+    "id": "d0bbe259-36f5-4adb-8f00-1162cc4aac96",
+    "candidateId": "c5",
+    "candidateName": "Eve Miller",
+    "problemId": "18647a15-0dc2-4f0b-ae30-824e3d4fcd31",
+    "problemTitle": "Assignment: 18647a15-0dc2-4f0b-ae30-824e3d4fcd31",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-08T09:24:53.225Z",
+      "lastSwitchAt": "2026-04-08T09:25:02.938Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-04-08T09:24:53.225Z"
+  },
+  {
+    "id": "f2e36efe-6492-48db-9878-1e2c83831488",
+    "candidateId": "Ronik",
+    "candidateName": "id-09",
+    "problemId": "7ed33003-2d3b-4b4e-816f-d54891cdb679",
+    "problemTitle": "Assignment: 7ed33003-2d3b-4b4e-816f-d54891cdb679",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T09:43:42.747Z",
+      "lastSwitchAt": "2026-04-08T09:44:54.470Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-08T09:43:42.748Z"
+  },
+  {
+    "id": "078b287d-0875-49b3-a337-2d7ff2c13465",
+    "candidateId": "id-09",
+    "candidateName": "Ronik",
+    "problemId": "1484ab16-5bf8-4520-80df-9f3bb8616d18",
+    "problemTitle": "Assignment: 1484ab16-5bf8-4520-80df-9f3bb8616d18",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T10:16:08.051Z",
+      "lastSwitchAt": "2026-04-08T10:16:08.051Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-08T10:16:08.051Z"
+  },
+  {
+    "id": "c0ce49a1-b662-4a2a-80e9-ed1fc4d3b79f",
+    "candidateId": "id-09",
+    "candidateName": "Ronik",
+    "problemId": "1",
+    "problemTitle": "Two Sum",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T10:17:44.835Z",
+      "lastSwitchAt": "2026-04-08T10:18:03.919Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-08T10:17:44.835Z"
+  },
+  {
+    "id": "c5cc72e5-75d6-48be-8545-66758308d025",
+    "candidateId": "id-10",
+    "candidateName": "Sujith",
+    "problemId": "9ad75fdb-8401-42eb-8e1e-c8fe29450e70",
+    "problemTitle": "Assignment: 9ad75fdb-8401-42eb-8e1e-c8fe29450e70",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T10:29:57.396Z",
+      "lastSwitchAt": "2026-04-08T10:30:05.235Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-08T10:29:57.396Z"
+  },
+  {
+    "id": "e33f3b9e-ff33-42dc-b946-b5d90fe81270",
+    "candidateId": "id-11",
+    "candidateName": "Sujith",
+    "problemId": "2250e7db-05f0-417b-a3da-1c5acec56e10",
+    "problemTitle": "Assignment: 2250e7db-05f0-417b-a3da-1c5acec56e10",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T11:55:42.661Z",
+      "lastSwitchAt": "2026-04-08T11:55:42.661Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-08T11:55:42.661Z"
+  },
+  {
+    "id": "afedb8b1-d5c9-4047-9ed5-2e17fc1d3a39",
+    "candidateId": "id-11",
+    "candidateName": "Sujith",
+    "problemId": "aa73a82b-2649-4976-9ca8-db6fbf81c73d",
+    "problemTitle": "Assignment: aa73a82b-2649-4976-9ca8-db6fbf81c73d",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T11:57:16.632Z",
+      "lastSwitchAt": "2026-04-08T11:57:16.632Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-08T11:57:16.632Z"
+  },
+  {
+    "id": "5c8ed232-f896-4f6d-92c3-9796f51b4690",
+    "candidateId": "id-11",
+    "candidateName": "Sujith",
+    "problemId": "d3044d2a-e905-4660-b670-6186eb32ff8f",
+    "problemTitle": "Assignment: d3044d2a-e905-4660-b670-6186eb32ff8f",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-08T12:00:57.067Z",
+      "lastSwitchAt": "2026-04-08T12:17:26.393Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-04-08T12:00:57.067Z"
+  },
+  {
+    "id": "922dd149-101e-4aba-ab74-b0f57f2a5399",
+    "candidateId": "id-11",
+    "candidateName": "Sujith",
+    "problemId": "e89a10a6-fd46-4b13-978d-5c53dc136b61",
+    "problemTitle": "Assignment: e89a10a6-fd46-4b13-978d-5c53dc136b61",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-08T12:22:32.834Z",
+      "lastSwitchAt": "2026-04-08T12:22:35.740Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-08T12:22:32.834Z"
+  },
+  {
+    "id": "418a70ff-b64a-47cf-8dda-a72b999116d0",
+    "candidateId": "id-11",
+    "candidateName": "Morgan",
+    "problemId": "b9cbb544-3c93-4975-83d9-cab903d31a30",
+    "problemTitle": "Assignment: b9cbb544-3c93-4975-83d9-cab903d31a30",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-08T12:48:09.439Z",
+      "lastSwitchAt": "2026-04-08T12:48:16.779Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-04-08T12:48:09.439Z"
+  },
+  {
+    "id": "7ed592fd-cddb-4c5f-b28d-5d2e7bb35843",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "f7923a07-2978-497c-9a20-a4c74b11d8e8",
+    "problemTitle": "Assignment: f7923a07-2978-497c-9a20-a4c74b11d8e8",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-08T13:06:05.494Z",
+      "lastSwitchAt": "2026-04-08T13:06:45.196Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-04-08T13:06:05.494Z"
+  },
+  {
+    "id": "4ca4247e-91b4-4a25-8408-f79855b49cce",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-09T21:29:35.314Z",
+      "lastSwitchAt": "2026-04-09T21:29:35.314Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-09T21:29:35.314Z"
+  },
+  {
+    "id": "e20bba5c-3a28-4cae-b76f-d6f0b83273cf",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-09T22:29:38.978Z",
+      "lastSwitchAt": "2026-04-09T22:29:38.978Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-09T22:29:38.978Z"
+  }
+]
