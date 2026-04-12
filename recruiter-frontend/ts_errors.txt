@@ -1,0 +1,16 @@
+﻿src/app/page.tsx(217,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(218,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(219,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(220,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(223,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(224,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(225,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.
+src/app/page.tsx(226,21): error TS2322: Type 'string | { [key: string]: string; }' is not assignable to type 'string | undefined'.
+  Type '{ [key: string]: string; }' is not assignable to type 'string'.

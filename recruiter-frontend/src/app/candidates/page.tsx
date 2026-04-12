@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { getAllActivityLogs, getAllInterviews, type ActivityLog, type Interview } from "@/lib/api";
-import { Loader2, Users, Search, Filter, ArrowUpRight, Clock, Target, Calendar, ChevronDown } from "lucide-react";
+import { Loader2, Users, Search, Filter, ArrowUpRight, Clock, Target, Calendar, ChevronDown, MessageCircle } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
+import CandidateMessages from "@/components/CandidateMessages";
+
 
 interface CandidateProgress {
   candidateId: string;
@@ -23,6 +25,7 @@ export default function CandidateAnalyticsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedCandidates, setExpandedCandidates] = useState<Set<string>>(new Set());
+  const [activeChat, setActiveChat] = useState<{ id: string; name: string; interviewId: string } | null>(null);
 
   useEffect(() => {
     async function loadData() {
@@ -233,6 +236,22 @@ export default function CandidateAnalyticsPage() {
                       <ChevronDown 
                         className={`w-5 h-5 text-neutral-500 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
                       />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const candidateInterviews = interviews.filter(i => i.candidateId === candidate.candidateId);
+                          const latestInterviewId = candidateInterviews.length > 0 ? candidateInterviews[0].id : 'default';
+                          setActiveChat({ 
+                            id: candidate.candidateId, 
+                            name: candidate.candidateName,
+                            interviewId: latestInterviewId
+                          });
+                        }}
+                        className="ml-4 p-2.5 bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white rounded-xl transition-all active:scale-90 border border-indigo-500/20 shadow-xl shadow-indigo-500/5 group/msg"
+                        title="Chat with candidate"
+                      >
+                        <MessageCircle className="w-5 h-5 group-hover/msg:animate-pulse" />
+                      </button>
                     </button>
 
                     {/* Expanded Details */}
@@ -299,6 +318,17 @@ export default function CandidateAnalyticsPage() {
           )}
         </div>
       </div>
+
+      {activeChat && (
+        <CandidateMessages 
+          candidateId={activeChat.id}
+          candidateName={activeChat.name}
+          interviewId={activeChat.interviewId}
+          recruiterId={currentUser.id}
+          recruiterName={currentUser.name}
+          onClose={() => setActiveChat(null)}
+        />
+      )}
     </div>
   );
 }

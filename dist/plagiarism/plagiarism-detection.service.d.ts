@@ -1,4 +1,4 @@
-interface PlagiarismMatch {
+export interface PlagiarismMatch {
     candidateId: string;
     candidateName: string;
     interviewId: string;
@@ -9,7 +9,7 @@ interface PlagiarismMatch {
     }>;
     timestamp: Date;
 }
-interface PlagiarismReport {
+export interface PlagiarismReport {
     submissionId: string;
     candidateId: string;
     codeHash: string;
@@ -21,7 +21,7 @@ interface PlagiarismReport {
 export declare class PlagiarismDetectionService {
     private submissionDatabase;
     registerSubmission(submissionId: string, code: string, candidateId: string, interviewId: string): void;
-    checkPlagiarism(submitCode: string, candidateId: string, interviewId: string): PlagiarismReport;
+    checkPlagiarism(submitCode: string, candidateId: string, interviewId: string, submissionId?: string): PlagiarismReport;
     private calculateSimilarity;
     private tokenizeCode;
     private cosineSimilarity;
@@ -31,4 +31,3 @@ export declare class PlagiarismDetectionService {
     private calculateRiskLevel;
     getSubmissionReport(submissionId: string): PlagiarismReport | null;
 }
-export {};

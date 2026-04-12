@@ -214,22 +214,33 @@ export default function RecruiterPortal() {
                   description: question.description,
                   testCases: question.testCases || [],
                   starterCode: { 
-                    python: question.starterCode || "",
-                    javascript: question.starterCode || "",
-                    java: question.starterCode || "",
-                    c: question.starterCode || ""
+                    python: question.starterCode?.python || "",
+                    javascript: question.starterCode?.javascript || "",
+                    java: question.starterCode?.java || "",
+                    c: question.starterCode?.c || ""
                   },
                   wrapperCode: {
-                    python: question.wrapperCode || "",
-                    javascript: question.wrapperCode || "",
-                    java: question.wrapperCode || "",
-                    c: question.wrapperCode || ""
+                    python: question.wrapperCode?.python || "",
+                    javascript: question.wrapperCode?.javascript || "",
+                    java: question.wrapperCode?.java || "",
+                    c: question.wrapperCode?.c || ""
                   },
                   activeLang: "python",
                   isAdvancedOpen: false
                 };
-                setQuestions([...questions, newQuestion]);
-                alert(`✅ "${question.title}" added to your interview!`);
+
+                // If the only question is the default unnamed/empty one, replace it
+                const isDefaultEmpty = questions.length === 1 && 
+                                       questions[0].title === "Algorithm Question 1" && 
+                                       questions[0].description === "";
+                
+                if (isDefaultEmpty) {
+                  setQuestions([newQuestion]);
+                } else {
+                  setQuestions([...questions, newQuestion]);
+                }
+
+                alert(`✅ "${question.title}" added to your interview! Please select a candidate and click 'Generate & Assign Interview' below.`);
               }}
             />
           </div>
@@ -250,10 +261,18 @@ export default function RecruiterPortal() {
               />
               <button 
                 onClick={() => navigator.clipboard.writeText(generatedLink)}
-                className="px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-semibold transition-colors active:scale-95"
+                className="px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-semibold transition-colors active:scale-95 shrink-0"
               >
                 Copy
               </button>
+              <a 
+                href={generatedLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-semibold transition-colors shrink-0"
+              >
+                Open
+              </a>
             </div>
           </div>
         )}
@@ -272,12 +291,22 @@ export default function RecruiterPortal() {
                       <p className="text-sm font-semibold text-emerald-200">{item.name}</p>
                       <p className="text-xs text-neutral-500">{item.id}</p>
                     </div>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(item.link)}
-                      className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold transition-colors"
-                    >
-                      Copy
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => navigator.clipboard.writeText(item.link)}
+                        className="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold transition-colors"
+                      >
+                        Copy
+                      </button>
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-semibold transition-colors flex items-center"
+                      >
+                        Open
+                      </a>
+                    </div>
                   </div>
                   <input
                     type="text"
@@ -571,15 +600,16 @@ export default function RecruiterPortal() {
         </div>
         )}
 
-        {/* Add Question Button (Manual Mode) */}
-        {questionCreationMode === "manual" && (
-        <div className="mt-8 flex items-center justify-between gap-4">
-          <button 
-            onClick={addQuestion}
-            className="flex items-center gap-2 px-6 py-3 border-2 border-dashed border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-500 rounded-xl font-bold transition-all"
-          >
-            <Plus className="w-5 h-5" /> Add Another Question
-          </button>
+        {/* Action Buttons */}
+        <div className={`mt-8 flex items-center ${questionCreationMode === "manual" ? "justify-between" : "justify-end"} gap-4`}>
+          {questionCreationMode === "manual" && (
+            <button 
+              onClick={addQuestion}
+              className="flex items-center gap-2 px-6 py-3 border-2 border-dashed border-neutral-700 text-neutral-400 hover:text-white hover:border-neutral-500 rounded-xl font-bold transition-all"
+            >
+              <Plus className="w-5 h-5" /> Add Another Question
+            </button>
+          )}
           
           <div className="flex flex-col items-end gap-2">
             {/* Inline validation hints */}
@@ -615,7 +645,6 @@ export default function RecruiterPortal() {
             </button>
           </div>
         </div>
-        )}
 
       </div>
     </div>

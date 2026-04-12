@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001/api";
 
 export interface Example {
   input: string;
@@ -216,3 +216,44 @@ export async function getTerminatedSessions(): Promise<TabSwitchIncident[]> {
   if (!res.ok) throw new Error("Failed to fetch terminated sessions");
   return res.json();
 }
+
+// ==================== HELP CENTER ====================
+
+export interface HelpMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderType: 'candidate' | 'recruiter' | 'ai';
+  content: string;
+  timestamp: string;
+}
+
+export interface Conversation {
+  candidateId: string;
+  interviewId: string;
+  messages: HelpMessage[];
+  status: 'active' | 'archived';
+}
+
+export async function getAllConversations(): Promise<Conversation[]> {
+  const res = await fetch(`${API_BASE_URL}/help-center/all-conversations`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch all conversations");
+  return res.json();
+}
+
+export async function getConversation(candidateId: string, interviewId: string): Promise<Conversation> {
+  const res = await fetch(`${API_BASE_URL}/help-center/conversation/${candidateId}/${interviewId}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch conversation");
+  return res.json();
+}
+
+export async function sendChatMessage(candidateId: string, interviewId: string, message: Omit<HelpMessage, 'id' | 'timestamp'>): Promise<HelpMessage> {
+  const res = await fetch(`${API_BASE_URL}/help-center/message`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ candidateId, interviewId, message }),
+  });
+  if (!res.ok) throw new Error("Failed to send message");
+  return res.json();
+}
+

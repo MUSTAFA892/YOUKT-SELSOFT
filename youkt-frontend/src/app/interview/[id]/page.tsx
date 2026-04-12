@@ -7,7 +7,9 @@ import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, ArrowRight
 import { useAuth } from "@/components/AuthProvider";
 import TabSwitchWarning from "@/components/TabSwitchWarning";
 import { useLockdownDetector } from "@/hooks/useLockdownDetector";
+import AiHelpCenter from "@/components/AiHelpCenter";
 import Link from "next/link";
+
 
 type Lang = "python" | "javascript" | "java" | "c";
 
@@ -415,13 +417,6 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
   const finishAssessment = async () => {
     if (!interview) return;
     
-    // Check if all questions are submitted
-    const allSubmitted = interview.questions.every((q, idx) => submittedMap[idx]);
-    if (!allSubmitted) {
-      alert("Please solve and submit all questions before finishing the assignment.");
-      return;
-    }
-
     // Build per-question report from resultMap
     const questionReports = interview.questions.map((q, idx) => {
       const r = resultMap[idx];
@@ -1002,6 +997,14 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
         count={tabSwitchCount}
         onClose={handleCloseTabWarning}
         onExit={handleExitAssignment}
+      />
+
+      {/* AI Help Center Widget */}
+      <AiHelpCenter 
+        candidateId={interview.candidateId}
+        candidateName={interview.candidateName}
+        interviewId={interview.id}
+        currentQuestion={currentQ}
       />
     </div>
   );

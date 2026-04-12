@@ -222,5 +222,101 @@
       "totalSwitches": 1
     },
     "recordedAt": "2026-04-09T22:29:38.978Z"
+  },
+  {
+    "id": "d4b55f61-7698-4599-b5dc-0971c5020929",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "3914bd18-e912-462e-bf0f-2f042f8d3b90",
+    "problemTitle": "Assignment: 3914bd18-e912-462e-bf0f-2f042f8d3b90",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-10T09:48:51.331Z",
+      "lastSwitchAt": "2026-04-10T09:49:08.923Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-04-10T09:48:51.331Z"
+  },
+  {
+    "id": "2e52217d-3cc1-400d-baf4-870d1e4e8bac",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-10T09:51:06.137Z",
+      "lastSwitchAt": "2026-04-10T09:51:30.806Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-10T09:51:06.137Z"
+  },
+  {
+    "id": "88d1398e-0b3f-4115-a3bf-ec95722c1c65",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "265c76ff-8647-43ad-99ef-6f6443252831",
+    "problemTitle": "Assignment: 265c76ff-8647-43ad-99ef-6f6443252831",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-11T21:25:11.791Z",
+      "lastSwitchAt": "2026-04-11T21:25:11.791Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-04-11T21:25:11.791Z"
+  },
+  {
+    "id": "dbc3ad49-90ab-4f34-95cc-f8f8f4323e1f",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "problemTitle": "Assignment: cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-12T08:33:40.787Z",
+      "lastSwitchAt": "2026-04-12T08:33:48.337Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-12T08:33:40.787Z"
+  },
+  {
+    "id": "471cfe47-f81f-4e03-a9b3-9135dbfab976",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "problemTitle": "Assignment: cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-12T09:37:31.006Z",
+      "lastSwitchAt": "2026-04-12T09:38:56.392Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-12T09:37:31.006Z"
+  },
+  {
+    "id": "901a9766-7b45-4de6-827a-02b842b69690",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "1e433c03-b5b6-43df-a343-b9e70189187a",
+    "problemTitle": "Assignment: 1e433c03-b5b6-43df-a343-b9e70189187a",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-04-12T13:37:40.752Z",
+      "lastSwitchAt": "2026-04-12T13:38:08.441Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-04-12T13:37:40.752Z"
   }
 ]

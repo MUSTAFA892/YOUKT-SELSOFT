@@ -24,7 +24,7 @@ export interface QuestionTemplate {
     votes?: number;
     views?: number;
 }
-interface QuestionPack {
+export interface QuestionPack {
     id: string;
     name: string;
     description: string;
@@ -65,4 +65,3 @@ export declare class QuestionLibraryService {
     getCategories(): string[];
     getTags(): string[];
 }
-export {};

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-interface PlagiarismMatch {
+export interface PlagiarismMatch {
   candidateId: string;
   candidateName: string;
   interviewId: string;
@@ -9,7 +9,7 @@ interface PlagiarismMatch {
   timestamp: Date;
 }
 
-interface PlagiarismReport {
+export interface PlagiarismReport {
   submissionId: string;
   candidateId: string;
   codeHash: string;
@@ -32,7 +32,7 @@ export class PlagiarismDetectionService {
     });
   }
 
-  checkPlagiarism(submitCode: string, candidateId: string, interviewId: string): PlagiarismReport {
+  checkPlagiarism(submitCode: string, candidateId: string, interviewId: string, submissionId?: string): PlagiarismReport {
     const matches: PlagiarismMatch[] = [];
     let maxSimilarity = 0;
 
@@ -164,6 +164,6 @@ export class PlagiarismDetectionService {
     if (!submission) return null;
 
     // Return a cached report or recalculate
-    return this.checkPlagiarism(submission.code, submission.candidateId, submission.interviewId);
+    return this.checkPlagiarism(submission.code, submission.candidateId, submission.interviewId, submissionId);
   }
 }

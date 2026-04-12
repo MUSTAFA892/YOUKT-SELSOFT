@@ -386,5 +386,389 @@
     "currentQuestionStartedAt": null,
     "createdAt": "2026-04-09T22:42:31.304Z",
     "isComplete": false
+  },
+  {
+    "id": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Reverse a String",
+        "description": "Given a string s, return the string reversed.\n\nExample:\n  Input: \"hello\"\n  Output: \"olleh\"\n",
+        "testCases": [
+          {
+            "input": "s = \"hello\"",
+            "expectedOutput": "olleh"
+          },
+          {
+            "input": "s = \"racecar\"",
+            "expectedOutput": "racecar"
+          }
+        ],
+        "starterCode": {
+          "python": "def reverse_string(s):\r\n    # Write your solution here\r\n    pass",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "{user_code}\r\n\r\ndef run():\r\n    raw = '''{input}'''\r\n    if '=' in raw:\r\n        s = raw.strip().split('=')[1].strip().strip('\"')\r\n    else:\r\n        s = raw.strip()\r\n    print(reverse_string(s))\r\n\r\nrun()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "4445d2e6-5688-460a-986c-a9cf12c7c54b",
+        "difficulty": "Easy",
+        "timeLimit": 120,
+        "inputFormat": "A string s",
+        "outputFormat": "The reversed string",
+        "examples": [
+          {
+            "input": "s = \"hello\"",
+            "output": "\"olleh\"",
+            "explanation": "Reverse of \"hello\" is \"olleh\"."
+          }
+        ]
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-04-10T09:49:21.977Z",
+    "createdAt": "2026-04-10T09:48:02.989Z",
+    "isComplete": false
+  },
+  {
+    "id": "f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "questions": [
+      {
+        "title": "Reverse a String",
+        "description": "Given a string s, return the string reversed.\n\nExample:\n  Input: \"hello\"\n  Output: \"olleh\"\n",
+        "testCases": [
+          {
+            "input": "s = \"hello\"",
+            "expectedOutput": "olleh"
+          },
+          {
+            "input": "s = \"racecar\"",
+            "expectedOutput": "racecar"
+          }
+        ],
+        "starterCode": {
+          "python": "def reverse_string(s):\r\n    # Write your solution here\r\n    pass",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "{user_code}\r\n\r\ndef run():\r\n    raw = '''{input}'''\r\n    if '=' in raw:\r\n        s = raw.strip().split('=')[1].strip().strip('\"')\r\n    else:\r\n        s = raw.strip()\r\n    print(reverse_string(s))\r\n\r\nrun()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "fabc8e45-fef2-4906-a4cb-f03927d5484c",
+        "difficulty": "Easy",
+        "timeLimit": 120,
+        "inputFormat": "A string s",
+        "outputFormat": "The reversed string",
+        "examples": [
+          {
+            "input": "s = \"hello\"",
+            "output": "\"olleh\"",
+            "explanation": "Reverse of \"hello\" is \"olleh\"."
+          }
+        ]
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": null,
+    "createdAt": "2026-04-10T09:48:02.993Z",
+    "isComplete": false
+  },
+  {
+    "id": "3914bd18-e912-462e-bf0f-2f042f8d3b90",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "questions": [
+      {
+        "title": "Reverse a String",
+        "description": "Given a string s, return the string reversed.\n\nExample:\n  Input: \"hello\"\n  Output: \"olleh\"\n",
+        "testCases": [
+          {
+            "input": "s = \"hello\"",
+            "expectedOutput": "olleh"
+          },
+          {
+            "input": "s = \"racecar\"",
+            "expectedOutput": "racecar"
+          }
+        ],
+        "starterCode": {
+          "python": "def reverse_string(s):\r\n    # Write your solution here\r\n    pass",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "{user_code}\r\n\r\ndef run():\r\n    raw = '''{input}'''\r\n    if '=' in raw:\r\n        s = raw.strip().split('=')[1].strip().strip('\"')\r\n    else:\r\n        s = raw.strip()\r\n    print(reverse_string(s))\r\n\r\nrun()\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "686aa60d-af82-4719-ba1c-548069e0841e",
+        "difficulty": "Easy",
+        "timeLimit": 120,
+        "inputFormat": "A string s",
+        "outputFormat": "The reversed string",
+        "examples": [
+          {
+            "input": "s = \"hello\"",
+            "output": "\"olleh\"",
+            "explanation": "Reverse of \"hello\" is \"olleh\"."
+          }
+        ]
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-04-10T09:48:12.279Z",
+    "createdAt": "2026-04-10T09:48:02.997Z",
+    "isComplete": false
+  },
+  {
+    "id": "38d693ba-cd0f-4827-81f3-6d1b291f604f",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "questions": [
+      {
+        "title": "Reverse a String",
+        "description": "Given a string s, return the string reversed.\n\nExample:\n  Input: \"hello\"\n  Output: \"olleh\"\n",
+        "testCases": [
+          {
+            "input": "s = \"hello\"",
+            "expectedOutput": "olleh"
+          },
+          {
+            "input": "s = \"racecar\"",
+            "expectedOutput": "racecar"
+          }
+        ],
+        "starterCode": {
+          "python": "def reverse_string(s):\r\n    # Write your solution here\r\n    pass\r\n",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "def run():\r\n    raw = '''{input}'''\r\n    if '=' in raw:\r\n        s = raw.strip().split('=')[1].strip().strip('\"')\r\n    else:\r\n        s = raw.strip()\r\n    print(reverse_string(s))\r\n\r\nrun()",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "adf6fce4-6684-4ce1-af8c-0b83be4b2e14",
+        "difficulty": "Easy",
+        "timeLimit": 120,
+        "inputFormat": "A string s",
+        "outputFormat": "The reversed string",
+        "examples": [
+          {
+            "input": "s = \"hello\"",
+            "output": "\"olleh\"",
+            "explanation": "Reverse of \"hello\" is \"olleh\"."
+          }
+        ]
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": null,
+    "createdAt": "2026-04-10T10:23:29.293Z",
+    "isComplete": false
+  },
+  {
+    "id": "265c76ff-8647-43ad-99ef-6f6443252831",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "Given a string s, return the string reversed.\n\nExample:\n  Input: \"hello\"\n  Output: \"olleh\"\n",
+        "testCases": [
+          {
+            "input": "s = \"hello\"",
+            "expectedOutput": "olleh"
+          },
+          {
+            "input": "s = \"racecar\"",
+            "expectedOutput": "racecar"
+          }
+        ],
+        "starterCode": {
+          "python": "def reverse_string(s):\r\n    # Write your solution here\r\n    pass",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "def run():\r\n    raw = '''{input}'''\r\n    if '=' in raw:\r\n        s = raw.strip().split('=')[1].strip().strip('\"')\r\n    else:\r\n        s = raw.strip()\r\n    print(reverse_string(s))\r\n\r\nrun()",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "2708273a-f2cc-4805-9010-f43036047586",
+        "difficulty": "Easy",
+        "timeLimit": 300,
+        "inputFormat": "",
+        "outputFormat": "",
+        "examples": []
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-04-11T21:24:31.926Z",
+    "createdAt": "2026-04-11T21:24:24.978Z",
+    "isComplete": false
+  },
+  {
+    "id": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "questions": [
+      {
+        "title": "Algorithm Question 1",
+        "description": "You are given N integers on separate lines.\nRead all N numbers and print their sum.\n\nThe first line contains N (the count of numbers).\nThe next N lines each contain one integer.\n\nExample:\n  Input:\n    3\n    10\n    20\n    30\n  Output:\n    60\n",
+        "testCases": [
+          {
+            "input": "3\n10\n20\n30",
+            "expectedOutput": "60"
+          },
+          {
+            "input": "5\n1\n2\n3\n4\n5",
+            "expectedOutput": "15"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "19b1ade8-b454-491b-aa5c-3e1d33a02166",
+        "difficulty": "Easy",
+        "timeLimit": 300,
+        "inputFormat": "",
+        "outputFormat": "",
+        "examples": []
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-04-12T08:32:31.423Z",
+    "createdAt": "2026-04-12T08:32:24.839Z",
+    "isComplete": false
+  },
+  {
+    "id": "1e433c03-b5b6-43df-a343-b9e70189187a",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "questions": [
+      {
+        "title": "N-Queens Problem",
+        "description": "Place n queens on an n x n chessboard such that no two queens attack each other.",
+        "testCases": [
+          {
+            "input": "n=4",
+            "expectedOutput": "[[...], [...]]"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "2ccaa795-7c98-4745-bab3-197cf23080a7",
+        "difficulty": "Easy",
+        "timeLimit": 300,
+        "inputFormat": "",
+        "outputFormat": "",
+        "examples": []
+      },
+      {
+        "title": "N-Queens Problem",
+        "description": "Place n queens on an n x n chessboard such that no two queens attack each other.",
+        "testCases": [
+          {
+            "input": "n=4",
+            "expectedOutput": "[[...], [...]]"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "81c35ebb-2947-42df-90cc-00dd3be3e2e2",
+        "difficulty": "Easy",
+        "timeLimit": 300,
+        "inputFormat": "",
+        "outputFormat": "",
+        "examples": []
+      },
+      {
+        "title": "N-Queens Problem",
+        "description": "Place n queens on an n x n chessboard such that no two queens attack each other.",
+        "testCases": [
+          {
+            "input": "n=4",
+            "expectedOutput": "[[...], [...]]"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "id": "530bd89a-8336-4470-99d8-53f293e6fc7c",
+        "difficulty": "Easy",
+        "timeLimit": 300,
+        "inputFormat": "",
+        "outputFormat": "",
+        "examples": []
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-04-12T13:36:20.151Z",
+    "createdAt": "2026-04-12T13:30:53.987Z",
+    "isComplete": false
   }
 ]

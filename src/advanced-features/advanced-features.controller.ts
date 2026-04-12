@@ -4,7 +4,7 @@ import { PlagiarismDetectionService } from '../plagiarism/plagiarism-detection.s
 import { AdaptiveDifficultyService } from '../adaptive-difficulty/adaptive-difficulty.service';
 import { QuestionLibraryService } from '../question-library/question-library.service';
 
-@Controller('api/advanced-features')
+@Controller('advanced-features')
 export class AdvancedFeaturesController {
   constructor(
     private codeReviewService: CodeReviewService,

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Code2, CheckCircle2, AlertCircle, Zap, Shield, BookOpen } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 interface CodeReviewProps {
   code: string;
@@ -16,7 +17,7 @@ export default function CodeReviewPanel({ code, language, onReview }: CodeReview
   const performReview = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/advanced-features/code-review`, {
+      const response = await fetch(`${API_BASE_URL}/advanced-features/code-review`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, language })

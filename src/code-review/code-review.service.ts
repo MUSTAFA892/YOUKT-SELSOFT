@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-interface CodeReviewResult {
+export interface CodeReviewResult {
   overallScore: number;
   qualityRating: 'excellent' | 'good' | 'fair' | 'poor';
   complexity: {

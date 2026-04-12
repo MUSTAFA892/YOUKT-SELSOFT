@@ -15,6 +15,9 @@ interface Question {
   votes?: number;
   views?: number;
   language: string[];
+  testCases?: Array<{ input: string; expectedOutput: string }>;
+  starterCode?: { [key: string]: string };
+  wrapperCode?: { [key: string]: string };
 }
 
 interface QuestionLibraryProps {
@@ -33,10 +36,12 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
   const [questions, setQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [difficulty, setDifficulty] = useState<'all' | 'easy' | 'medium' | 'hard' | 'expert'>('all');
   const [sortBy, setSortBy] = useState<'trending' | 'top-rated' | 'by-difficulty'>('top-rated');
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [addedQuestions, setAddedQuestions] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchQuestions();
@@ -48,16 +53,23 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
 
   const fetchQuestions = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const endpoint = sortBy === 'trending'
         ? `${process.env.NEXT_PUBLIC_API_URL}/advanced-features/questions/trending`
         : `${process.env.NEXT_PUBLIC_API_URL}/advanced-features/questions/top-rated`;
 
       const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const result = await response.json();
       setQuestions(result.data || []);
-    } catch (error) {
-      console.error('Failed to load questions:', error);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      console.error('Failed to load questions:', errorMessage);
+      setError('Could not connect to the question library server. Please try again later.');
+      setQuestions([]);
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +112,9 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
       if (isFav) newFavs.delete(questionId);
       else newFavs.add(questionId);
       setFavorites(newFavs);
-    } catch (error) {
-      console.error('Failed to update favorite:', error);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
+      console.error('Failed to update favorite:', errorMessage);
     }
   };
 
@@ -159,6 +172,8 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-8 text-neutral-500">Loading questions...</div>
+        ) : error ? (
+          <div className="text-center py-8 text-rose-500 bg-rose-500/10 rounded-lg border border-rose-500/20">{error}</div>
         ) : filteredQuestions.length === 0 ? (
           <div className="text-center py-8 text-neutral-500">No questions found. Try different filters.</div>
         ) : (
@@ -235,10 +250,18 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
               )}
 
               <button
-                onClick={() => onSelectQuestion?.(question)}
-                className="w-full px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-xs font-medium transition-colors"
+                onClick={() => {
+                  onSelectQuestion?.(question);
+                  setAddedQuestions(prev => new Set(prev).add(question.id));
+                }}
+                disabled={addedQuestions.has(question.id)}
+                className={`w-full px-3 py-1.5 rounded text-xs font-medium transition-colors ${
+                  addedQuestions.has(question.id)
+                    ? 'bg-emerald-600/20 text-emerald-400 cursor-not-allowed border border-emerald-600/30'
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                }`}
               >
-                Use This Question
+                {addedQuestions.has(question.id) ? 'Added ✓' : 'Use This Question'}
               </button>
             </div>
           ))

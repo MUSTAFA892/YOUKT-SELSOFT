@@ -1,4 +1,4 @@
-interface CodeReviewResult {
+export interface CodeReviewResult {
     overallScore: number;
     qualityRating: 'excellent' | 'good' | 'fair' | 'poor';
     complexity: {
@@ -39,4 +39,3 @@ export declare class CodeReviewService {
     private findUnusedVariables;
     private findDuplicatePatterns;
 }
-export {};

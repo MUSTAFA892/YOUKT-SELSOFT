@@ -198,5 +198,55 @@
     },
     "id": "1d7100ea-470f-48e8-b460-617f5d9f0ed7",
     "finishedAt": "2026-04-08T13:06:45.202Z"
+  },
+  {
+    "interviewId": "3914bd18-e912-462e-bf0f-2f042f8d3b90",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 2,
+    "totalTestsAvailable": 2,
+    "scorePercent": 100,
+    "questions": [
+      {
+        "questionId": "686aa60d-af82-4719-ba1c-548069e0841e",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 2,
+        "failed": 0,
+        "allPassed": true,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "c52d0952-2608-4855-94b5-ef802682ede2",
+    "finishedAt": "2026-04-10T09:49:06.976Z"
+  },
+  {
+    "interviewId": "265c76ff-8647-43ad-99ef-6f6443252831",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "2708273a-f2cc-4805-9010-f43036047586",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "id": "999fa680-f6fe-4219-9d46-3465881b148d",
+    "finishedAt": "2026-04-11T21:25:23.503Z"
   }
 ]

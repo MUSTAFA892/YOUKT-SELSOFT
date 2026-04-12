@@ -16,6 +16,7 @@ const reports_module_1 = require("./reports/reports.module");
 const activity_logs_module_1 = require("./activity-logs/activity-logs.module");
 const tab_switch_module_1 = require("./tab-switch/tab-switch.module");
 const advanced_features_module_1 = require("./advanced-features/advanced-features.module");
+const help_center_module_1 = require("./help-center/help-center.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +31,7 @@ exports.AppModule = AppModule = __decorate([
             activity_logs_module_1.ActivityLogsModule,
             tab_switch_module_1.TabSwitchModule,
             advanced_features_module_1.AdvancedFeaturesModule,
+            help_center_module_1.HelpCenterModule,
         ],
     })
 ], AppModule);

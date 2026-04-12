@@ -1,0 +1,104 @@
+[
+  {
+    "candidateId": "c1",
+    "interviewId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "ea3583db-51b1-4cf4-af69-fa110fbef806",
+        "timestamp": "2026-04-12T09:36:59.049Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Sure! The problem \"Algorithm Question 1\" requires you to you are given n integers on separate lines. \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
+        "id": "8d4063a6-f00b-4fe1-9d6f-5df7945b4f86",
+        "timestamp": "2026-04-12T09:36:59.050Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "9f153691-51ef-4ddb-8574-6ec9c82b7381",
+        "timestamp": "2026-04-12T09:37:10.619Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "I've analyzed the problem description and test cases for \"Algorithm Question 1\". At the moment, the problem statements appear to be correct. If you believe there's a specific test case that is failing incorrectly, please describe it and I'll notify the recruiter.",
+        "id": "c9267c65-a9f1-409a-a247-0a1cd0e52af8",
+        "timestamp": "2026-04-12T09:37:10.620Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "6cdc1dad-07e3-4809-8e81-1ef740dc1762",
+        "timestamp": "2026-04-12T09:37:20.764Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Try walking through your code with a simple edge case, like empty input or very large values, to see if it behaves as expected.",
+        "id": "aa5c2a9e-26ac-4b6f-a15e-085fa11946ce",
+        "timestamp": "2026-04-12T09:37:20.765Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c3",
+    "interviewId": "1e433c03-b5b6-43df-a343-b9e70189187a",
+    "messages": [
+      {
+        "senderId": "c3",
+        "senderName": "Charlie Brown",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "e7dc62d0-b184-4eb9-b897-7c5ed4a976e7",
+        "timestamp": "2026-04-12T13:36:46.258Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Sure! The problem \"N-Queens Problem\" requires you to place n queens on an n x n chessboard such that no two queens attack each other. \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
+        "id": "e9968b84-d17d-4c39-8780-3fe298da77bb",
+        "timestamp": "2026-04-12T13:36:46.259Z"
+      },
+      {
+        "senderId": "c3",
+        "senderName": "Charlie Brown",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "621c5589-8f6f-4b6c-ba8b-315bafd3ccc1",
+        "timestamp": "2026-04-12T13:36:58.249Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Try walking through your code with a simple edge case, like empty input or very large values, to see if it behaves as expected.",
+        "id": "32604b39-3e9c-4085-bd42-ca80808efbc6",
+        "timestamp": "2026-04-12T13:36:58.250Z"
+      },
+      {
+        "senderId": "c3",
+        "senderName": "Charlie Brown",
+        "senderType": "candidate",
+        "content": "Speak to a recruiter",
+        "id": "62f0e894-e275-40c6-888c-8268cb118090",
+        "timestamp": "2026-04-12T13:37:05.001Z"
+      }
+    ],
+    "status": "active"
+  }
+]

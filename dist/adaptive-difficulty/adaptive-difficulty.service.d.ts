@@ -1,18 +1,18 @@
-interface DifficultyMetrics {
+export interface DifficultyMetrics {
     problemsSolved: number;
     problemsAttempted: number;
     averageAccuracy: number;
     averageTime: number;
     successRate: number;
 }
-interface DifficultyPrediction {
+export interface DifficultyPrediction {
     currentDifficulty: 'easy' | 'medium' | 'hard' | 'expert';
     recommendedNextDifficulty: 'easy' | 'medium' | 'hard' | 'expert';
     confidenceScore: number;
     reasoning: string;
     metrics: DifficultyMetrics;
 }
-interface Question {
+export interface Question {
     id: string;
     title: string;
     difficulty: 'easy' | 'medium' | 'hard' | 'expert';
@@ -38,4 +38,3 @@ export declare class AdaptiveDifficultyService {
     addQuestion(question: Question): void;
     getQuestion(id: string): Question | undefined;
 }
-export {};

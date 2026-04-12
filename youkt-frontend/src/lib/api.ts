@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001/api";
 
 export interface Example {
   input: string;
@@ -50,19 +50,32 @@ export interface SubmissionResult {
 }
 
 export async function fetchProblems(): Promise<Problem[]> {
-  const res = await fetch(`${API_BASE_URL}/problems`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch problems");
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/problems`, { cache: "no-store" });
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Fetch Problems failed:", error);
+    return [];
+  }
 }
 
 export async function fetchProblem(id: string, candidateId?: string): Promise<Problem> {
-  const url = new URL(`${API_BASE_URL}/problems/${id}`);
-  if (candidateId) {
-    url.searchParams.append('candidateId', candidateId);
+  try {
+    const url = new URL(`${API_BASE_URL}/problems/${id}`);
+    if (candidateId) {
+      url.searchParams.append('candidateId', candidateId);
+    }
+    const res = await fetch(url.toString(), { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to fetch problem ${id}: ${res.statusText}`);
+    return res.json();
+  } catch (error) {
+    console.error(`Fetch Problem ${id} failed:`, error);
+    throw error; // Rethrow because the specific problem page needs this data to render
   }
-  const res = await fetch(url.toString(), { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to fetch problem ${id}`);
-  return res.json();
 }
 
 export async function submitCode(
@@ -171,15 +184,25 @@ export async function createInterview(
 }
 
 export async function getInterview(id: string): Promise<Interview> {
-  const res = await fetch(`${API_BASE_URL}/interviews/${id}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to fetch interview ${id}`);
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/interviews/${id}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to fetch interview ${id}: ${res.statusText}`);
+    return res.json();
+  } catch (error) {
+    console.error(`Get Interview ${id} failed:`, error);
+    throw error;
+  }
 }
 
 export async function getCandidateInterviews(candidateId: string): Promise<Interview[]> {
-  const res = await fetch(`${API_BASE_URL}/interviews/candidate/${candidateId}`, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch candidate interviews");
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/interviews/candidate/${candidateId}`, { cache: "no-store" });
+    if (!res.ok) return [];
+    return res.json();
+  } catch (error) {
+    console.error("Get Candidate Interviews failed:", error);
+    return [];
+  }
 }
 
 export async function submitInterviewCode(
@@ -264,15 +287,25 @@ export async function submitActivityLog(
 }
 
 export async function getCandidateActivityLogs(candidateId: string): Promise<ActivityLog[]> {
-  const res = await fetch(`${API_BASE_URL}/activity-logs/candidate/${candidateId}`);
-  if (!res.ok) throw new Error("Failed to fetch activity logs");
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/activity-logs/candidate/${candidateId}`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch (error) {
+    console.error("Get Candidate Activity Logs failed:", error);
+    return [];
+  }
 }
 
 export async function getAllActivityLogs(): Promise<ActivityLog[]> {
-  const res = await fetch(`${API_BASE_URL}/activity-logs`);
-  if (!res.ok) throw new Error("Failed to fetch all activity logs");
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/activity-logs`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch (error) {
+    console.error("Get All Activity Logs failed:", error);
+    return [];
+  }
 }
 
 export async function getNextProblem(
@@ -328,13 +361,74 @@ export async function reportTabSwitch(payload: {
 }
 
 export async function getTabSwitchIncidents(): Promise<TabSwitchIncident[]> {
-  const res = await fetch(`${API_BASE_URL}/tab-switch`);
-  if (!res.ok) throw new Error("Failed to fetch tab switch incidents");
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/tab-switch`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch (error) {
+    console.error("Get Tab Switch Incidents failed:", error);
+    return [];
+  }
 }
 
 export async function getCandidateTabSwitchIncidents(candidateId: string): Promise<TabSwitchIncident[]> {
-  const res = await fetch(`${API_BASE_URL}/tab-switch/candidate/${candidateId}`);
-  if (!res.ok) throw new Error("Failed to fetch candidate tab switch incidents");
+  try {
+    const res = await fetch(`${API_BASE_URL}/tab-switch/candidate/${candidateId}`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch (error) {
+    console.error("Get Candidate Tab Switch Incidents failed:", error);
+    return [];
+  }
+}
+
+// ==================== HELP CENTER ====================
+
+export interface HelpMessage {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderType: 'candidate' | 'recruiter' | 'ai';
+  content: string;
+  timestamp: string;
+}
+
+export interface Conversation {
+  candidateId: string;
+  interviewId: string;
+  messages: HelpMessage[];
+  status: 'active' | 'archived';
+}
+
+export async function getConversation(candidateId: string, interviewId: string): Promise<Conversation> {
+  const res = await fetch(`${API_BASE_URL}/help-center/conversation/${candidateId}/${interviewId}`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch conversation");
   return res.json();
 }
+
+export async function sendChatMessage(candidateId: string, interviewId: string, message: Omit<HelpMessage, 'id' | 'timestamp'>): Promise<HelpMessage> {
+  const res = await fetch(`${API_BASE_URL}/help-center/message`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ candidateId, interviewId, message }),
+  });
+  if (!res.ok) throw new Error("Failed to send message");
+  return res.json();
+}
+
+export async function getAiAssistance(payload: {
+  query: string;
+  questionContext: any;
+  candidateId: string;
+  interviewId: string;
+  candidateName: string;
+}): Promise<{ status: 'success' | 'switching_to_recruiter'; data?: HelpMessage }> {
+  const res = await fetch(`${API_BASE_URL}/help-center/ai-assist`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Failed to get AI assistance");
+  return res.json();
+}
+

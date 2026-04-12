@@ -20,7 +20,7 @@ let PlagiarismDetectionService = class PlagiarismDetectionService {
             timestamp: new Date()
         });
     }
-    checkPlagiarism(submitCode, candidateId, interviewId) {
+    checkPlagiarism(submitCode, candidateId, interviewId, submissionId) {
         const matches = [];
         let maxSimilarity = 0;
         this.submissionDatabase.forEach((submission, submissionId) => {
@@ -128,7 +128,7 @@ let PlagiarismDetectionService = class PlagiarismDetectionService {
         const submission = this.submissionDatabase.get(submissionId);
         if (!submission)
             return null;
-        return this.checkPlagiarism(submission.code, submission.candidateId, submission.interviewId);
+        return this.checkPlagiarism(submission.code, submission.candidateId, submission.interviewId, submissionId);
     }
 };
 exports.PlagiarismDetectionService = PlagiarismDetectionService;

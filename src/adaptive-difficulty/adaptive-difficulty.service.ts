@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-interface DifficultyMetrics {
+export interface DifficultyMetrics {
   problemsSolved: number;
   problemsAttempted: number;
   averageAccuracy: number;
@@ -8,7 +8,7 @@ interface DifficultyMetrics {
   successRate: number;
 }
 
-interface DifficultyPrediction {
+export interface DifficultyPrediction {
   currentDifficulty: 'easy' | 'medium' | 'hard' | 'expert';
   recommendedNextDifficulty: 'easy' | 'medium' | 'hard' | 'expert';
   confidenceScore: number;
@@ -16,7 +16,7 @@ interface DifficultyPrediction {
   metrics: DifficultyMetrics;
 }
 
-interface Question {
+export interface Question {
   id: string;
   title: string;
   difficulty: 'easy' | 'medium' | 'hard' | 'expert';

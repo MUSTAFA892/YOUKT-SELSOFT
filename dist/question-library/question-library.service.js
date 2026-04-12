@@ -97,6 +97,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_longest_substring',
                 title: 'Longest Substring Without Repeating',
+                description: 'Find the length of the longest substring without repeating characters.',
                 difficulty: 'medium',
                 language: ['python', 'javascript', 'java', 'c'],
                 topic: 'string',
@@ -114,6 +115,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_word_ladder',
                 title: 'Word Ladder',
+                description: 'Find the length of shortest transformation sequence from beginWord to endWord.',
                 difficulty: 'hard',
                 language: ['python', 'javascript', 'java', 'c'],
                 topic: 'graph',
@@ -130,6 +132,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_design_cache',
                 title: 'Design LRU Cache',
+                description: 'Design and implement a data structure for Least Recently Used (LRU) cache.',
                 difficulty: 'hard',
                 language: ['python', 'javascript', 'java', 'c'],
                 topic: 'design',
@@ -146,6 +149,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_n_queens',
                 title: 'N-Queens Problem',
+                description: 'Place n queens on an n x n chessboard such that no two queens attack each other.',
                 difficulty: 'expert',
                 language: ['python', 'javascript', 'java', 'c'],
                 topic: 'backtracking',
@@ -162,6 +166,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_regex_match',
                 title: 'Regular Expression Matching',
+                description: 'Implement regular expression matching with support for \".\" and \"*\".',
                 difficulty: 'expert',
                 language: ['python', 'javascript', 'java', 'c'],
                 topic: 'dynamic-programming',
@@ -178,6 +183,7 @@ let QuestionLibraryService = class QuestionLibraryService {
             {
                 id: 'q_design_db',
                 title: 'Design a Distributed Database',
+                description: 'Design a scalable distributed database system.',
                 difficulty: 'hard',
                 language: ['python', 'javascript'],
                 topic: 'system-design',

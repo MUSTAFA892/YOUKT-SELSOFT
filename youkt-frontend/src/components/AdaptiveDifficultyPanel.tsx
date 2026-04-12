@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { TrendingUp, Zap, Brain, BookOpen } from "lucide-react";
+import { API_BASE_URL } from "@/lib/api";
 
 interface Metrics {
   problemsSolved: number;
@@ -48,7 +49,7 @@ export default function AdaptiveDifficultyPanel({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/advanced-features/adaptive-difficulty/predict/${candidateId}/${currentDifficulty}`
+        `${API_BASE_URL}/advanced-features/adaptive-difficulty/predict/${candidateId}/${currentDifficulty}`
       );
       const result = await response.json();
       setPrediction(result.data);

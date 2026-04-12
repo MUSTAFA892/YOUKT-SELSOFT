@@ -354,7 +354,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AdvancedFeaturesController.prototype, "getTopQuestions", null);
 exports.AdvancedFeaturesController = AdvancedFeaturesController = __decorate([
-    (0, common_1.Controller)('api/advanced-features'),
+    (0, common_1.Controller)('advanced-features'),
     __metadata("design:paramtypes", [code_review_service_1.CodeReviewService,
         plagiarism_detection_service_1.PlagiarismDetectionService,
         adaptive_difficulty_service_1.AdaptiveDifficultyService,
