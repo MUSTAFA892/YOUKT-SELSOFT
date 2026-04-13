@@ -4,6 +4,8 @@ import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
 
+import { ThemeProvider } from "@/components/theme-provider";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,30 +27,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-neutral-950 text-neutral-50 selection:bg-indigo-500/30 flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary selection:text-white flex flex-col`}
       >
-        <AuthProvider>
-          <header className="sticky top-0 z-50 shrink-0 border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md">
-            <div className="flex h-14 items-center justify-between px-6">
-              <a href="/" className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors">
-                <div className="h-6 w-6 rounded bg-indigo-500 flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">YK</span>
-                </div>
-                <span className="font-bold tracking-tight text-lg text-white">YOUKT</span>
-              </a>
-              <div className="flex items-center gap-4">
-                <a href="/" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">Problems</a>
-                <a href="/progress" className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors">Progress</a>
-                <a href="/ide" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Custom IDE</a>
-                <a href="/interviews" className="text-sm font-medium text-amber-400 hover:text-amber-300 transition-colors">Interviews</a>
-                <AccountSwitcher />
-              </div>
-            </div>
-          </header>
-          <main className="flex-1 flex flex-col">{children}</main>
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

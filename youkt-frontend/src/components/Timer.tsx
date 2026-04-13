@@ -43,27 +43,27 @@ export default function Timer({ timeLimit, isActive, onTimeout }: TimerProps) {
   const isCritical = timeRemaining < timeLimit * 0.1; // Critical at 10% time remaining
 
   return (
-    <div className="flex items-center gap-3 px-4 py-2 rounded-md bg-neutral-900 border border-neutral-800">
-      <div className="flex items-center gap-2">
-        <Clock className={`w-5 h-5 ${
+    <div className="flex items-center gap-4 px-4 py-1.5 rounded-xl bg-foreground/[0.03] border border-border transition-all">
+      <div className="flex items-center gap-2.5">
+        <Clock className={`w-4 h-4 ${
           isCritical ? 'text-rose-500 animate-pulse' :
           isWarning ? 'text-amber-500' :
-          'text-indigo-400'
+          'text-primary'
         }`} />
-        <span className={`text-sm font-mono font-bold ${
-          isCritical ? 'text-rose-400' :
-          isWarning ? 'text-amber-400' :
-          'text-neutral-200'
+        <span className={`text-xs font-mono font-black ${
+          isCritical ? 'text-rose-500' :
+          isWarning ? 'text-amber-500' :
+          'text-foreground'
         }`}>
           {formatTime(timeRemaining)}
         </span>
       </div>
 
       {/* Visual progress bar */}
-      <div className="w-24 h-2 rounded-full bg-neutral-700 overflow-hidden">
+      <div className="w-20 h-1.5 rounded-full bg-foreground/10 overflow-hidden hidden sm:block">
         <div
-          className={`h-full transition-all ${
-            isCritical ? 'bg-rose-500' :
+          className={`h-full transition-all duration-1000 ${
+            isCritical ? 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]' :
             isWarning ? 'bg-amber-500' :
             'bg-emerald-500'
           }`}
@@ -72,9 +72,9 @@ export default function Timer({ timeLimit, isActive, onTimeout }: TimerProps) {
       </div>
 
       {isCritical && (
-        <div className="flex items-center gap-1">
-          <AlertCircle className="w-4 h-4 text-rose-500" />
-          <span className="text-xs text-rose-400 font-semibold">Time Low!</span>
+        <div className="flex items-center gap-1.5 ml-1 animate-in fade-in slide-in-from-right-2 duration-300">
+          <AlertCircle className="w-3.5 h-3.5 text-rose-500" />
+          <span className="text-[10px] text-rose-500 font-black uppercase tracking-wider">Low!</span>
         </div>
       )}
     </div>

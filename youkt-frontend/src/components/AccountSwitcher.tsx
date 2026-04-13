@@ -15,18 +15,18 @@ export function AccountSwitcher() {
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition-colors"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border hover:border-primary/50 transition-colors"
       >
-        <UserCircle className="w-4 h-4 text-neutral-400" />
+        <UserCircle className="w-4 h-4 text-neutral-500" />
         <span className="text-xs font-semibold">{currentUser.name}</span>
-        <span className="text-[10px] uppercase font-bold text-indigo-400 bg-indigo-500/10 px-1.5 rounded">
+        <span className="text-[10px] uppercase font-bold text-primary bg-primary/10 px-1.5 rounded">
           {currentUser.role}
         </span>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl shadow-black/50 overflow-hidden z-50">
-          <div className="px-3 py-2 border-b border-neutral-800 bg-neutral-950">
+        <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-xl shadow-black/10 overflow-hidden z-50">
+          <div className="px-3 py-2 border-b border-border bg-surface">
             <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Switch Account</span>
           </div>
           <div className="p-1 max-h-72 overflow-y-auto">
@@ -39,7 +39,7 @@ export function AccountSwitcher() {
                 key={u.id}
                 onClick={() => { setCurrentUser(u); setIsOpen(false); }}
                 className={`w-full text-left flex items-center justify-between px-3 py-2 rounded text-sm font-medium ${
-                  currentUser.id === u.id ? "bg-indigo-500/20 text-indigo-300" : "hover:bg-neutral-800 text-neutral-300"
+                  currentUser.id === u.id ? "bg-primary/20 text-primary" : "hover:bg-surface text-neutral-600 dark:text-neutral-300"
                 }`}
               >
                 {u.name}
@@ -60,7 +60,7 @@ export function AccountSwitcher() {
                     key={u.id}
                     onClick={() => { setCurrentUser(u); setIsOpen(false); }}
                     className={`w-full text-left flex items-center justify-between px-3 py-2 rounded text-sm font-medium ${
-                      currentUser.id === u.id ? "bg-amber-500/20 text-amber-300" : "hover:bg-neutral-800 text-neutral-300"
+                      currentUser.id === u.id ? "bg-amber-500/20 text-amber-500" : "hover:bg-surface text-neutral-600 dark:text-neutral-300"
                     }`}
                   >
                     <span>{u.name}</span>

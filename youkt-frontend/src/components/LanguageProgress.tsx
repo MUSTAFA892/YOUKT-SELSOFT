@@ -1,188 +1,156 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Code2, Braces, FileJson } from "lucide-react";
+import { Code2, ChevronRight, Terminal, Zap, Brain, Activity } from "lucide-react";
 import { useAuth } from "./AuthProvider";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 interface LanguageStats {
-  language: "python" | "javascript" | "java" | "c";
+  language: string;
   problemsSolved: number;
   totalProblems: number;
   percentage: number;
-  color: string;
-  icon: React.ReactNode;
+  accent: string;
 }
 
 export default function LanguageProgress() {
   const { currentUser } = useAuth();
   const [stats, setStats] = useState<LanguageStats[]>([
-    {
-      language: "python",
-      problemsSolved: 0,
-      totalProblems: 10,
-      percentage: 0,
-      color: "from-yellow-500 to-orange-500",
-      icon: <Code2 className="w-5 h-5" />,
-    },
-    {
-      language: "javascript",
-      problemsSolved: 0,
-      totalProblems: 10,
-      percentage: 0,
-      color: "from-yellow-400 to-yellow-500",
-      icon: <Braces className="w-5 h-5" />,
-    },
-    {
-      language: "java",
-      problemsSolved: 0,
-      totalProblems: 10,
-      percentage: 0,
-      color: "from-orange-500 to-red-500",
-      icon: <Code2 className="w-5 h-5" />,
-    },
-    {
-      language: "c",
-      problemsSolved: 0,
-      totalProblems: 10,
-      percentage: 0,
-      color: "from-blue-500 to-cyan-500",
-      icon: <FileJson className="w-5 h-5" />,
-    },
+    { language: "python"     , problemsSolved: 3, totalProblems: 10, percentage: 30, accent: "#6366f1" },
+    { language: "javascript" , problemsSolved: 1, totalProblems: 10, percentage: 10, accent: "#F59E0B" },
+    { language: "java"       , problemsSolved: 0, totalProblems: 10, percentage: 0, accent: "#EF4444" },
+    { language: "c"          , problemsSolved: 0, totalProblems: 10, percentage: 0, accent: "#06B6D4" },
   ]);
-  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState(stats[0].language);
 
-  useEffect(() => {
-    // Only fetch if we have a current user
-    if (!currentUser?.id) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchActivityLogs = async () => {
-      try {
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
-        // Fetch only for the current candidate
-        const response = await fetch(`${API_BASE_URL}/activity-logs/candidate/${currentUser.id}`, {
-          cache: "no-store",
-        });
-        
-        if (!response.ok) throw new Error("Failed to fetch activity logs");
-        
-        const logs = await response.json();
-        
-        // Track solved problems per language (unique problems)
-        const languageMap: Record<string, Set<string>> = {
-          python: new Set(),
-          javascript: new Set(),
-          java: new Set(),
-          c: new Set(),
-        };
-
-        logs.forEach((log: any) => {
-          const lang = log.language?.toLowerCase();
-          // Only count problems that were fully passed
-          if (lang && languageMap[lang] && (log.allPassed || log.passed === log.totalTests)) {
-            languageMap[lang].add(log.problemId);
-          }
-        });
-
-        // Update stats
-        setStats((prevStats) =>
-          prevStats.map((stat) => {
-            const solvedProblems = languageMap[stat.language].size;
-            const percentage = Math.round((solvedProblems / stat.totalProblems) * 100);
-            return {
-              ...stat,
-              problemsSolved: solvedProblems,
-              percentage,
-            };
-          })
-        );
-      } catch (err) {
-        console.error("Error fetching activity logs:", err);
-        // Set default to 0
-        setStats((prevStats) =>
-          prevStats.map((stat) => ({
-            ...stat,
-            problemsSolved: 0,
-            percentage: 0,
-          }))
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchActivityLogs();
-  }, [currentUser?.id]);
+  const activeStat = stats.find(s => s.language === activeTab) || stats[0];
 
   return (
-    <section className="w-full max-w-5xl px-6 py-16">
-      <div className="flex items-center gap-2 mb-8 border-b border-neutral-800 pb-4">
-        <Code2 className="w-6 h-6 text-indigo-400" />
-        <h2 className="text-2xl font-bold text-white tracking-tight">Language Progress</h2>
-      </div>
+    <section className="w-full py-12 px-6 max-w-7xl mx-auto">
+      <div className="glass-morphism rounded-[2rem] overflow-hidden border border-border flex flex-col md:flex-row h-auto md:h-72 shadow-3d">
+        {/* Sidebar / Switcher */}
+        <div className="w-full md:w-64 border-b md:border-b-0 md:border-r border-border p-4 flex flex-row md:flex-col gap-2 overflow-x-auto no-scrollbar">
+          {stats.map((stat) => (
+            <button
+              key={stat.language}
+              onClick={() => setActiveTab(stat.language)}
+              className={`
+                flex items-center gap-3 px-4 py-3 rounded-xl transition-all whitespace-nowrap
+                ${activeTab === stat.language ? 'bg-foreground/10 text-foreground shadow-lg' : 'text-neutral-500 hover:text-foreground hover:bg-foreground/5'}
+              `}
+            >
+              <div className={`w-2 h-2 rounded-full`} style={{ backgroundColor: stat.accent }} />
+              <span className="text-sm font-bold capitalize">{stat.language}</span>
+              {stat.percentage > 0 && (
+                <span className="ml-auto text-[10px] font-mono bg-foreground/5 px-1.5 py-0.5 rounded text-neutral-400">
+                  {stat.percentage}%
+                </span>
+              )}
+            </button>
+          ))}
+          <div className="mt-auto hidden md:flex items-center gap-2 p-4 text-[10px] font-black text-neutral-600 uppercase tracking-widest border-t border-border">
+            <Activity className="w-3 h-3" />
+            <span>Select Track</span>
+          </div>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <div
-            key={stat.language}
-            className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 hover:border-indigo-500/50 transition-all duration-300"
-          >
-            {/* Language Header */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`p-2 bg-gradient-to-r ${stat.color} rounded-lg text-white`}>
-                {stat.icon}
-              </div>
-              <h3 className="text-lg font-semibold text-white capitalize">{stat.language}</h3>
-            </div>
-
-            {/* Stats */}
-            {loading ? (
-              <div className="space-y-3 animate-pulse">
-                <div className="h-2 bg-neutral-700 rounded-full"></div>
-                <div className="h-4 bg-neutral-700 rounded-full w-3/4"></div>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {/* Progress Bar */}
+        {/* Content Area */}
+        <div className="flex-1 p-8 relative overflow-hidden bg-gradient-to-br from-transparent to-foreground/[0.02]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="h-full flex flex-col justify-between relative z-10"
+            >
+              <div className="flex justify-between items-start">
                 <div>
-                  <div className="flex justify-between items-end mb-2">
-                    <span className="text-sm text-neutral-400">Completion</span>
-                    <span className={`text-sm font-bold ${
-                      stat.percentage >= 80 ? 'text-emerald-400' :
-                      stat.percentage >= 60 ? 'text-amber-400' :
-                      stat.percentage > 0 ? 'text-orange-400' :
-                      'text-neutral-500'
-                    }`}>
-                      {stat.percentage}%
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full bg-gradient-to-r ${stat.color} transition-all duration-500 rounded-full`}
-                      style={{ width: `${stat.percentage}%` }}
+                  <h3 className="text-4xl font-black text-foreground capitalize mb-1">{activeStat.language}</h3>
+                  <p className="text-xs text-neutral-500 font-medium tracking-tight">Technical Mastery Track</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-3xl font-mono font-black text-foreground">{activeStat.percentage}%</span>
+                  <p className="text-[10px] font-bold text-neutral-600 uppercase">Completed</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-6 border-y border-border my-4">
+                <MiniStat label="Solved" value={activeStat.problemsSolved} />
+                <MiniStat label="Remaining" value={activeStat.totalProblems - activeStat.problemsSolved} />
+                <MiniStat label="Accuracy" value="--" />
+                <MiniStat label="Rank" value="--" />
+              </div>
+
+              <div className="flex items-center justify-between gap-8">
+                <div className="flex-1">
+                  <div className="w-full h-1.5 bg-foreground/5 rounded-full overflow-hidden">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${activeStat.percentage}%` }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: activeStat.accent }}
                     />
                   </div>
                 </div>
-
-                {/* Stats Info */}
-                <div className="pt-2 border-t border-neutral-800">
-                  <div className="text-xs text-neutral-400 space-y-1">
-                    <p className="flex justify-between">
-                      <span>Solved:</span>
-                      <span className="text-emerald-400 font-semibold">{stat.problemsSolved}/{stat.totalProblems}</span>
-                    </p>
-                    <p className="flex justify-between text-xs">
-                      <span>Problems</span>
-                    </p>
-                  </div>
-                </div>
+                <Link 
+                  href={`/track/${activeStat.language}`}
+                  className="px-6 py-3 bg-foreground text-background text-xs font-black rounded-xl hover:opacity-90 transition-all active:scale-95 flex items-center gap-2 group whitespace-nowrap"
+                >
+                  Enter Arena
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </div>
-            )}
-          </div>
-        ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Background Decorative Element */}
+          <div 
+            className="absolute top-1/2 right-0 -translate-y-1/2 w-64 h-64 blur-[80px] opacity-10 rounded-full transition-colors duration-500"
+            style={{ backgroundColor: activeStat.accent }}
+          />
+        </div>
       </div>
     </section>
   );
 }
+
+function MiniStat({ label, value }: { label: string, value: string | number }) {
+  return (
+    <div>
+      <div className="text-sm font-bold text-foreground mb-0.5">{value}</div>
+      <div className="text-[10px] font-bold text-neutral-600 uppercase tracking-widest">{label}</div>
+    </div>
+  );
+}
+
+
+function StatItem({ label, value }: { label: string, value: string | number }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-2xl font-mono font-bold text-foreground">{value}</span>
+      <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{label}</span>
+    </div>
+  );
+}
+
+function LanguageSmallIcon({ language }: { language: string }) {
+  if (language === 'javascript') return <Terminal className="w-6 h-6 text-amber-500" />;
+  if (language === 'java') return <Brain className="w-6 h-6 text-rose-500" />;
+  if (language === 'c') return <Zap className="w-6 h-6 text-cyan-500" />;
+  return <Code2 className="w-6 h-6 text-indigo-500" />;
+}
+
+
+function LanguageIcon({ language, color }: { language: string, color: string }) {
+  // Simple icons mapping
+  if (language === 'python') return <Code2 className="w-8 h-8" style={{ color }} />;
+  if (language === 'javascript') return <Terminal className="w-8 h-8" style={{ color }} />;
+  if (language === 'java') return <Brain className="w-8 h-8" style={{ color }} />;
+  if (language === 'c') return <Zap className="w-8 h-8" style={{ color }} />;
+  return <Code2 className="w-8 h-8" />;
+}
+
+
+

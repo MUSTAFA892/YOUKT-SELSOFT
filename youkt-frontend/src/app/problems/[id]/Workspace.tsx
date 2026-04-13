@@ -7,8 +7,16 @@ import Timer from "@/components/Timer";
 import PerformanceFeedback from "@/components/PerformanceFeedback";
 import TimeoutFeedback from "@/components/TimeoutFeedback";
 import { type Problem, type SubmissionResult, submitCode, submitActivityLog, getNextProblem, fetchProblem } from "@/lib/api";
-import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Send } from "lucide-react";
+import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Send, ArrowLeft, Sun, Moon, ChevronRight, GripVertical, GripHorizontal } from "lucide-react";
+import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
+import { useTheme } from "next-themes";
+import { AccountSwitcher } from "@/components/AccountSwitcher";
+import {
+  Separator as ResizableHandle,
+  Panel as ResizablePanel,
+  Group as ResizablePanelGroup,
+} from "react-resizable-panels";
 
 
 interface ProblemWithSession extends Problem {
@@ -39,6 +47,11 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
   const [isLoadingNext, setIsLoadingNext] = useState(false);
   const [timeExpired, setTimeExpired] = useState(false);
   const [timerResetKey, setTimerResetKey] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   // Fetch problem with dynamic test cases and session
   useEffect(() => {
@@ -199,210 +212,291 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
   const displayTestCases = problem.testCasesPreview || problem.examples || [];
 
   return (
-    <>
-      <div className="flex h-[calc(100vh-3.5rem)] w-full overflow-hidden bg-neutral-950">
-        
-        {/* Left Pane: Problem Description */}
-        <div className="w-1/2 flex flex-col border-r border-neutral-800 bg-neutral-900/40">
-          <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-neutral-800">
-            <div className="flex items-center gap-3 mb-6">
-              <h1 className="text-2xl font-bold text-white">{problem.title}</h1>
-              <span className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${
-                problem.difficulty === 'Easy' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                problem.difficulty === 'Medium' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' :
-                'bg-rose-500/10 border-rose-500/20 text-rose-400'
-              }`}>
-                {problem.difficulty}
-              </span>
+    <div className="flex flex-col h-screen w-full bg-background overflow-hidden">
+      {/* Workspace Header */}
+      <header className="h-12 border-b border-border flex items-center justify-between px-4 bg-surface shrink-0 z-50 shadow-sm">
+        <div className="flex items-center gap-3">
+          <Link 
+            href="/" 
+            className="p-2 hover:bg-foreground/5 rounded-full transition-colors text-neutral-500 hover:text-foreground"
+            title="Go Home"
+            scroll={true}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div className="h-4 w-[1px] bg-border mx-1" />
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-primary text-white rounded flex items-center justify-center">
+              <Terminal className="w-4 h-4" />
             </div>
+            <span className="font-bold text-sm tracking-tight hidden sm:inline-block">
+              YOUKT <span className="text-neutral-500 font-medium">WORKSPACE</span>
+            </span>
+          </div>
+        </div>
 
-            <div className="prose prose-invert max-w-none text-neutral-300">
-              <div dangerouslySetInnerHTML={{ __html: problem.description.replace(/\n/g, "<br/>") }} />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            className="p-2 rounded-full hover:bg-foreground/5 transition-colors text-neutral-500 hover:text-foreground"
+            aria-label="Toggle theme"
+          >
+            {mounted && (resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+          </button>
+          <div className="h-4 w-[1px] bg-border" />
+          <AccountSwitcher />
+        </div>
+      </header>
+
+      <div className="flex-1 w-full overflow-hidden">
+        <ResizablePanelGroup orientation="horizontal">
+          {/* Left Pane: Problem Description */}
+          <ResizablePanel defaultSize={45} minSize={20}>
+            <div className="h-full overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-border bg-surface/30">
+              <div className="flex items-center gap-3 mb-6">
+                <h1 className="text-2xl font-bold text-foreground">{problem.title}</h1>
+                <span className={`px-2 py-0.5 text-xs font-semibold rounded-md border ${
+                  problem.difficulty === 'Easy' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
+                  problem.difficulty === 'Medium' ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' :
+                  'bg-rose-500/10 border-rose-500/20 text-rose-400'
+                }`}>
+                  {problem.difficulty}
+                </span>
+              </div>
+
+              <div className="prose dark:prose-invert max-w-none text-foreground/80">
+                <div dangerouslySetInnerHTML={{ __html: problem.description.replace(/\n/g, "<br/>") }} />
+              </div>
+
+              {/* Complexity Info */}
+              {(problem.expectedTimeComplexity || problem.expectedSpaceComplexity) && (
+                <div className="mt-6 p-4 bg-surface border border-border rounded-lg space-y-2">
+                  <p className="text-sm font-semibold text-foreground">Complexity</p>
+                  {problem.expectedTimeComplexity && (
+                    <p className="text-xs text-neutral-500">Time: <span className="text-primary font-mono">{problem.expectedTimeComplexity}</span></p>
+                  )}
+                  {problem.expectedSpaceComplexity && (
+                    <p className="text-xs text-neutral-500">Space: <span className="text-primary font-mono">{problem.expectedSpaceComplexity}</span></p>
+                  )}
+                </div>
+              )}
+
+              {/* Hints */}
+              {problem.hints && problem.hints.length > 0 && (
+                <div className="mt-6 p-4 bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/30 rounded-lg space-y-2">
+                  <p className="text-sm font-bold text-amber-700 dark:text-amber-300 flex items-center gap-2">
+                    <span>💡</span> Hints
+                  </p>
+                  <ul className="space-y-2">
+                    {problem.hints.map((hint, i) => (
+                      <li key={i} className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed font-medium">• {hint}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Dynamic test cases indicator */}
+              {problem.sessionId && (
+                <div className="mt-6 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                  <p className="text-xs text-primary-600 dark:text-primary-300 leading-relaxed">
+                    🔒 <strong className="font-bold">Dynamic Test Cases:</strong> These test examples are unique to your session. Additional hidden test cases will validate your solution.
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-8 space-y-6">
+                {displayTestCases.map((ex, i) => (
+                  <div key={i} className="bg-surface rounded-lg p-4 border border-border shadow-sm">
+                    <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3 block">
+                      {problem.testCasesPreview ? 'Example' : 'Test Case'} {i + 1}
+                    </span>
+                    <div className="space-y-2 text-sm font-mono bg-foreground/[0.03] p-3 rounded-md border border-border">
+                      <div><span className="text-neutral-500">Input:</span> <span className="text-primary font-bold">{ex.input}</span></div>
+                      <div><span className="text-neutral-500">Output:</span> <span className="text-emerald-600 font-bold">{ex.output || ex.expectedOutput}</span></div>
+                      {(ex.explanation || ex.description) && (
+                        <div className="mt-2 text-neutral-500 text-xs font-sans border-t border-border pt-2 break-words leading-relaxed">
+                          {ex.explanation || ex.description}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+          </ResizablePanel>
 
-            {/* Complexity Info */}
-            {(problem.expectedTimeComplexity || problem.expectedSpaceComplexity) && (
-              <div className="mt-6 p-4 bg-neutral-800/50 rounded-lg space-y-2">
-                <p className="text-sm font-semibold text-neutral-300">Complexity</p>
-                {problem.expectedTimeComplexity && (
-                  <p className="text-xs text-neutral-400">Time: <span className="text-indigo-300 font-mono">{problem.expectedTimeComplexity}</span></p>
-                )}
-                {problem.expectedSpaceComplexity && (
-                  <p className="text-xs text-neutral-400">Space: <span className="text-indigo-300 font-mono">{problem.expectedSpaceComplexity}</span></p>
-                )}
-              </div>
-            )}
+          <ResizableHandle className="w-[3px] bg-border hover:bg-primary/40 transition-colors relative z-10 group">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-8 bg-surface border border-border rounded-full flex items-center justify-center shadow-sm group-hover:border-primary/50 transition-colors">
+              <GripVertical className="w-2.5 h-2.5 text-neutral-500" />
+            </div>
+          </ResizableHandle>
 
-            {/* Hints */}
-            {problem.hints && problem.hints.length > 0 && (
-              <div className="mt-6 p-4 bg-amber-500/5 border border-amber-500/20 rounded-lg space-y-2">
-                <p className="text-sm font-semibold text-amber-300">💡 Hints</p>
-                <ul className="space-y-1">
-                  {problem.hints.map((hint, i) => (
-                    <li key={i} className="text-xs text-amber-200">• {hint}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+          <ResizablePanel defaultSize={55} minSize={30}>
+            <ResizablePanelGroup orientation="vertical">
+              {/* Top Section: Editor */}
+              <ResizablePanel defaultSize={65} minSize={30}>
+                <div className="h-full flex flex-col bg-background">
+                  {/* Editor Toolbar */}
+                  <div className="flex items-center justify-between px-4 h-12 border-b border-border shrink-0 bg-surface gap-4">
+                    <div className="relative">
+                      <button 
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-2 bg-background text-xs font-bold text-foreground border border-border rounded-lg pl-3 pr-2 py-1.5 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-foreground/[0.02] min-w-[120px] justify-between shadow-sm"
+                      >
+                        <span className="capitalize">{language}</span>
+                        <ChevronRight className={`w-3 h-3 transition-transform duration-200 ${isDropdownOpen ? 'rotate-[-90deg]' : 'rotate-90'}`} />
+                      </button>
 
-            {/* Dynamic test cases indicator */}
-            {problem.sessionId && (
-              <div className="mt-6 p-3 bg-indigo-500/5 border border-indigo-500/20 rounded-lg">
-                <p className="text-xs text-indigo-300">
-                  🔒 <strong>Dynamic Test Cases:</strong> These test examples are unique to your session. Additional hidden test cases will validate your solution.
-                </p>
-              </div>
-            )}
+                      {isDropdownOpen && (
+                        <>
+                          <div 
+                            className="fixed inset-0 z-40" 
+                            onClick={() => setIsDropdownOpen(false)} 
+                          />
+                          <div className="absolute top-full left-0 mt-1 w-full bg-surface border border-border rounded-lg shadow-3d overflow-hidden z-50 py-1 animate-in fade-in zoom-in-95 duration-100 origin-top">
+                            {["javascript", "python", "java", "c"].map((lang) => (
+                              <button
+                                key={lang}
+                                onClick={() => {
+                                  setLanguage(lang as any);
+                                  setCode(problem.starterCode[lang as keyof typeof problem.starterCode]);
+                                  setIsDropdownOpen(false);
+                                }}
+                                className={`w-full text-left px-3 py-2 text-xs font-semibold capitalize transition-colors flex items-center justify-between ${
+                                  language === lang ? 'bg-primary text-white' : 'hover:bg-foreground/5 text-foreground'
+                                }`}
+                              >
+                                {lang}
+                                {language === lang && <CheckCircle2 className="w-3 h-3" />}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
 
-            <div className="mt-8 space-y-6">
-              {displayTestCases.map((ex, i) => (
-                <div key={i} className="bg-neutral-900 rounded-lg p-4 border border-neutral-800">
-                  <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3 block">
-                    {problem.testCasesPreview ? 'Example' : 'Test Case'} {i + 1}
-                  </span>
-                  <div className="space-y-2 text-sm font-mono bg-black/40 p-3 rounded-md">
-                    <div><span className="text-neutral-500">Input:</span> <span className="text-indigo-300">{ex.input}</span></div>
-                    <div><span className="text-neutral-500">Output:</span> <span className="text-emerald-300">{ex.output || ex.expectedOutput}</span></div>
-                    {(ex.explanation || ex.description) && (
-                      <div className="mt-2 text-neutral-400 text-xs font-sans border-t border-neutral-800 pt-2 break-words">
-                        {ex.explanation || ex.description}
+                    {problem.timeLimit && (
+                      <Timer 
+                        key={timerResetKey}
+                        timeLimit={problem.timeLimit} 
+                        isActive={isTimerActive}
+                        onTimeout={handleTimeoutWarning}
+                      />
+                    )}
+                    
+                    <button 
+                      onClick={runCode}
+                      disabled={isSubmitting || loading || (timeExpired && result !== null)}
+                      className="flex items-center gap-2 bg-primary hover:brightness-110 disabled:opacity-50 text-white text-sm font-semibold px-4 py-1.5 rounded-md transition-all active:scale-95 shadow-lg shadow-primary/20"
+                    >
+                      {isSubmitting || loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+                      {loading ? "Loading..." : timeExpired && result !== null ? "Submitted" : "Run Code"}
+                    </button>
+                  </div>
+
+                  {/* Monaco Editor */}
+                  <div className="flex-1 relative overflow-hidden bg-[#1e1e1e]">
+                    {timeExpired && (
+                      <div className="absolute top-0 left-0 right-0 z-50 bg-rose-500/10 border-b border-rose-500/30 px-4 py-3 flex items-center gap-2 text-rose-600 dark:text-rose-300 backdrop-blur-md">
+                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                        <span className="font-bold uppercase tracking-tight">Time's up!</span>
+                        <span className="text-xs font-medium opacity-90">The editor is now read-only. Your work will be auto-submitted.</span>
+                      </div>
+                    )}
+                    <Editor
+                      height="100%"
+                      language={language}
+                      theme={resolvedTheme === "dark" ? "vs-dark" : "light"}
+                      value={code}
+                      onChange={(val) => !timeExpired && setCode(val || "")}
+                      options={{
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        fontFamily: "var(--font-geist-mono), monospace",
+                        padding: { top: 16 },
+                        scrollBeyondLastLine: false,
+                        roundedSelection: false,
+                        readOnly: timeExpired,
+                      }}
+                    />
+                  </div>
+                </div>
+              </ResizablePanel>
+
+              <ResizableHandle className="h-[3px] bg-border hover:bg-primary/40 transition-colors relative z-10 group">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-4 bg-surface border border-border rounded-full flex items-center justify-center shadow-sm group-hover:border-primary/50 transition-colors">
+                  <GripHorizontal className="w-2.5 h-2.5 text-neutral-500" />
+                </div>
+              </ResizableHandle>
+
+              {/* Bottom Section: Console */}
+              <ResizablePanel defaultSize={35} minSize={10}>
+                <div className="h-full flex flex-col bg-background">
+                  <div className="px-4 h-10 flex items-center border-b border-border shrink-0 bg-surface">
+                    <div className="flex items-center gap-2 text-neutral-400 text-sm font-medium">
+                      <Terminal className="w-4 h-4" />
+                      <span>Console</span>
+                    </div>
+                    {result && (
+                      <div className="ml-auto flex items-center gap-2 text-xs font-semibold">
+                        {result.allPassed ? (
+                          <span className="text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> Accepted</span>
+                        ) : (
+                          <span className="text-rose-400 flex items-center gap-1"><XCircle className="w-4 h-4"/> Rejected</span>
+                        )}
+                        <span className="text-neutral-500 ml-2">({result.passed}/{result.totalTests} passed)</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto p-4 font-mono text-sm bg-background">
+                    {!result && !isSubmitting && (
+                      <div className="text-neutral-600 italic">Run your code to see the output...</div>
+                    )}
+                    
+                    {isSubmitting && (
+                      <div className="text-indigo-400 flex items-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin" /> Executing your code...
+                      </div>
+                    )}
+
+                    {result && (
+                      <div className="space-y-4">
+                        {result.results.map((tr, i) => (
+                          <div key={i} className={`p-3 rounded border ${
+                            tr.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-200' :
+                            tr.status === 'timeout' ? 'bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-200' :
+                            'bg-rose-500/5 border-rose-500/20 text-rose-600 dark:text-rose-200'
+                          }`}>
+                            <div className="flex items-center gap-2 mb-2 font-bold tracking-wide text-xs uppercase">
+                              {tr.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+                              {tr.status === 'fail' && <XCircle className="w-4 h-4 text-rose-400" />}
+                              {(tr.status === 'error' || tr.status === 'timeout') && <AlertCircle className="w-4 h-4 text-rose-400" />}
+                              Test Case {tr.testCase}: {tr.status}
+                            </div>
+                            
+                            {tr.errorMessage ? (
+                              <div className="bg-black/5 dark:bg-black/50 p-2 rounded text-rose-500 whitespace-pre-wrap">{tr.errorMessage}</div>
+                            ) : (
+                              <div className="grid grid-cols-2 gap-4 text-xs opacity-80">
+                                <div><div className="font-semibold mb-1 opacity-50">Input:</div><div className="bg-foreground/5 p-1.5 rounded">{tr.input}</div></div>
+                                <div><div className="font-semibold mb-1 opacity-50">Expected:</div><div className="bg-foreground/5 p-1.5 rounded text-emerald-600 font-bold">{tr.expectedOutput}</div></div>
+                                <div className="col-span-2"><div className="font-semibold mb-1 opacity-50">Your Output:</div><div className={`bg-foreground/5 p-1.5 rounded font-bold ${tr.status === 'pass' ? 'text-emerald-600' : 'text-rose-600'}`}>{tr.actualOutput || '""'}</div></div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Pane: Editor & Console */}
-        <div className="w-1/2 flex flex-col h-full bg-neutral-950">
-          
-          {/* Editor Toolbar */}
-          <div className="flex items-center justify-between px-4 h-12 border-b border-neutral-800 shrink-0 bg-neutral-900/60 gap-3">
-            <select 
-              value={language}
-              onChange={handleLanguageChange}
-              className="bg-neutral-800 text-sm text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-medium"
-            >
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-              <option value="java">Java</option>
-              <option value="c">C</option>
-            </select>
-
-            {/* Timer */}
-            {problem.timeLimit && (
-              <Timer 
-                key={timerResetKey}
-                timeLimit={problem.timeLimit} 
-                isActive={isTimerActive}
-                onTimeout={handleTimeoutWarning}
-              />
-            )}
-            
-            <button 
-              onClick={runCode}
-              disabled={isSubmitting || loading || (timeExpired && result !== null)}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 text-white text-sm font-semibold px-4 py-1.5 rounded-md transition-all active:scale-95"
-            >
-              {isSubmitting || loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
-              {loading ? "Loading..." : timeExpired && result !== null ? "Submitted" : "Run Code"}
-            </button>
-          </div>
-
-          {/* Monaco Editor */}
-          <div className="flex-1 relative overflow-hidden bg-[#1e1e1e]">
-            {timeExpired && (
-              <div className="absolute top-0 left-0 right-0 z-50 bg-rose-500/10 border-b border-rose-500/30 px-4 py-3 flex items-center gap-2 text-rose-300">
-                <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                <span className="font-semibold">Time's up!</span>
-                <span className="text-sm opacity-90">The editor is now read-only. Your work will be auto-submitted.</span>
-              </div>
-            )}
-            <Editor
-              height="100%"
-              language={language}
-              theme="vs-dark"
-              value={code}
-              onChange={(val) => !timeExpired && setCode(val || "")}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                fontFamily: "var(--font-geist-mono), monospace",
-                padding: { top: 16 },
-                scrollBeyondLastLine: false,
-                roundedSelection: false,
-                readOnly: timeExpired, // Disable editing when time expires
-              }}
-            />
-          </div>
-
-          {/* Terminal/Console Output */}
-          <div className="h-64 shrink-0 flex flex-col border-t border-neutral-800 bg-neutral-900">
-            <div className="px-4 h-10 flex items-center border-b border-neutral-800 shrink-0 bg-neutral-950">
-              <div className="flex items-center gap-2 text-neutral-400 text-sm font-medium">
-                <Terminal className="w-4 h-4" />
-                Console
-              </div>
-              {result && (
-                <div className="ml-auto flex items-center gap-2 text-xs font-semibold">
-                  {result.allPassed ? (
-                    <span className="text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> Accepted</span>
-                  ) : (
-                    <span className="text-rose-400 flex items-center gap-1"><XCircle className="w-4 h-4"/> Rejected</span>
-                  )}
-                  <span className="text-neutral-500 ml-2">({result.passed}/{result.totalTests} passed)</span>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-4 font-mono text-sm bg-[#0a0a0a]">
-              {!result && !isSubmitting && (
-                <div className="text-neutral-600 italic">Run your code to see the output...</div>
-              )}
-              
-              {isSubmitting && (
-                <div className="text-indigo-400 flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" /> Executing your code...
-                </div>
-              )}
-
-              {result && (
-                <div className="space-y-4">
-                  {result.results.map((tr, i) => (
-                    <div key={i} className={`p-3 rounded border ${
-                      tr.status === 'pass' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-200' :
-                      tr.status === 'timeout' ? 'bg-amber-500/5 border-amber-500/20 text-amber-200' :
-                      'bg-rose-500/5 border-rose-500/20 text-rose-200'
-                    }`}>
-                      <div className="flex items-center gap-2 mb-2 font-bold tracking-wide text-xs uppercase">
-                        {tr.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-                        {tr.status === 'fail' && <XCircle className="w-4 h-4 text-rose-400" />}
-                        {(tr.status === 'error' || tr.status === 'timeout') && <AlertCircle className="w-4 h-4 text-rose-400" />}
-                        Test Case {tr.testCase}: {tr.status}
-                      </div>
-                      
-                      {tr.errorMessage ? (
-                        <div className="bg-black/50 p-2 rounded text-rose-400 whitespace-pre-wrap">{tr.errorMessage}</div>
-                      ) : (
-                        <div className="grid grid-cols-2 gap-4 text-xs opacity-80">
-                          <div><div className="font-semibold mb-1 opacity-50">Input:</div><div className="bg-black/30 p-1.5 rounded">{tr.input}</div></div>
-                          <div><div className="font-semibold mb-1 opacity-50">Expected:</div><div className="bg-black/30 p-1.5 rounded text-emerald-300">{tr.expectedOutput}</div></div>
-                          <div className="col-span-2"><div className="font-semibold mb-1 opacity-50">Your Output:</div><div className={`bg-black/30 p-1.5 rounded ${tr.status === 'pass' ? 'text-emerald-300' : 'text-rose-300'}`}>{tr.actualOutput || '""'}</div></div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-        </div>
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
 
-      {/* Performance Feedback Modal */}
+      {/* Modals outside resizable area */}
       {showFeedback && result && (
         <PerformanceFeedback
           currentProblem={problem}
@@ -418,7 +512,6 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
         />
       )}
 
-      {/* Timeout Feedback Modal */}
       {showTimeoutFeedback && (
         <TimeoutFeedback
           currentProblem={problem}
@@ -430,7 +523,6 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
           isFirstProblem={problem.difficulty === 'Easy' && problem.id === '1'}
         />
       )}
-
-    </>
+    </div>
   );
 }
