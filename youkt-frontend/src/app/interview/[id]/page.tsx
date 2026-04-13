@@ -9,7 +9,7 @@ import TabSwitchWarning from "@/components/TabSwitchWarning";
 import { useLockdownDetector } from "@/hooks/useLockdownDetector";
 import AiHelpCenter from "@/components/AiHelpCenter";
 import Link from "next/link";
-
+import Navbar from "@/components/landing/Navbar";
 
 type Lang = "python" | "javascript" | "java" | "c";
 
@@ -475,10 +475,13 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
   }
 
   if (error || !interview) {
-    return <div className="flex flex-col h-[calc(100vh-3.5rem)] items-center justify-center bg-neutral-950 text-rose-400 font-semibold gap-4">
-      <AlertCircle className="w-12 h-12" />
-      {error}
-      <Link href="/interviews" className="text-white bg-neutral-800 hover:bg-neutral-700 px-4 py-2 rounded">Return Home</Link>
+    return <div className="flex flex-col min-h-screen items-center justify-center bg-background text-rose-400 font-bold gap-4">
+      <Navbar />
+      <div className="pt-24 flex flex-col items-center gap-4 bg-surface/50 p-12 rounded-3xl border border-border">
+        <AlertCircle className="w-12 h-12" />
+        {error}
+        <Link href="/interviews" className="text-primary-foreground bg-primary hover:bg-primary/90 shadow-lg px-6 py-2 rounded-xl transition-all">Return Home</Link>
+      </div>
     </div>;
   }
 
@@ -556,26 +559,30 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
   const LANG_LABELS: Record<Lang, string> = { python: "Python", javascript: "JavaScript", java: "Java", c: "C" };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)] w-full overflow-hidden bg-neutral-950">
+    <div className="flex flex-col h-screen w-full bg-background overflow-hidden relative">
+      <Navbar />
       
-      {/* Assessment Header */}
-      <div className="h-14 bg-neutral-900 border-b border-neutral-800 flex items-center justify-between px-6 shrink-0 shadow-lg relative z-10">
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-black text-indigo-400 tracking-tighter italic">YOUKT<span className="text-white"> CTP</span></span>
-          <div className="h-6 w-[1px] bg-neutral-800" />
-          <span className="text-xs bg-neutral-800 border border-neutral-700 text-neutral-300 px-2 py-1 rounded flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <div className="flex flex-col leading-tight">
-              <span className="font-bold">{interview.candidateName}</span>
-              <span className="text-[9px] text-neutral-500 font-mono">{interview.candidateId}</span>
-            </div>
-          </span>
-          <span className="text-xs bg-indigo-500/10 text-indigo-300 px-2 py-1 rounded font-medium border border-indigo-500/20">Question {questionIndex + 1} / {interview.questions.length}</span>
-        </div>
+      <div className="flex-1 flex flex-col overflow-hidden pt-24 pb-6 px-6 gap-6 w-full max-w-[1600px] mx-auto">
 
-        <div className="flex items-center gap-8">
+        {/* Assessment Header */}
+        <div className="h-16 bg-surface/50 border border-border rounded-2xl flex items-center justify-between px-6 shrink-0 shadow-3d backdrop-blur-sm relative z-10 w-full overflow-hidden">
+          <div className="absolute inset-0 bg-primary/5 opacity-50" />
+          <div className="flex items-center gap-4 relative z-10">
+            <span className="text-sm font-black text-primary tracking-tighter italic">YOUKT<span className="text-foreground"> CTP</span></span>
+            <div className="h-6 w-[1px] bg-border" />
+            <span className="text-xs bg-surface/80 border border-border text-foreground px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+              <div className="flex flex-col leading-tight">
+                <span className="font-bold">{interview.candidateName}</span>
+                <span className="text-[9px] text-neutral-500 font-mono tracking-widest">{interview.candidateId}</span>
+              </div>
+            </span>
+            <span className="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-bold border border-primary/20">Question {questionIndex + 1} / {interview.questions.length}</span>
+          </div>
+
+        <div className="flex items-center gap-8 relative z-10">
           {/* Timer Tool */}
-          <div className={`flex items-center gap-2 font-mono text-lg font-bold tabular-nums transition-colors ${
+          <div className={`flex items-center gap-2 font-mono text-xl font-bold tabular-nums transition-colors tracking-tight ${
             timeLeft < 30 ? 'text-rose-500 animate-pulse' : 
             timeLeft < 60 ? 'text-amber-500' : 'text-emerald-400'
           }`}>
@@ -589,7 +596,7 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
             <button
               onClick={clearAssessment}
               disabled={isTimedOut}
-              className="flex items-center gap-1.5 text-neutral-500 hover:text-rose-400 hover:bg-rose-500/10 border border-neutral-800 hover:border-rose-500/30 px-3 py-1.5 rounded text-xs font-semibold transition-colors disabled:opacity-30"
+              className="flex items-center gap-1.5 text-neutral-500 hover:text-rose-400 bg-surface/50 hover:bg-rose-500/10 border border-border hover:border-rose-500/30 px-4 py-2 rounded-lg text-xs font-bold transition-colors disabled:opacity-30"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Reset Code
             </button>
@@ -597,35 +604,35 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden gap-6">
         {/* Left Pane: Tabbed Challenge Info */}
-        <div className="w-[40%] flex flex-col border-r border-neutral-800 bg-[#0a0a0a] divide-y divide-neutral-800">
+        <div className="w-[40%] flex flex-col bg-surface/30 border border-border backdrop-blur-sm rounded-3xl shadow-3d overflow-hidden divide-y divide-border">
           
           {/* Question List Navigator */}
-          <div className="px-4 py-3 bg-neutral-900/80 border-b border-neutral-800 shrink-0">
-            <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-2">All Questions</p>
+          <div className="px-6 py-4 bg-background/50 border-b border-border shrink-0">
+            <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-3">All Questions</p>
             <div className="flex flex-wrap gap-2">
               {interview?.questions.map((q, idx) => (
                 <button
                   key={idx}
                   onClick={() => jumpToQuestion(idx)}
-                  className={`w-8 h-8 rounded text-xs font-bold flex items-center justify-center transition-all ${
+                  className={`w-10 h-10 rounded-xl text-xs font-bold flex items-center justify-center transition-all ${
                     questionIndex === idx
-                      ? 'bg-indigo-600 text-white border border-indigo-500'
+                      ? 'bg-primary text-primary-foreground border border-primary shadow-lg shadow-primary/20 scale-105'
                       : submittedMap[idx]
-                      ? 'bg-emerald-600/30 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-600/50'
-                      : 'bg-neutral-800 text-neutral-300 border border-neutral-700 hover:bg-neutral-700'
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20'
+                      : 'bg-surface/50 text-neutral-400 border border-border hover:bg-surface hover:text-foreground'
                   }`}
                   title={submittedMap[idx] ? 'Completed' : 'Not completed'}
                 >
-                  {submittedMap[idx] ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
+                  {submittedMap[idx] ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                 </button>
               ))}
             </div>
           </div>
           
           {/* Tab Headers */}
-          <div className="flex shrink-0 bg-neutral-900/50">
+          <div className="flex shrink-0 bg-background/30">
             {[
               { id: 'description', label: 'Description', icon: Info },
               { id: 'examples', label: 'Examples', icon: BookOpen },
@@ -634,10 +641,10 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 py-3 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 border-b-2 transition-all ${
+                className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 border-b-2 transition-all ${
                   activeTab === tab.id 
-                    ? 'border-indigo-500 text-white bg-indigo-500/5' 
-                    : 'border-transparent text-neutral-500 hover:text-neutral-300 hover:bg-white/5'
+                    ? 'border-primary text-primary bg-primary/5' 
+                    : 'border-transparent text-neutral-500 hover:text-foreground hover:bg-surface'
                 }`}
               >
                 <tab.icon className="w-3.5 h-3.5" />
@@ -646,20 +653,20 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
             ))}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-neutral-800">
+          <div className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-surface">
             {activeTab === 'description' && (
               <div className="space-y-6">
                 <div>
-                  <h1 className="text-xl font-bold text-white mb-2">{currentQ.title}</h1>
+                  <h1 className="text-2xl font-bold text-foreground mb-3">{currentQ.title}</h1>
                   <div className="flex gap-2">
-                    <span className={`text-[10px] uppercase font-black px-2 py-0.5 rounded border ${
-                      currentQ.difficulty === 'Easy' ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/5' :
-                      currentQ.difficulty === 'Medium' ? 'border-amber-500/30 text-amber-500 bg-amber-500/5' :
-                      'border-rose-500/30 text-rose-500 bg-rose-500/5'
+                    <span className={`text-[10px] uppercase font-black px-3 py-1 rounded-lg border ${
+                      currentQ.difficulty === 'Easy' ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/10' :
+                      currentQ.difficulty === 'Medium' ? 'border-amber-500/30 text-amber-500 bg-amber-500/10' :
+                      'border-rose-500/30 text-rose-500 bg-rose-500/10'
                     }`}>
                       {currentQ.difficulty}
                     </span>
-                    <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded border border-neutral-800 text-neutral-500">
+                    <span className="text-[10px] uppercase font-black px-3 py-1 rounded-lg border border-border text-neutral-400 bg-surface/50">
                       Score: 100
                     </span>
                   </div>
@@ -669,16 +676,16 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
                   {currentQ.description}
                 </div>
 
-                <div className="space-y-4 pt-4">
+                <div className="space-y-4 pt-6 border-t border-border">
                   <div>
-                    <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-2">Input Format</h3>
-                    <div className="bg-neutral-900/50 p-3 rounded border border-neutral-800 text-neutral-400 text-xs italic">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Input Format</h3>
+                    <div className="bg-background/50 p-4 xl:p-6 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
                       {currentQ.inputFormat}
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-2">Output Format</h3>
-                    <div className="bg-neutral-900/50 p-3 rounded border border-neutral-800 text-neutral-400 text-xs italic">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Output Format</h3>
+                    <div className="bg-background/50 p-4 xl:p-6 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
                       {currentQ.outputFormat}
                     </div>
                   </div>
@@ -687,26 +694,26 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
             )}
 
             {activeTab === 'examples' && (
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {currentQ.examples?.map((ex, i) => (
-                  <div key={i} className="space-y-3">
+                  <div key={i} className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="h-4 w-[2px] bg-indigo-500" />
-                      <h3 className="text-xs font-bold text-white uppercase tracking-widest">Example {i + 1}</h3>
+                      <div className="h-4 w-[3px] bg-primary rounded-full shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
+                      <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">Example {i + 1}</h3>
                     </div>
-                    <div className="space-y-2 bg-neutral-900 rounded-lg border border-neutral-800 p-4">
+                    <div className="space-y-3 bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
                       <div>
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Input</span>
-                        <code className="text-indigo-300 text-xs font-mono">{ex.input}</code>
+                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</span>
+                        <code className="text-primary text-sm font-mono bg-surface p-2 rounded-lg block">{ex.input}</code>
                       </div>
                       <div>
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Output</span>
-                        <code className="text-emerald-300 text-xs font-mono">{ex.output}</code>
+                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Output</span>
+                        <code className="text-emerald-400 text-sm font-mono bg-surface p-2 rounded-lg block">{ex.output}</code>
                       </div>
                       {ex.explanation && (
-                        <div className="pt-2 border-t border-neutral-800">
+                        <div className="pt-3 mt-1 border-t border-border">
                           <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Explanation</span>
-                          <p className="text-neutral-400 text-[11px] leading-relaxed italic">{ex.explanation}</p>
+                          <p className="text-neutral-400 text-xs leading-relaxed italic">{ex.explanation}</p>
                         </div>
                       )}
                     </div>
@@ -716,22 +723,22 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
             )}
 
             {activeTab === 'testcases' && (
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {currentQ.testCases?.map((tc, idx) => (
-                  <div key={idx} className="bg-neutral-900 rounded-lg border border-neutral-800 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest">Test Case {idx + 1}</span>
+                  <div key={idx} className="bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
+                    <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
+                      <span className="text-xs font-black text-neutral-400 uppercase tracking-widest">Test Case {idx + 1}</span>
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div>
-                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Input</label>
-                        <div className="bg-black/30 border border-neutral-800 rounded p-2 text-indigo-300 text-[11px] font-mono whitespace-pre-wrap">
+                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</label>
+                        <div className="bg-surface border border-border rounded-lg p-3 text-primary text-xs font-mono whitespace-pre-wrap">
                           {tc.input}
                         </div>
                       </div>
                       <div>
-                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Expected Output</label>
-                        <div className="bg-black/30 border border-neutral-800 rounded p-2 text-emerald-300 text-[11px] font-mono whitespace-pre-wrap">
+                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Expected Output</label>
+                        <div className="bg-surface border border-border rounded-lg p-3 text-emerald-400 text-xs font-mono whitespace-pre-wrap">
                           {tc.expectedOutput}
                         </div>
                       </div>
@@ -744,16 +751,16 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
         </div>
 
         {/* Right Pane: Code + Console */}
-        <div className="flex-1 flex flex-col bg-neutral-950 relative">
+        <div className="flex-1 flex flex-col bg-surface/30 border border-border backdrop-blur-sm rounded-3xl shadow-3d overflow-hidden relative">
           
           {/* Editor Toolbar with unified actions */}
-          <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-800 bg-neutral-900/60 shadow-sm shrink-0">
+          <div className="flex items-center justify-between px-6 h-16 border-b border-border bg-background/30 shadow-sm shrink-0">
             <div className="flex items-center gap-3">
               <select 
                 value={language}
                 onChange={(e) => handleLanguageChange(e.target.value as Lang)}
                 disabled={isTimedOut}
-                className="bg-neutral-800 text-xs text-neutral-200 border border-neutral-700 rounded px-3 py-1.5 outline-none focus:border-indigo-500 font-bold uppercase tracking-wider disabled:opacity-50"
+                className="bg-surface text-sm text-foreground border border-border rounded-lg px-4 py-2 outline-none focus:border-primary font-bold appearance-none cursor-pointer disabled:opacity-50"
               >
                 {availableLangs.map(lang => (
                   <option key={lang} value={lang}>{LANG_LABELS[lang]}</option>
@@ -766,7 +773,7 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
               <button 
                 onClick={runCode}
                 disabled={isSubmitting || isTimedOut}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:bg-neutral-800 disabled:text-neutral-500 text-white text-xs font-bold uppercase px-3 py-2 rounded transition-all active:scale-95"
+                className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:bg-surface disabled:text-neutral-500 text-primary-foreground text-sm font-bold uppercase px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-lg shadow-primary/20 hover:shadow-primary/40 tracking-wider"
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
                 Run
@@ -776,53 +783,53 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
               {submittedMap[questionIndex] ? (
                 <button 
                   disabled
-                  className="flex items-center gap-2 bg-emerald-600 text-white text-xs font-bold uppercase px-3 py-2 rounded"
+                  className="flex items-center gap-2 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-xs font-bold uppercase px-4 py-2.5 rounded-xl tracking-wider"
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  Question Completed
+                  Completed
                 </button>
               ) : (
-                <div className="flex items-center gap-2 text-neutral-500 text-xs font-bold uppercase px-3 py-2 rounded bg-neutral-800/50 border border-neutral-700">
+                <div className="flex items-center gap-2 text-amber-500/80 text-xs font-bold uppercase px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 tracking-wider">
                   <Info className="w-4 h-4" />
-                  All Tests Needed
+                  Needs Passing
                 </div>
               )}
 
-              <div className="w-[1px] h-6 bg-neutral-800 mx-1" />
+              <div className="w-[1px] h-8 bg-border mx-2" />
 
               {/* PREVIOUS BUTTON */}
               <button 
                 onClick={goToPreviousQuestion}
                 disabled={questionIndex === 0}
-                className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:opacity-30 text-white text-xs font-bold uppercase px-3 py-2 rounded border border-neutral-700 transition-all"
+                className="flex items-center gap-2 bg-surface hover:bg-surface/80 disabled:opacity-30 text-foreground text-xs font-bold uppercase px-4 py-2.5 rounded-xl border border-border transition-all tracking-wider"
               >
                 <ChevronLeft className="w-4 h-4" />
                 Prev
               </button>
 
-              {/* NEXT BUTTON */}
-              <button 
-                onClick={goToNextQuestion}
-                disabled={interview ? questionIndex >= interview.questions.length - 1 : true}
-                className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:opacity-30 text-white text-xs font-bold uppercase px-3 py-2 rounded border border-neutral-700 transition-all"
-              >
-                Next
-                <ChevronRight className="w-4 h-4" />
-              </button>
-
-              {/* FINAL SUBMIT BUTTON */}
-              <div className="w-[1px] h-6 bg-neutral-800 mx-1" />
-              <button 
-                onClick={finishAssessment}
-                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold uppercase px-4 py-2 rounded transition-all"
-              >
-                <Send className="w-4 h-4" />
-                Finish & Submit
-              </button>
+              {/* NEXT / SUBMIT BUTTON */}
+              {questionIndex === interview.questions.length - 1 ? (
+                <button 
+                  onClick={finishAssessment}
+                  className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 tracking-wider"
+                >
+                  <Send className="w-4 h-4" />
+                  Finish Complete Assignment
+                </button>
+              ) : (
+                <button 
+                  onClick={goToNextQuestion}
+                  className="flex items-center gap-2 bg-surface hover:bg-surface/80 text-foreground text-xs font-bold uppercase px-4 py-2.5 rounded-xl border border-border transition-all tracking-wider group"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="flex-1 relative">
+          {/* Monaco Editor */}
+          <div className="flex-1 relative overflow-hidden bg-background">
             <Editor
               language={language}
               theme="vs-dark"
@@ -858,33 +865,50 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
           </div>
 
           {/* Console / Results Pane */}
-          <div className="h-64 border-t border-neutral-800 bg-[#0d0d0d] flex flex-col shrink-0">
-            <div className="flex items-center px-4 h-10 border-b border-neutral-800 bg-neutral-900/40 shrink-0">
-              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider flex items-center gap-2">
-                <Terminal className="w-4 h-4" /> Evaluation Results
+          <div className="h-72 border-t border-border bg-background/50 flex flex-col shrink-0 relative">
+            <div className="px-6 h-12 flex items-center justify-between border-b border-border bg-background shrink-0 z-10 w-full">
+              <span className="text-xs font-bold text-neutral-400 uppercase tracking-widest flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-primary" /> Evaluation Results
               </span>
+              
+              <div className="flex gap-2">
+                 <button 
+                  onClick={handleSubmitQuestion}
+                  disabled={!result || !result.allPassed || submittedMap[questionIndex] || isTimedOut}
+                  className={`flex items-center gap-2 text-xs font-bold uppercase px-4 py-1.5 rounded-lg transition-all ${
+                    !result?.allPassed 
+                      ? 'bg-surface text-neutral-500 border border-border'
+                      : submittedMap[questionIndex]
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                      : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-[0_0_15px_rgba(52,211,153,0.3)] border border-emerald-400 animate-pulse'
+                  }`}
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  {submittedMap[questionIndex] ? 'Submitted' : 'Submit Code'}
+                </button>
+              </div>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-neutral-800">
+            <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-surface bg-background/30">
               {!result ? (
-                <div className="flex items-center justify-center h-full text-neutral-600 text-sm italic font-medium">Click "Submit Code" to evaluate your solution.</div>
+                <div className="flex items-center justify-center h-full text-neutral-500 text-sm italic font-medium">Click "Run" to evaluate your solution.</div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {/* Summary Bar */}
-                  <div className="flex items-center gap-3 mb-4 pb-4 border-b border-neutral-800">
+                  <div className="flex items-center gap-3 mb-6 pb-6 border-b border-border">
                     {result.allPassed ? (
-                      <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full font-bold text-sm">
-                        <CheckCircle2 className="w-4 h-4" /> All {result.totalTests} test cases passed!
+                      <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20 font-bold text-sm shadow-inner">
+                        <CheckCircle2 className="w-5 h-5" /> All {result.totalTests} test cases passed!
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-full font-bold text-sm">
-                        <XCircle className="w-4 h-4" /> {result.passed}/{result.totalTests} test cases passed
+                      <div className="flex items-center gap-2 text-rose-400 bg-rose-500/10 px-4 py-2 rounded-xl border border-rose-500/20 font-bold text-sm shadow-inner">
+                        <XCircle className="w-5 h-5" /> {result.passed}/{result.totalTests} test cases passed
                       </div>
                     )}
-                    <span className="text-xs text-neutral-500 ml-auto">{result.language} • {result.averageTimeMs}ms avg</span>
+                    <span className="text-xs text-neutral-500 ml-auto font-mono bg-surface px-3 py-1.5 rounded-lg border border-border">{result.language} • {result.averageTimeMs || 0}ms avg</span>
                     {result.allPassed && (
-                      <div className="flex items-center gap-1.5 text-indigo-400 text-[10px] font-bold uppercase ml-4">
-                        <Zap className="w-3 h-3 fill-current" /> Optimal Flow Active
+                      <div className="flex items-center gap-1.5 text-primary text-[10px] font-bold uppercase ml-4 bg-primary/10 px-3 py-1.5 rounded-lg border border-primary/20">
+                        <Zap className="w-3 h-3 fill-current animate-pulse" /> Optimal Flow Active
                       </div>
                     )}
                   </div>
@@ -892,65 +916,65 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
                   {/* Per Test Case Cards */}
                   {result.results.map((r, i) => (
                     <div key={i}
-                      className={`rounded-lg border overflow-hidden ${
+                      className={`rounded-2xl border overflow-hidden transition-all ${
                         r.status === 'pass'
-                          ? 'border-emerald-800/60 bg-emerald-950/20'
+                          ? 'border-emerald-500/30 bg-emerald-500/5 shadow-inner'
                           : r.status === 'timeout'
-                          ? 'border-yellow-800/60 bg-yellow-950/20'
-                          : 'border-rose-800/60 bg-rose-950/20'
+                          ? 'border-amber-500/30 bg-amber-500/5 shadow-inner'
+                          : 'border-rose-500/30 bg-rose-500/5 shadow-inner'
                       }`}
                     >
                       {/* Card Header */}
-                      <div className={`flex items-center justify-between px-4 py-2 border-b ${
-                        r.status === 'pass' ? 'border-emerald-800/40 bg-emerald-950/40' :
-                        r.status === 'timeout' ? 'border-yellow-800/40 bg-yellow-950/40' :
-                        'border-rose-800/40 bg-rose-950/40'
+                      <div className={`flex items-center justify-between px-5 py-3 border-b ${
+                        r.status === 'pass' ? 'border-emerald-500/20 bg-emerald-500/10' :
+                        r.status === 'timeout' ? 'border-amber-500/20 bg-amber-500/10' :
+                        'border-rose-500/20 bg-rose-500/10'
                       }`}>
                         <div className="flex items-center gap-2">
                           {r.status === 'pass'    && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
                           {r.status === 'fail'    && <XCircle className="w-4 h-4 text-rose-400" />}
                           {r.status === 'error'   && <AlertCircle className="w-4 h-4 text-orange-400" />}
-                          {r.status === 'timeout' && <AlertCircle className="w-4 h-4 text-yellow-400" />}
-                          <span className={`text-sm font-bold ${
-                            r.status === 'pass' ? 'text-emerald-300' :
-                            r.status === 'timeout' ? 'text-yellow-300' : 'text-rose-300'
+                          {r.status === 'timeout' && <AlertCircle className="w-4 h-4 text-amber-400" />}
+                          <span className={`text-sm font-bold uppercase tracking-widest ${
+                            r.status === 'pass' ? 'text-emerald-400' :
+                            r.status === 'timeout' ? 'text-amber-400' : 'text-rose-400'
                           }`}>
-                            Test Case {i + 1}
+                            Test Case {r.testCase}
                           </span>
                         </div>
-                        <span className={`text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                          r.status === 'pass'    ? 'text-emerald-300 bg-emerald-500/15' :
-                          r.status === 'timeout' ? 'text-yellow-300 bg-yellow-500/15' :
-                          r.status === 'error'   ? 'text-orange-300 bg-orange-500/15' :
-                                                    'text-rose-300 bg-rose-500/15'
+                        <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-lg border ${
+                          r.status === 'pass'    ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
+                          r.status === 'timeout' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
+                          r.status === 'error'   ? 'text-orange-400 bg-orange-500/10 border-orange-500/20' :
+                                                    'text-rose-400 bg-rose-500/10 border-rose-500/20'
                         }`}>{r.status}</span>
                       </div>
 
                       {/* Card Body */}
-                      <div className="p-3 grid grid-cols-3 gap-3 text-xs font-mono">
+                      <div className="p-5 grid grid-cols-3 gap-6 text-xs font-mono">
                         {/* Input */}
                         <div>
-                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Input</div>
-                          <div className="bg-black/40 rounded p-2 text-indigo-300 whitespace-pre-wrap break-all min-h-[40px]">
+                          <div className="text-neutral-500 uppercase font-bold tracking-widest mb-2 text-[10px] sans-serif">Input</div>
+                          <div className="bg-background/80 border border-border rounded-xl p-3 text-primary whitespace-pre-wrap break-all min-h-[40px]">
                             {r.input || '—'}
                           </div>
                         </div>
 
                         {/* Expected Output */}
                         <div>
-                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Expected</div>
-                          <div className="bg-black/40 rounded p-2 text-emerald-300 whitespace-pre-wrap break-all min-h-[40px]">
+                          <div className="text-neutral-500 uppercase font-bold tracking-widest mb-2 text-[10px] sans-serif">Expected</div>
+                          <div className="bg-background/80 border border-border rounded-xl p-3 text-emerald-400 whitespace-pre-wrap break-all min-h-[40px]">
                             {r.expectedOutput || '""'}
                           </div>
                         </div>
 
                         {/* Actual Output */}
                         <div>
-                          <div className="text-neutral-500 uppercase font-bold tracking-wider mb-1.5 font-sans">Your Output</div>
-                          <div className={`bg-black/40 rounded p-2 whitespace-pre-wrap break-all min-h-[40px] ${
-                            r.status === 'pass' ? 'text-emerald-300' :
-                            r.status === 'timeout' ? 'text-yellow-300' :
-                            r.status === 'error' ? 'text-orange-300' : 'text-rose-300'
+                          <div className="text-neutral-500 uppercase font-bold tracking-widest mb-2 text-[10px] sans-serif">Your Output</div>
+                          <div className={`bg-background/80 border border-border rounded-xl p-3 whitespace-pre-wrap break-all min-h-[40px] ${
+                            r.status === 'pass' ? 'text-emerald-400' :
+                            r.status === 'timeout' ? 'text-amber-400' :
+                            r.status === 'error' ? 'text-orange-400' : 'text-rose-400'
                           }`}>
                             {r.status === 'error'   ? (r.errorMessage || 'Runtime Error') :
                              r.status === 'timeout' ? 'Time Limit Exceeded' :
@@ -1006,6 +1030,7 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
         interviewId={interview.id}
         currentQuestion={currentQ}
       />
+      </div>
     </div>
   );
 }

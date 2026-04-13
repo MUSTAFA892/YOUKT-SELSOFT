@@ -7,6 +7,7 @@ import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Plus, Tras
 import CodeReviewPanel from "@/components/CodeReviewPanel";
 import PlagiarismDetectionPanel from "@/components/PlagiarismDetectionPanel";
 import { useAuth } from "@/components/AuthProvider";
+import Navbar from "@/components/landing/Navbar";
 
 export default function CustomIDE() {
   const { currentUser } = useAuth();
@@ -55,16 +56,19 @@ export default function CustomIDE() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] w-full overflow-hidden bg-neutral-950">
+    <div className="flex flex-col h-screen w-full bg-background overflow-hidden relative">
+      <Navbar />
       
-      {/* Left Pane: Custom Problem config */}
-      <div className="w-[45%] flex flex-col border-r border-neutral-800 bg-neutral-900/40 divide-y divide-neutral-800">
+      <div className="flex-1 flex overflow-hidden pt-24 pb-6 px-6 gap-6 w-full max-w-[1600px] mx-auto">
         
-        {/* Problem Statement Box */}
-        <div className="flex flex-col h-1/2">
-          <div className="px-4 py-3 bg-neutral-900 border-b border-neutral-800 shrink-0 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wider">Problem Statement</h2>
-          </div>
+        {/* Left Pane: Custom Problem config */}
+        <div className="w-[45%] flex flex-col gap-6">
+          
+          {/* Problem Statement Box */}
+          <div className="flex-1 flex flex-col bg-surface/50 border border-border rounded-3xl backdrop-blur-sm shadow-3d overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-background/30 shrink-0 flex items-center justify-between">
+              <h2 className="text-sm font-bold text-foreground tracking-wider">Problem Statement</h2>
+            </div>
           <textarea
             value={problemStatement}
             onChange={e => setProblemStatement(e.target.value)}
@@ -74,15 +78,15 @@ export default function CustomIDE() {
         </div>
 
         {/* Test Cases Box */}
-        <div className="flex flex-col h-1/2">
-          <div className="px-4 py-3 bg-neutral-900 border-b border-neutral-800 shrink-0 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-white uppercase tracking-wider">Custom Test Cases</h2>
-            <button 
-              onClick={addTestCase}
-              className="flex items-center gap-1.5 px-3 py-1 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 rounded-md text-xs font-semibold transition-colors border border-indigo-500/20"
-            >
-              <Plus className="w-3.5 h-3.5" /> Add Case
-            </button>
+          <div className="flex-1 flex flex-col bg-surface/50 border border-border rounded-3xl backdrop-blur-sm shadow-3d overflow-hidden">
+            <div className="px-6 py-4 border-b border-border bg-background/30 shrink-0 flex items-center justify-between">
+              <h2 className="text-sm font-bold text-foreground tracking-wider">Custom Test Cases</h2>
+              <button 
+                onClick={addTestCase}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg text-xs font-bold transition-all border border-primary/20"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Case
+              </button>
           </div>
           <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-neutral-800">
             {testCases.map((tc, idx) => (
@@ -121,28 +125,28 @@ export default function CustomIDE() {
         </div>
       </div>
 
-      {/* Right Pane: Editor & Console */}
-      <div className="flex-1 flex flex-col h-full bg-neutral-950">
-        
-        {/* Editor Toolbar */}
-        <div className="flex items-center justify-between px-4 h-12 border-b border-neutral-800 shrink-0 bg-neutral-900/60">
-          <select 
-            value={language}
-            onChange={handleLanguageChange}
-            className="bg-neutral-800 text-sm text-neutral-200 border border-neutral-700 rounded px-2 py-1 outline-none focus:border-indigo-500 font-medium"
-          >
+        {/* Right Pane: Editor & Console */}
+        <div className="flex-1 flex flex-col h-full bg-surface/30 border border-border rounded-3xl backdrop-blur-sm shadow-3d overflow-hidden">
+          
+          {/* Editor Toolbar */}
+          <div className="flex items-center justify-between px-6 h-16 border-b border-border shrink-0 bg-background/30">
+            <select 
+              value={language}
+              onChange={handleLanguageChange}
+              className="bg-surface text-sm text-foreground border border-border rounded-lg px-3 py-1.5 outline-none focus:border-primary font-bold appearance-none cursor-pointer"
+            >
             <option value="javascript">JavaScript</option>
             <option value="python">Python</option>
             <option value="java">Java</option>
             <option value="c">C</option>
           </select>
           
-          <button 
-            onClick={runCode}
-            disabled={isSubmitting || testCases.some(tc => !tc.expectedOutput)}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-neutral-700 disabled:text-neutral-500 text-white text-sm font-semibold px-4 py-1.5 rounded-md transition-all active:scale-95"
-            title={testCases.some(tc => !tc.expectedOutput) ? "Please fill Expected Output for all test cases" : ""}
-          >
+            <button 
+              onClick={runCode}
+              disabled={isSubmitting || testCases.some(tc => !tc.expectedOutput)}
+              className="flex items-center gap-2 bg-primary hover:bg-primary/90 disabled:bg-surface disabled:text-neutral-500 text-primary-foreground text-sm font-bold px-6 py-2 rounded-xl transition-all active:scale-95 shadow-lg shadow-primary/20 hover:shadow-primary/40"
+              title={testCases.some(tc => !tc.expectedOutput) ? "Please fill Expected Output for all test cases" : ""}
+            >
             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
             Run Tests
           </button>
@@ -165,18 +169,18 @@ export default function CustomIDE() {
           />
         </div>
 
-        {/* Console Output */}
-        <div className="h-64 shrink-0 flex flex-col border-t border-neutral-800 bg-neutral-900">
-          <div className="px-4 h-10 flex items-center border-b border-neutral-800 shrink-0 bg-neutral-950 gap-4">
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={() => setAnalysisTab("console")}
-                className={`flex items-center gap-2 text-sm font-medium px-3 py-1 rounded transition-colors ${
-                  analysisTab === "console" 
-                    ? "text-indigo-400 bg-indigo-500/10" 
-                    : "text-neutral-400 hover:text-neutral-200"
-                }`}
-              >
+          {/* Console Output */}
+          <div className="h-72 shrink-0 flex flex-col border-t border-border bg-background/50">
+            <div className="px-6 h-12 flex items-center border-b border-border shrink-0 gap-4">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setAnalysisTab("console")}
+                  className={`flex items-center gap-2 text-sm font-bold px-4 py-1.5 rounded-lg transition-colors ${
+                    analysisTab === "console" 
+                      ? "text-primary bg-primary/10 border border-primary/20" 
+                      : "text-neutral-500 hover:text-foreground hover:bg-surface"
+                  }`}
+                >
                 <Terminal className="w-4 h-4" /> Console
               </button>
               {result && (
@@ -205,11 +209,11 @@ export default function CustomIDE() {
               )}
             </div>
             {result && analysisTab === "console" && (
-              <div className="ml-auto flex items-center gap-2 text-xs font-semibold">
+              <div className="ml-auto flex items-center gap-2 text-xs font-bold">
                 {result.allPassed ? (
-                  <span className="text-emerald-400 flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/> Accepted</span>
+                  <span className="text-emerald-400 flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20"><CheckCircle2 className="w-4 h-4"/> Accepted</span>
                 ) : (
-                  <span className="text-rose-400 flex items-center gap-1"><XCircle className="w-4 h-4"/> Rejected</span>
+                  <span className="text-rose-400 flex items-center gap-1.5 px-3 py-1 bg-rose-500/10 rounded-full border border-rose-500/20"><XCircle className="w-4 h-4"/> Rejected</span>
                 )}
                 <span className="text-neutral-500 ml-2">({result.passed}/{result.totalTests} passed)</span>
               </div>
@@ -282,6 +286,7 @@ export default function CustomIDE() {
           </div>
         </div>
 
+        </div>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import Editor from "@monaco-editor/react";
 import Timer from "@/components/Timer";
 import PerformanceFeedback from "@/components/PerformanceFeedback";
 import TimeoutFeedback from "@/components/TimeoutFeedback";
-import { type Problem, type SubmissionResult, submitCode, submitActivityLog, getNextProblem, fetchProblem } from "@/lib/api";
+import { type Problem, type SubmissionResult, submitCode, submitActivityLog, getNextProblem, fetchProblem, API_BASE_URL } from "@/lib/api";
 import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Send, ArrowLeft, Sun, Moon, ChevronRight, GripVertical, GripHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
@@ -110,6 +110,22 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
           allPassed: res.allPassed,
           timeSpentSeconds: getTimeSpent(),
         });
+
+        // Record attempt for adaptive difficulty engine
+        const accuracyPercent = res.totalTests > 0
+          ? Math.round((res.passed / res.totalTests) * 100)
+          : 0;
+        fetch(`${API_BASE_URL}/advanced-features/adaptive-difficulty/record-attempt`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            candidateId: currentUser.id,
+            problemDifficulty: problem.difficulty, // 'Easy' | 'Medium' | 'Hard'
+            accuracy: accuracyPercent,
+            timeTaken: getTimeSpent(),
+            solved: res.allPassed,
+          }),
+        }).catch(() => {}); // fire-and-forget
 
         // Pause timer and show feedback after successful submission
         if (res.allPassed) {

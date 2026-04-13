@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Terminal, Menu, X, Rocket, Command, Zap, Trophy, MessageSquare, Sun, Moon } from "lucide-react";
+import { Terminal, Menu, X, Rocket, Command, Zap, Trophy, MessageSquare, Sun, Moon, Target } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
@@ -29,8 +29,11 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
+    { name: "Interviews", href: "/interviews", icon: Command },
+    { name: "Custom IDE", href: "/ide", icon: Terminal },
     { name: "Problems", href: "/problems", icon: Zap },
     { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
+    { name: "Progress", href: "/progress", icon: Target },
     { name: "Discuss", href: "/discuss", icon: MessageSquare },
   ];
 
