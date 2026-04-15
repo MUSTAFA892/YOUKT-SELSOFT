@@ -432,3 +432,35 @@ export async function getAiAssistance(payload: {
   return res.json();
 }
 
+export interface SkillScore {
+  topic: string;
+  score: number;
+  problemsSolved: number;
+}
+
+export interface CandidateInsights {
+  candidateId: string;
+  skillHeatmap: SkillScore[];
+  difficultyRecommendation: {
+    level: 'Easy' | 'Medium' | 'Hard';
+    reasoning: string;
+  };
+  integritySummary: {
+    overallRisk: 'low' | 'medium' | 'high' | 'critical';
+    totalPlagiarismWarnings: number;
+    violationCount: number;
+  };
+  stats: {
+    problemsSolved: number;
+    interviewsPassed: number;
+    avgScore: number;
+  };
+}
+
+export async function getCandidateInsights(candidateId: string): Promise<CandidateInsights> {
+  const res = await fetch(`${API_BASE_URL}/reports/candidate/${candidateId}/insights`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch candidate insights");
+  return res.json();
+}
+
+

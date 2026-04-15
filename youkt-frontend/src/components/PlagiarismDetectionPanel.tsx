@@ -17,6 +17,7 @@ interface PlagiarismDetectionProps {
   code: string;
   candidateId: string;
   interviewId: string;
+  problemId: string;
   onCheck?: (report: PlagiarismReport) => void;
 }
 
@@ -24,6 +25,7 @@ export default function PlagiarismDetectionPanel({
   code,
   candidateId,
   interviewId,
+  problemId,
   onCheck
 }: PlagiarismDetectionProps) {
   const [report, setReport] = useState<PlagiarismReport | null>(null);
@@ -39,6 +41,7 @@ export default function PlagiarismDetectionPanel({
           code,
           candidateId,
           interviewId,
+          problemId,
           submissionId: `sub_${Date.now()}`
         })
       });

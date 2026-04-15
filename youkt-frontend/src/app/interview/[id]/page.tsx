@@ -631,121 +631,123 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
             </div>
           </div>
           
-          {/* Tab Headers */}
-          <div className="flex shrink-0 bg-background/30">
-            {[
-              { id: 'description', label: 'Description', icon: Info },
-              { id: 'examples', label: 'Examples', icon: BookOpen },
-              { id: 'testcases', label: 'Test Cases', icon: ListChecks },
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 py-4 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 border-b-2 transition-all ${
-                  activeTab === tab.id 
-                    ? 'border-primary text-primary bg-primary/5' 
-                    : 'border-transparent text-neutral-500 hover:text-foreground hover:bg-surface'
-                }`}
-              >
-                <tab.icon className="w-3.5 h-3.5" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <div className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-surface space-y-12">
+            
+            {/* 1. Description Section */}
+            <section className="space-y-6">
+              <div>
+                <h1 className="text-2xl font-bold text-foreground mb-3">{currentQ.title}</h1>
+                <div className="flex gap-2">
+                  <span className={`text-[10px] uppercase font-black px-3 py-1 rounded-lg border ${
+                    currentQ.difficulty === 'Easy' ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/10' :
+                    currentQ.difficulty === 'Medium' ? 'border-amber-500/30 text-amber-500 bg-amber-500/10' :
+                    'border-rose-500/30 text-rose-500 bg-rose-500/10'
+                  }`}>
+                    {currentQ.difficulty}
+                  </span>
+                  <span className="text-[10px] uppercase font-black px-3 py-1 rounded-lg border border-border text-neutral-400 bg-surface/50">
+                    Score: 100
+                  </span>
+                </div>
+              </div>
 
-          <div className="flex-1 overflow-y-auto p-8 scrollbar-thin scrollbar-thumb-surface">
-            {activeTab === 'description' && (
-              <div className="space-y-6">
+              <div className="text-neutral-300 text-sm leading-relaxed whitespace-pre-wrap font-sans">
+                {currentQ.description}
+              </div>
+            </section>
+
+            {/* 2. Format Specifications */}
+            <section className="space-y-6 pt-8 border-t border-border">
+              <h3 className="text-xs font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Specifications
+              </h3>
+              
+              <div className="space-y-4">
                 <div>
-                  <h1 className="text-2xl font-bold text-foreground mb-3">{currentQ.title}</h1>
-                  <div className="flex gap-2">
-                    <span className={`text-[10px] uppercase font-black px-3 py-1 rounded-lg border ${
-                      currentQ.difficulty === 'Easy' ? 'border-emerald-500/30 text-emerald-500 bg-emerald-500/10' :
-                      currentQ.difficulty === 'Medium' ? 'border-amber-500/30 text-amber-500 bg-amber-500/10' :
-                      'border-rose-500/30 text-rose-500 bg-rose-500/10'
-                    }`}>
-                      {currentQ.difficulty}
-                    </span>
-                    <span className="text-[10px] uppercase font-black px-3 py-1 rounded-lg border border-border text-neutral-400 bg-surface/50">
-                      Score: 100
-                    </span>
+                  <h4 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2">Input Format</h4>
+                  <div className="bg-background/50 p-4 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
+                    {currentQ.inputFormat && currentQ.inputFormat.trim().length > 0 ? currentQ.inputFormat : "Refer to the examples below for standard input structure."}
                   </div>
                 </div>
-
-                <div className="text-neutral-300 text-sm leading-relaxed whitespace-pre-wrap font-sans">
-                  {currentQ.description}
-                </div>
-
-                <div className="space-y-4 pt-6 border-t border-border">
-                  <div>
-                    <h3 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Input Format</h3>
-                    <div className="bg-background/50 p-4 xl:p-6 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
-                      {currentQ.inputFormat}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-foreground uppercase tracking-widest mb-3">Output Format</h3>
-                    <div className="bg-background/50 p-4 xl:p-6 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
-                      {currentQ.outputFormat}
-                    </div>
+                <div>
+                  <h4 className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2">Output Format</h4>
+                  <div className="bg-background/50 p-4 rounded-2xl border border-border text-neutral-400 text-xs italic shadow-inner">
+                    {currentQ.outputFormat && currentQ.outputFormat.trim().length > 0 ? currentQ.outputFormat : "Return the expected data type as shown in the examples."}
                   </div>
                 </div>
               </div>
+            </section>
+
+            {/* 3. Examples Section */}
+            {currentQ.examples && currentQ.examples.length > 0 && (
+              <section className="space-y-8 pt-8 border-t border-border">
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                  Examples
+                </h3>
+                
+                <div className="space-y-8">
+                  {currentQ.examples.map((ex, i) => (
+                    <div key={i} className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-4 w-[3px] bg-primary rounded-full" />
+                        <h4 className="text-xs font-bold text-foreground uppercase tracking-widest">Example {i + 1}</h4>
+                      </div>
+                      <div className="space-y-3 bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
+                        <div>
+                          <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</span>
+                          <code className="text-primary text-sm font-mono bg-surface p-2 rounded-lg block overflow-x-auto">{ex.input}</code>
+                        </div>
+                        <div>
+                          <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Expected Output</span>
+                          <code className="text-emerald-400 text-sm font-mono bg-surface p-2 rounded-lg block overflow-x-auto">{ex.output}</code>
+                        </div>
+                        {ex.explanation && (
+                          <div className="pt-3 mt-1 border-t border-border">
+                            <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Explanation</span>
+                            <p className="text-neutral-400 text-xs leading-relaxed italic">{ex.explanation}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
             )}
 
-            {activeTab === 'examples' && (
-              <div className="space-y-8">
-                {currentQ.examples?.map((ex, i) => (
-                  <div key={i} className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-4 w-[3px] bg-primary rounded-full shadow-[0_0_8px_rgba(var(--primary),0.5)]" />
-                      <h3 className="text-xs font-bold text-foreground uppercase tracking-widest">Example {i + 1}</h3>
-                    </div>
-                    <div className="space-y-3 bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
-                      <div>
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</span>
-                        <code className="text-primary text-sm font-mono bg-surface p-2 rounded-lg block">{ex.input}</code>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Output</span>
-                        <code className="text-emerald-400 text-sm font-mono bg-surface p-2 rounded-lg block">{ex.output}</code>
-                      </div>
-                      {ex.explanation && (
-                        <div className="pt-3 mt-1 border-t border-border">
-                          <span className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Explanation</span>
-                          <p className="text-neutral-400 text-xs leading-relaxed italic">{ex.explanation}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* 4. Public Test Cases Section */}
+            {currentQ.testCases && currentQ.testCases.length > 0 && (
+              <section className="space-y-6 pt-8 border-t border-border">
+                <h3 className="text-xs font-bold text-foreground uppercase tracking-widest flex items-center gap-2">
+                  <ListChecks className="w-4 h-4 text-primary" />
+                  Test Cases
+                </h3>
 
-            {activeTab === 'testcases' && (
-              <div className="space-y-6">
-                {currentQ.testCases?.map((tc, idx) => (
-                  <div key={idx} className="bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
-                    <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
-                      <span className="text-xs font-black text-neutral-400 uppercase tracking-widest">Test Case {idx + 1}</span>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</label>
-                        <div className="bg-surface border border-border rounded-lg p-3 text-primary text-xs font-mono whitespace-pre-wrap">
-                          {tc.input}
+                <div className="space-y-6">
+                  {currentQ.testCases.map((tc, idx) => (
+                    <div key={idx} className="bg-background/50 rounded-2xl border border-border p-5 xl:p-6 shadow-inner">
+                      <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
+                        <span className="text-xs font-black text-neutral-400 uppercase tracking-widest">Case {idx + 1}</span>
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Input</label>
+                          <div className="bg-surface border border-border rounded-lg p-3 text-primary text-xs font-mono whitespace-pre-wrap overflow-x-auto">
+                            {tc.input}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Expected Output</label>
+                          <div className="bg-surface border border-border rounded-lg p-3 text-emerald-400 text-xs font-mono whitespace-pre-wrap overflow-x-auto">
+                            {tc.expectedOutput}
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-2">Expected Output</label>
-                        <div className="bg-surface border border-border rounded-lg p-3 text-emerald-400 text-xs font-mono whitespace-pre-wrap">
-                          {tc.expectedOutput}
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </section>
             )}
           </div>
         </div>
