@@ -1,5 +1,24 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001/api";
 
+export interface PlagiarismMatch {
+  candidateId: string;
+  candidateName: string;
+  interviewId: string;
+  similarity: number;
+  matchedLines: Array<{ lineNumber: number; content: string }>;
+  timestamp: string;
+}
+
+export interface PlagiarismReport {
+  submissionId: string;
+  candidateId: string;
+  codeHash: string;
+  matches: PlagiarismMatch[];
+  overallSimilarity: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: string;
+}
+
 export interface Example {
   input: string;
   output: string;
@@ -461,6 +480,25 @@ export async function getCandidateInsights(candidateId: string): Promise<Candida
   const res = await fetch(`${API_BASE_URL}/reports/candidate/${candidateId}/insights`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch candidate insights");
   return res.json();
+}
+
+export async function checkPlagiarism(payload: {
+  code: string;
+  candidateId: string;
+  interviewId: string;
+  problemId: string;
+  submissionId?: string;
+  submissionTimeMs?: number;
+  pasteDetected?: boolean;
+}): Promise<PlagiarismReport> {
+  const res = await fetch(`${API_BASE_URL}/advanced-features/plagiarism/check`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Plagiarism check failed");
+  const result = await res.json();
+  return result.data;
 }
 
 

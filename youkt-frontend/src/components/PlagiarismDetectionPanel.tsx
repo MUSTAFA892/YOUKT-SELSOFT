@@ -2,16 +2,9 @@
 
 import { useState } from "react";
 import { AlertTriangle, CheckCircle2, Eye, AlertCircle } from "lucide-react";
+import { checkPlagiarism as checkPlagiarismApi, type PlagiarismReport } from "@/lib/api";
 
-interface PlagiarismReport {
-  overallSimilarity: number;
-  riskLevel: 'low' | 'medium' | 'high' | 'critical';
-  matches: Array<{
-    candidateId: string;
-    similarity: number;
-    matchedLines: Array<{ lineNumber: number; content: string }>;
-  }>;
-}
+// Reusing interfaces from @/lib/api
 
 interface PlagiarismDetectionProps {
   code: string;
@@ -34,20 +27,15 @@ export default function PlagiarismDetectionPanel({
   const checkPlagiarism = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/advanced-features/plagiarism/check`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          code,
-          candidateId,
-          interviewId,
-          problemId,
-          submissionId: `sub_${Date.now()}`
-        })
+      const result = await checkPlagiarismApi({
+        code,
+        candidateId,
+        interviewId,
+        problemId,
+        submissionId: `sub_${Date.now()}`
       });
-      const result = await response.json();
-      setReport(result.data);
-      onCheck?.(result.data);
+      setReport(result);
+      onCheck?.(result);
     } catch (error) {
       console.error('Plagiarism check failed:', error);
     } finally {

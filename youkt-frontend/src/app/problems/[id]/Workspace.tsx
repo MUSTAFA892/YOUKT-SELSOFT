@@ -6,7 +6,7 @@ import Editor from "@monaco-editor/react";
 import Timer from "@/components/Timer";
 import PerformanceFeedback from "@/components/PerformanceFeedback";
 import TimeoutFeedback from "@/components/TimeoutFeedback";
-import { type Problem, type SubmissionResult, submitCode, submitActivityLog, getNextProblem, fetchProblem, API_BASE_URL } from "@/lib/api";
+import { type Problem, type SubmissionResult, type PlagiarismReport, submitCode, submitActivityLog, getNextProblem, fetchProblem, checkPlagiarism, API_BASE_URL } from "@/lib/api";
 import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, Send, ArrowLeft, Sun, Moon, ChevronRight, GripVertical, GripHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
@@ -50,6 +50,9 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [plagiarismResult, setPlagiarismResult] = useState<PlagiarismReport | null>(null);
+  const [isPlagiarismChecking, setIsPlagiarismChecking] = useState(false);
+  const [pasteDetected, setPasteDetected] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -131,6 +134,23 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
         if (res.allPassed) {
           setIsTimerActive(false);
           
+          // Trigger plagiarism check
+          setIsPlagiarismChecking(true);
+          checkPlagiarism({
+            code,
+            candidateId: currentUser.id,
+            interviewId: problem.sessionId || 'practice',
+            problemId: problem.id,
+            submissionTimeMs: (Date.now() - startTime),
+            pasteDetected: pasteDetected
+          }).then(report => {
+            setPlagiarismResult(report);
+            setIsPlagiarismChecking(false);
+          }).catch(err => {
+            console.error('Plagiarism check failed:', err);
+            setIsPlagiarismChecking(false);
+          });
+
           // Get next problem recommendation
           try {
             const next = await getNextProblem(problem.id, {
@@ -434,6 +454,12 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
                         roundedSelection: false,
                         readOnly: timeExpired,
                       }}
+                      onMount={(editor) => {
+                        editor.onDidPaste(() => {
+                          console.log("Paste detected!");
+                          setPasteDetected(true);
+                        });
+                      }}
                     />
                   </div>
                 </div>
@@ -525,6 +551,8 @@ export default function Workspace({ problem: initialProblem }: { problem: Proble
           nextProblem={nextProblem}
           onProceed={handleProceedToNext}
           isLoading={isLoadingNext}
+          plagiarismResult={plagiarismResult}
+          isPlagiarismChecking={isPlagiarismChecking}
         />
       )}
 
