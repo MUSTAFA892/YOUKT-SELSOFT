@@ -3,6 +3,13 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 import * as crypto from 'crypto';
 
+export interface PlagiarismWarning {
+  detected: boolean;
+  similarityPercent: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  matchCount?: number;
+}
+
 export interface QuestionReport {
   questionId: string;
   questionTitle: string;
@@ -12,6 +19,7 @@ export interface QuestionReport {
   allPassed: boolean;
   language: string;
   submittedCode?: string;
+  plagiarismWarning?: PlagiarismWarning;
 }
 
 export interface AssessmentReport {
@@ -30,6 +38,7 @@ export interface AssessmentReport {
     tabSwitches: number;
     terminated: boolean;
   };
+  plagiarismWarning?: PlagiarismWarning;
 }
 
 @Injectable()

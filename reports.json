@@ -248,5 +248,123 @@
     ],
     "id": "999fa680-f6fe-4219-9d46-3465881b148d",
     "finishedAt": "2026-04-11T21:25:23.503Z"
+  },
+  {
+    "interviewId": "1e433c03-b5b6-43df-a343-b9e70189187a",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 3,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 3,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "2ccaa795-7c98-4745-bab3-197cf23080a7",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "81c35ebb-2947-42df-90cc-00dd3be3e2e2",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "530bd89a-8336-4470-99d8-53f293e6fc7c",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "id": "db84b8d1-0bc6-4e25-b2d7-e4ff0076c52c",
+    "finishedAt": "2026-04-13T07:34:54.094Z"
+  },
+  {
+    "interviewId": "1e433c03-b5b6-43df-a343-b9e70189187a",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 3,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 3,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "2ccaa795-7c98-4745-bab3-197cf23080a7",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "81c35ebb-2947-42df-90cc-00dd3be3e2e2",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "530bd89a-8336-4470-99d8-53f293e6fc7c",
+        "questionTitle": "N-Queens Problem",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "id": "c8568696-8a18-4782-8b7e-b075e6db3b00",
+    "finishedAt": "2026-04-13T12:18:18.693Z"
+  },
+  {
+    "interviewId": "34867b44-439f-4dea-9b4c-222cbe1441c0",
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "totalQuestions": 2,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 3,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "2e1cf2c4-f0a1-4ecd-95e8-38e2f26a7e11",
+        "questionTitle": "Word Ladder",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      },
+      {
+        "questionId": "1ce26d12-8ff3-412c-872b-9928050f2b2a",
+        "questionTitle": "Two Sum",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "77265ae3-6479-4002-ac46-8246b94fd516",
+    "finishedAt": "2026-04-14T12:14:06.567Z"
   }
 ]

@@ -97,6 +97,159 @@
         "content": "Speak to a recruiter",
         "id": "62f0e894-e275-40c6-888c-8268cb118090",
         "timestamp": "2026-04-12T13:37:05.001Z"
+      },
+      {
+        "senderId": "c3",
+        "senderName": "Charlie Brown",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "7cbd7a5c-6db0-423b-a455-044bde373052",
+        "timestamp": "2026-04-13T07:48:41.832Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Sure! The problem \"N-Queens Problem\" requires you to place n queens on an n x n chessboard such that no two queens attack each other. \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
+        "id": "d1553d63-518f-47c9-8692-717e51322a91",
+        "timestamp": "2026-04-13T07:48:41.833Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c3",
+    "interviewId": "f7923a07-2978-497c-9a20-a4c74b11d8e8",
+    "messages": [
+      {
+        "senderId": "recruiter1",
+        "senderName": "Recruiter 1",
+        "senderType": "recruiter",
+        "content": "not bad",
+        "id": "3f1c90e6-c3fe-4f69-adad-99e71800d219",
+        "timestamp": "2026-04-13T09:47:48.022Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "messages": [],
+    "status": "active"
+  },
+  {
+    "candidateId": "c2",
+    "interviewId": "638e09a8-2ff7-45c5-8287-8bfec06eec04",
+    "messages": [],
+    "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "0abc7e17-68ef-4315-99e3-95b315857f60",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "c1c35fab-e06b-40c8-98fa-0d3872565bcf",
+        "timestamp": "2026-04-13T12:02:33.605Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Sure! The problem \"Longest Substring Without Repeating\" requires you to find the length of the longest substring without repeating characters. \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
+        "id": "46a04176-da54-4e2e-b78e-0755547bf830",
+        "timestamp": "2026-04-13T12:02:33.606Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c2",
+    "interviewId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "messages": [
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "8b243e7b-939b-4c4b-9b8c-125164ef8bb1",
+        "timestamp": "2026-04-14T10:07:51.903Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Try walking through your code with a simple edge case, like empty input or very large values, to see if it behaves as expected.",
+        "id": "7d2ddf2f-66ff-453a-b860-6f6e3a04a809",
+        "timestamp": "2026-04-14T10:07:51.905Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "cab63d18-6edd-411d-98f8-f2cc7f5534b9",
+        "timestamp": "2026-04-14T10:08:00.562Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Sure! The problem \"Regular Expression Matching\" requires you to implement regular expression matching with support for \". \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
+        "id": "dfd9cda5-3d08-44af-80ac-a854d88e00ae",
+        "timestamp": "2026-04-14T10:08:00.563Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "028058a6-306d-4083-93cf-a907fc70dc93",
+        "timestamp": "2026-04-14T10:34:52.091Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Of course! Let's break down **Regular Expression Matching**. \n\nThe goal here is to implement regular expression matching with support for \"\n\n### Key Precise Details:\n\n\n### Core Strategy:\nTry thinking about how you would solve this manually with pen and paper first. For example, if you see a similar pattern, could a Sliding Window or Iterative approach be useful here?\n\nDoes this focus help you structure your code?",
+        "id": "66d3981a-d1e8-4ea7-955b-5dbc8ec2be66",
+        "timestamp": "2026-04-14T10:34:52.093Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "3c2dd524-0cc1-4be5-a2f7-6ba0527ab10b",
+        "timestamp": "2026-04-14T10:35:11.080Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "I've performed a quick audit of the specifications for **Regular Expression Matching**. \n\nThe test cases and expected outputs are consistent with standard algorithmic patterns. If your code is failing, I recommend checking these common pitfalls:\n1. **Edge Cases**: Have you handled empty, null, or unusually large inputs?\n2. **Types**: Ensure your return type matches the expected output exactly (check requirements).\n3. **Loop Boundaries**: Double-check for off-by-one errors in your iterations.\n\nIf you describe your specific error message, I can provide more targeted advice!",
+        "id": "669203c7-12e1-4542-a70d-92fbcbf2ef8e",
+        "timestamp": "2026-04-14T10:35:11.081Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "2b5d3a3e-984a-4ebc-845a-831fad52c1a5",
+        "timestamp": "2026-04-14T10:35:25.223Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "I recommend creating a simple test case for yourself:\n- **Input**: Use the simplest possible valid value.\n- **Expected**: Manually calculate the result.\nDoes your code return that value correctly?",
+        "id": "774f00b6-76ec-4ffe-a05d-da57d75cd6d0",
+        "timestamp": "2026-04-14T10:35:25.224Z"
       }
     ],
     "status": "active"

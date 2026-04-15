@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ReportsService, AssessmentReport, QuestionReport } from './reports.service';
+import { ReportsService, AssessmentReport, QuestionReport, PlagiarismWarning } from './reports.service';
 
 interface CreateReportDto {
   interviewId: string;
@@ -11,11 +11,17 @@ interface CreateReportDto {
   totalTestsAvailable: number;
   scorePercent: number;
   questions: QuestionReport[];
+  plagiarismWarning?: PlagiarismWarning;
 }
+
+import { CandidateAnalysisService } from './candidate-analysis.service';
 
 @Controller('reports')
 export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+  constructor(
+    private readonly reportsService: ReportsService,
+    private readonly analysisService: CandidateAnalysisService
+  ) {}
 
   @Post()
   async create(@Body() dto: CreateReportDto): Promise<AssessmentReport> {
@@ -30,5 +36,10 @@ export class ReportsController {
   @Get('interview/:interviewId')
   async getByInterview(@Param('interviewId') interviewId: string) {
     return this.reportsService.getReportsByInterview(interviewId);
+  }
+
+  @Get('candidate/:id/insights')
+  async getCandidateInsights(@Param('id') id: string) {
+    return this.analysisService.getAnalysis(id);
   }
 }

@@ -8,6 +8,7 @@ import { ActivityLogsModule } from './activity-logs/activity-logs.module';
 import { TabSwitchModule } from './tab-switch/tab-switch.module';
 import { AdvancedFeaturesModule } from './advanced-features/advanced-features.module';
 import { HelpCenterModule } from './help-center/help-center.module';
+import { PlagiarismModule } from './plagiarism/plagiarism.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HelpCenterModule } from './help-center/help-center.module';
     TabSwitchModule,
     AdvancedFeaturesModule,
     HelpCenterModule,
+    PlagiarismModule,
   ],
 })
 export class AppModule {}

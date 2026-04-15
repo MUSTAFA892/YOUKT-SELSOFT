@@ -11,6 +11,7 @@ import QuestionLibraryBrowser from "@/components/QuestionLibraryBrowser";
 type EditingQuestion = Omit<Question, 'id'> & {
   activeLang: "python" | "javascript" | "java" | "c";
   isAdvancedOpen?: boolean;
+  isExamplesOpen?: boolean;
 };
 
 export default function RecruiterPortal() {
@@ -31,11 +32,15 @@ export default function RecruiterPortal() {
   const [questions, setQuestions] = useState<EditingQuestion[]>([{
     title: "Algorithm Question 1",
     description: "",
+    inputFormat: "",
+    outputFormat: "",
+    examples: [],
     testCases: [{ input: "", expectedOutput: "" }],
     starterCode: { python: "", javascript: "", java: "", c: "" },
     wrapperCode: { python: "", javascript: "", java: "", c: "" },
     activeLang: "python",
-    isAdvancedOpen: false
+    isAdvancedOpen: false,
+    isExamplesOpen: false
   }]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,11 +54,15 @@ export default function RecruiterPortal() {
       {
         title: `Algorithm Question ${questions.length + 1}`,
         description: "",
+        inputFormat: "",
+        outputFormat: "",
+        examples: [],
         testCases: [{ input: "", expectedOutput: "" }],
         starterCode: { python: "", javascript: "", java: "", c: "" },
         wrapperCode: { python: "", javascript: "", java: "", c: "" },
         activeLang: "python",
-        isAdvancedOpen: false
+        isAdvancedOpen: false,
+        isExamplesOpen: false
       }
     ]);
   };
@@ -212,6 +221,9 @@ export default function RecruiterPortal() {
                 const newQuestion: EditingQuestion = {
                   title: question.title,
                   description: question.description,
+                  inputFormat: question.inputFormat || "",
+                  outputFormat: question.outputFormat || "",
+                  examples: question.examples || [],
                   testCases: question.testCases || [],
                   starterCode: { 
                     python: question.starterCode?.python || "",
@@ -226,7 +238,8 @@ export default function RecruiterPortal() {
                     c: question.wrapperCode?.c || ""
                   },
                   activeLang: "python",
-                  isAdvancedOpen: false
+                  isAdvancedOpen: false,
+                  isExamplesOpen: false
                 };
 
                 // If the only question is the default unnamed/empty one, replace it
@@ -478,6 +491,99 @@ export default function RecruiterPortal() {
                     placeholder="Paste the problem statement here..."
                     className="w-full bg-[#1e1e1e] border border-neutral-700/50 rounded p-3 text-neutral-200 text-sm focus:border-indigo-500 focus:outline-none resize-y min-h-[120px]"
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-semibold text-neutral-400 block mb-1">Input Format</label>
+                    <textarea 
+                      value={q.inputFormat}
+                      onChange={e => updateQuestion(qIndex, { inputFormat: e.target.value })}
+                      placeholder="e.g. First line contains integer N..."
+                      className="w-full bg-[#1e1e1e] border border-neutral-700/50 rounded p-3 text-neutral-200 text-xs focus:border-indigo-500 focus:outline-none resize-none h-20"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-neutral-400 block mb-1">Output Format</label>
+                    <textarea 
+                      value={q.outputFormat}
+                      onChange={e => updateQuestion(qIndex, { outputFormat: e.target.value })}
+                      placeholder="e.g. Return the count of triplets..."
+                      className="w-full bg-[#1e1e1e] border border-neutral-700/50 rounded p-3 text-neutral-200 text-xs focus:border-indigo-500 focus:outline-none resize-none h-20"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-800">
+                  <div className="flex items-center justify-between mb-4">
+                    <label className="text-sm font-semibold text-white">Examples (Optional)</label>
+                    <button 
+                      onClick={() => {
+                        const newEx = [...(q.examples || []), { input: "", output: "", explanation: "" }];
+                        updateQuestion(qIndex, { examples: newEx });
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1 bg-neutral-800 text-neutral-300 hover:bg-neutral-700 rounded text-xs font-semibold transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> Add Example
+                    </button>
+                  </div>
+                  <div className="space-y-3">
+                    {q.examples?.map((ex, exIdx) => (
+                      <div key={exIdx} className="bg-neutral-950 rounded border border-neutral-800 p-4 space-y-3 relative group">
+                        <button 
+                          onClick={() => {
+                            const newEx = [...(q.examples || [])];
+                            newEx.splice(exIdx, 1);
+                            updateQuestion(qIndex, { examples: newEx });
+                          }}
+                          className="absolute top-2 right-2 text-neutral-600 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Input</label>
+                            <input 
+                              type="text"
+                              value={ex.input}
+                              onChange={e => {
+                                const newEx = [...(q.examples || [])];
+                                newEx[exIdx].input = e.target.value;
+                                updateQuestion(qIndex, { examples: newEx });
+                              }}
+                              className="w-full bg-[#1e1e1e] border border-neutral-800 rounded p-2 text-primary text-xs font-mono outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Output</label>
+                            <input 
+                              type="text"
+                              value={ex.output}
+                              onChange={e => {
+                                const newEx = [...(q.examples || [])];
+                                newEx[exIdx].output = e.target.value;
+                                updateQuestion(qIndex, { examples: newEx });
+                              }}
+                              className="w-full bg-[#1e1e1e] border border-neutral-800 rounded p-2 text-emerald-400 text-xs font-mono outline-none"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-500 uppercase block mb-1">Explanation</label>
+                          <input 
+                            type="text"
+                            value={ex.explanation}
+                            onChange={e => {
+                              const newEx = [...(q.examples || [])];
+                              newEx[exIdx].explanation = e.target.value;
+                              updateQuestion(qIndex, { examples: newEx });
+                            }}
+                            className="w-full bg-[#1e1e1e] border border-neutral-800 rounded p-2 text-neutral-400 text-xs outline-none"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="pt-4 border-t border-neutral-800">

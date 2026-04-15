@@ -25,15 +25,33 @@ export class AdvancedFeaturesController {
 
   // ==================== PLAGIARISM DETECTION ====================
   @Post('plagiarism/check')
-  checkPlagiarism(@Body() body: { code: string; candidateId: string; interviewId: string; submissionId?: string }) {
-    const report = this.plagiarismService.checkPlagiarism(body.code, body.candidateId, body.interviewId);
+  checkPlagiarism(@Body() body: { 
+    code: string; 
+    candidateId: string; 
+    interviewId: string; 
+    problemId: string; 
+    submissionId?: string;
+    submissionTimeMs?: number;
+    pasteDetected?: boolean;
+  }) {
+    const report = this.plagiarismService.checkPlagiarism(
+      body.code, 
+      body.candidateId, 
+      body.interviewId, 
+      body.problemId,
+      body.submissionId,
+      body.submissionTimeMs,
+      body.pasteDetected
+    );
     
     // Register the submission for future comparisons
+    const submissionId = body.submissionId || `sub_${Date.now()}`;
     this.plagiarismService.registerSubmission(
-      body.submissionId || `sub_${Date.now()}`,
+      submissionId,
       body.code,
       body.candidateId,
-      body.interviewId
+      body.interviewId,
+      body.problemId
     );
 
     return {

@@ -21,9 +21,9 @@
     "passed": 3,
     "totalTests": 3,
     "allPassed": true,
-    "timeSpentSeconds": 48,
+    "timeSpentSeconds": 13,
     "id": "da8f1c10-e01b-4033-bf1e-b5767f438650",
-    "submittedAt": "2026-04-10T09:40:39.458Z"
+    "submittedAt": "2026-04-14T07:23:17.799Z"
   },
   {
     "candidateId": "c1",
@@ -43,13 +43,13 @@
     "candidateName": "Alice Smith",
     "problemId": "7",
     "problemTitle": "Longest Substring",
-    "language": "python",
-    "passed": 4,
-    "totalTests": 4,
+    "language": "javascript",
+    "passed": 5,
+    "totalTests": 5,
     "allPassed": true,
-    "timeSpentSeconds": 510,
+    "timeSpentSeconds": 40,
     "id": "c3492f61-d977-45cb-9da4-56870f370b71",
-    "submittedAt": "2026-04-08T04:26:58.956Z"
+    "submittedAt": "2026-04-14T07:24:08.156Z"
   },
   {
     "candidateId": "c1",
@@ -60,9 +60,9 @@
     "passed": 3,
     "totalTests": 3,
     "allPassed": true,
-    "timeSpentSeconds": 22,
+    "timeSpentSeconds": 39,
     "id": "0f0b2054-be52-4581-b946-c0305d0e656f",
-    "submittedAt": "2026-04-08T05:18:56.500Z"
+    "submittedAt": "2026-04-13T19:31:04.181Z"
   },
   {
     "candidateId": "id-07",
@@ -82,12 +82,90 @@
     "candidateName": "Alice Smith",
     "problemId": "9",
     "problemTitle": "Median of Two Arrays",
-    "language": "javascript",
-    "passed": 0,
-    "totalTests": 1,
-    "allPassed": false,
-    "timeSpentSeconds": 19,
+    "language": "python",
+    "passed": 2,
+    "totalTests": 2,
+    "allPassed": true,
+    "timeSpentSeconds": 66,
     "id": "ea482450-d4a0-41c0-ad1a-8c6978caa7a8",
-    "submittedAt": "2026-04-08T05:19:21.557Z"
+    "submittedAt": "2026-04-14T07:54:40.362Z"
+  },
+  {
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "1",
+    "problemTitle": "Two Sum",
+    "language": "python",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 47,
+    "id": "f636d3e1-ec09-436e-9931-be338f1e5776",
+    "submittedAt": "2026-04-13T07:56:09.100Z"
+  },
+  {
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "3",
+    "problemTitle": "FizzBuzz",
+    "language": "javascript",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 74,
+    "id": "74f45506-d399-4a86-ae20-cec806e5e4f3",
+    "submittedAt": "2026-04-13T07:57:46.280Z"
+  },
+  {
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "9",
+    "problemTitle": "Median of Two Arrays",
+    "language": "python",
+    "passed": 2,
+    "totalTests": 2,
+    "allPassed": true,
+    "timeSpentSeconds": 348,
+    "id": "605536ff-af38-480e-9f92-5f2b83f0e64b",
+    "submittedAt": "2026-04-13T08:03:38.992Z"
+  },
+  {
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "problemId": "10",
+    "problemTitle": "Merge K Sorted Lists",
+    "language": "python",
+    "passed": 2,
+    "totalTests": 2,
+    "allPassed": true,
+    "timeSpentSeconds": 81,
+    "id": "44aeebed-4a9a-4313-a536-a43e782ab43b",
+    "submittedAt": "2026-04-13T08:05:02.893Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "2",
+    "problemTitle": "Reverse a String",
+    "language": "python",
+    "passed": 7,
+    "totalTests": 7,
+    "allPassed": true,
+    "timeSpentSeconds": 38,
+    "id": "07334e1b-9f57-46a0-94cd-68b53fdd4b1a",
+    "submittedAt": "2026-04-14T07:52:32.160Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "3",
+    "problemTitle": "FizzBuzz",
+    "language": "javascript",
+    "passed": 3,
+    "totalTests": 3,
+    "allPassed": true,
+    "timeSpentSeconds": 44,
+    "id": "98ead20d-dde2-44dc-9277-64d0e60c7934",
+    "submittedAt": "2026-04-14T07:53:28.710Z"
   }
 ]

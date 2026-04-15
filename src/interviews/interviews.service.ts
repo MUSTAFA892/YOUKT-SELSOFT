@@ -78,15 +78,18 @@ export class InterviewsService {
     questions: Omit<Question, 'id'>[]
   ): Promise<Interview> {
     const enrichedQuestions = questions.map(q => {
-      const p = this.problemsService.findAllWithTestCases().find(ap => ap.title === q.title);
+      const p = this.problemsService.findAllWithTestCases().find(ap => 
+        ap.title.toLowerCase().trim() === q.title.toLowerCase().trim()
+      );
       return {
         ...q,
         id: crypto.randomUUID(),
-        difficulty: p?.difficulty || 'Easy',
-        timeLimit: p?.timeLimit || 300,
-        inputFormat: p?.inputFormat || '',
-        outputFormat: p?.outputFormat || '',
-        examples: p?.examples || [],
+        difficulty: q.difficulty || p?.difficulty || 'Easy',
+        timeLimit: q.timeLimit || p?.timeLimit || 300,
+        description: q.description || p?.description || '',
+        inputFormat: q.inputFormat || p?.inputFormat || '',
+        outputFormat: q.outputFormat || p?.outputFormat || '',
+        examples: q.examples && q.examples.length > 0 ? q.examples : (p?.examples || []),
       } as Question;
     });
 
@@ -147,7 +150,10 @@ export class InterviewsService {
 
     // Locate problem source for metadata
     const allProblems = this.problemsService.findAllWithTestCases();
-    const problem = allProblems.find(p => p.title === question.title || p.id === question.id);
+    const problem = allProblems.find(p => 
+      p.title.toLowerCase().trim() === question.title.toLowerCase().trim() || 
+      p.id === question.id
+    );
     const difficulty = (problem?.difficulty || (question as any).difficulty || 'Easy') as 'Easy' | 'Medium' | 'Hard';
 
     // Record history

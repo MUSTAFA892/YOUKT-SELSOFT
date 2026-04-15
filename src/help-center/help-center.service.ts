@@ -82,27 +82,96 @@ export class HelpCenterService {
 
   async getAiResponse(query: string, questionContext: any): Promise<string> {
     const qLower = query.toLowerCase();
+    const title = questionContext.title || 'the current problem';
     
-    // Simulate thinking delay in the frontend, so we return immediately here
-    
-    if (qLower.includes('clarify') || qLower.includes('explain') || qLower.includes('understand')) {
-      return `Sure! The problem "${questionContext.title}" requires you to ${questionContext.description.split('.')[0].toLowerCase()}. \n\nKey constraints to keep in mind:\n- Input Format: ${questionContext.inputFormat}\n- Output Format: ${questionContext.outputFormat}\n\nDoes that help clear things up?`;
+    // ── 1. CLARIFICATION & EXPLANATION ──────────────────────────────────
+    if (qLower.includes('clarify') || qLower.includes('explain') || qLower.includes('understand') || qLower.includes('logic')) {
+      const summary = questionContext.description ? 
+        this.simplifyDescription(questionContext.description) : 
+        "evaluate the constraints and produce the required results.";
+        
+      const inputInfo = questionContext.inputFormat ? `\n- **Input**: ${questionContext.inputFormat}` : "";
+      const outputInfo = questionContext.outputFormat ? `\n- **Output**: ${questionContext.outputFormat}` : "";
+      const complexity = (questionContext.expectedTimeComplexity || questionContext.expectedSpaceComplexity) ? 
+        `\n- **Target Complexity**: ${questionContext.expectedTimeComplexity || 'O(n)'}` : "";
+
+      return `Of course! Let's break down **${title}**. 
+
+The goal here is to ${summary}
+
+### Key Precise Details:
+${inputInfo}${outputInfo}${complexity}
+
+### Core Strategy:
+Try thinking about how you would solve this manually with pen and paper first. For example, if you see a similar pattern, could a ${this.getSuggestedPattern(questionContext)} be useful here?
+
+Does this focus help you structure your code?`;
     }
 
-    if (qLower.includes('error') || qLower.includes('wrong') || qLower.includes('issue')) {
-      return `I've analyzed the problem description and test cases for "${questionContext.title}". At the moment, the problem statements appear to be correct. If you believe there's a specific test case that is failing incorrectly, please describe it and I'll notify the recruiter.`;
+    // ── 2. ERROR & ISSUE ANALYSIS ──────────────────────────────────────
+    if (qLower.includes('error') || qLower.includes('wrong') || qLower.includes('issue') || qLower.includes('bug')) {
+      return `I've performed a quick audit of the specifications for **${title}**. 
+
+The test cases and expected outputs are consistent with standard algorithmic patterns. If your code is failing, I recommend checking these common pitfalls:
+1. **Edge Cases**: Have you handled empty, null, or unusually large inputs?
+2. **Types**: Ensure your return type matches the expected output exactly (${questionContext.outputFormat || 'check requirements'}).
+3. **Loop Boundaries**: Double-check for off-by-one errors in your iterations.
+
+If you describe your specific error message, I can provide more targeted advice!`;
     }
 
-    if (qLower.includes('test') || qLower.includes('case')) {
+    // ── 3. TEST CASES & EXAMPLES ────────────────────────────────────────
+    if (qLower.includes('test') || qLower.includes('case') || qLower.includes('example')) {
       const examples = questionContext.examples || [];
       if (examples.length > 0) {
-        return `Let's look at one of the test cases. In Example 1: \nInput: ${examples[0].input} \nExpected Output: ${examples[0].output} \n\n${examples[0].explanation || ''} \n\nTry testing your solution with this specific case!`;
+        const ex = examples[0];
+        return `Let's analyze **Example 1** to clarify the logic:
+- **Given Input**: \`${ex.input}\`
+- **Why Expected Output is**: \`${ex.output}\`
+- **Reasoning**: ${ex.explanation || 'Following the problem constraints, this input must be transformed to match the output rule.'}
+
+I suggest printing internal variables for this specific input to see where your logic might be diverging!`;
       }
-      return `Try walking through your code with a simple edge case, like empty input or very large values, to see if it behaves as expected.`;
+      return `I recommend creating a simple test case for yourself:
+- **Input**: Use the simplest possible valid value.
+- **Expected**: Manually calculate the result.
+Does your code return that value correctly?`;
     }
 
-    // Default: Transform to messaging mode (handled by frontend logic, but backend provides a transition msg)
+    // ── 4. HINTS ────────────────────────────────────────────────────────
+    if (qLower.includes('hint') || qLower.includes('help') || qLower.includes('clue')) {
+      const hints = questionContext.hints || [];
+      if (hints.length > 0) {
+        return `Here is a precise hint for **${title}**:
+> ${hints[0]}
+
+If you'd like another hint or a more direct clue about the algorithm, just let me know!`;
+      }
+      return `Think about the most efficient way to store and retrieve the data you've already seen. Would a Hash Map or a simple Array suffice?`;
+    }
+
+    // Default: Transition to human recruiter if AI doesn't feel confident
+    if (qLower.length < 5) {
+      return "Hi there! I'm your AI technical assistant. I can explain problem logic, clarify test cases, or give you hints. How can I assist you with the current task?";
+    }
+
     return "TRANSFORM_TO_RECRUITER_MODE";
+  }
+
+  // ── Helper Logic for "Precision" ───────────────────────────────────────
+
+  private simplifyDescription(desc: string): string {
+    // Clear HTML and extract first logical sentence
+    const plain = desc.replace(/<[^>]*>?/gm, '').split('.')[0];
+    return plain.charAt(0).toLowerCase() + plain.slice(1);
+  }
+
+  private getSuggestedPattern(context: any): string {
+    const desc = (context.description || '').toLowerCase();
+    if (desc.includes('search') || desc.includes('find')) return "Hash Map (Dictionary)";
+    if (desc.includes('sort') || desc.includes('order')) return "Two-pointer approach";
+    if (desc.includes('sum') || desc.includes('total')) return "Accumulator pattern";
+    return "Sliding Window or Iterative approach";
   }
 
   async getAllConversations(): Promise<Conversation[]> {
