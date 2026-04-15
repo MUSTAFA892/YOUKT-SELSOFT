@@ -251,14 +251,14 @@ export default function CandidateProgressPage() {
                <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Live Sync Alpha v2.0</span>
              </div>
-            <h1 className="text-6xl font-black text-foreground tracking-tighter">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tighter">
               Personal <span className="animate-flowing-text italic drop-shadow-[0_0_15px_rgba(245,158,11,0.2)]">Analytics</span>
             </h1>
             <p className="text-neutral-500 font-medium max-w-lg leading-relaxed">Your real-time performance matrix across labs, assessments, and coding domains.</p>
           </div>
           
-          <div className="flex gap-6">
-            <div className="bg-surface/50 border border-border px-8 py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all shadow-3d hover:shadow-xl">
+          <div className="flex flex-wrap gap-4 w-full lg:w-auto">
+            <div className="flex-1 bg-surface/50 border border-border px-6 py-4 lg:px-8 lg:py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all shadow-3d hover:shadow-xl min-w-[160px]">
               <div className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-1">Overall Accuracy</div>
               <div className="text-4xl font-black text-foreground group-hover:text-amber-500 transition-colors tracking-tighter">{insights.stats.avgScore}%</div>
             </div>
@@ -283,7 +283,7 @@ export default function CandidateProgressPage() {
               <BrainCircuit className="w-64 h-64 text-amber-500" />
             </div>
             
-            <div className="flex flex-col h-full justify-between relative z-10">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 lg:gap-12 relative z-10">
               <div>
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-14 h-14 rounded-[1.5rem] bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-inner border border-amber-500/20">

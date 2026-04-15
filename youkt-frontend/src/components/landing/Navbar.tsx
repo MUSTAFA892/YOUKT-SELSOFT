@@ -68,7 +68,7 @@ export default function Navbar() {
             </Link>
 
             {/* Central Nav Links */}
-            <div className="flex items-center gap-1 md:gap-2">
+            <div className="hidden lg:flex items-center gap-1 md:gap-2">
               {navLinks.map((link) => (
                 <Link 
                   key={link.name} 
@@ -101,7 +101,7 @@ export default function Navbar() {
             </div>
 
             {/* Action Group */}
-            <div className="flex items-center flex-nowrap gap-2 md:gap-4 ml-4 border-l border-black/10 dark:border-white/10 pl-4 md:pl-6">
+            <div className="flex items-center flex-nowrap gap-2 md:gap-4 ml-4 border-l border-black/10 dark:border-white/10 pl-2 md:pl-6 leading-none">
               
                 <motion.button
                   whileHover={{ scale: 1.1, rotate: 15 }}
@@ -116,24 +116,27 @@ export default function Navbar() {
                       setTheme(nextTheme);
                     }
                   }}
-                  className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-neutral-600 dark:text-neutral-400 hover:text-foreground relative w-10 h-10 flex items-center justify-center overflow-hidden"
+                  className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-neutral-600 dark:text-neutral-400 hover:text-foreground relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center overflow-hidden shrink-0"
                   aria-label="Toggle theme"
                 >
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={resolvedTheme}
-                      initial={{ scale: 0.3, opacity: 0, rotate: -180 }}
-                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                      exit={{ scale: 0.3, opacity: 0, rotate: 180 }}
-                      transition={{ type: "spring", stiffness: 250, damping: 25 }}
-                      className="absolute"
-                    >
-                      {mounted && (resolvedTheme === "dark" ? <Sun className="w-4 h-4 md:w-5 md:h-5" /> : <Moon className="w-4 h-4 md:w-5 md:h-5" />)}
-                    </motion.div>
-                  </AnimatePresence>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={resolvedTheme}
+                    initial={{ scale: 0.3, opacity: 0, rotate: -180 }}
+                    animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                    exit={{ scale: 0.3, opacity: 0, rotate: 180 }}
+                    transition={{ type: "spring", stiffness: 250, damping: 25 }}
+                    className="absolute"
+                  >
+                    {mounted && (resolvedTheme === "dark" ? <Sun className="w-4 h-4 md:w-5 md:h-5" /> : <Moon className="w-4 h-4 md:w-5 md:h-5" />)}
+                  </motion.div>
+                </AnimatePresence>
                 </motion.button>
 
-              <AccountSwitcher />
+              <div className="hidden sm:block">
+                <AccountSwitcher />
+              </div>
+              
               {!scrolled && (
                 <motion.div
                   whileHover={{ scale: 1.05, translateY: -2 }}
@@ -141,7 +144,7 @@ export default function Navbar() {
                 >
                   <Link 
                     href="/signup" 
-                    className="hidden md:flex px-5 py-2 bg-primary text-white text-xs font-black rounded-full hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap shrink-0"
+                    className="hidden xl:flex px-5 py-2 bg-primary text-white text-xs font-black rounded-full hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap shrink-0"
                   >
                     Get Started
                   </Link>
@@ -150,7 +153,7 @@ export default function Navbar() {
               
               {/* Mobile Menu Toggle */}
               <button 
-                className="md:hidden p-2" 
+                className="lg:hidden p-2" 
                 onClick={() => setIsOpen(!isOpen)}
               >
                 {isOpen ? <X className="w-5 h-5 text-foreground" /> : <Menu className="w-5 h-5 text-foreground" />}
@@ -173,38 +176,56 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] bg-background/90 backdrop-blur-3xl flex items-center justify-center p-12"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-[150] bg-background flex flex-col p-6"
           >
-            <div className="flex flex-col gap-8 text-center">
+            <div className="flex items-center justify-between mb-12">
+              <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center">
+                  <Terminal className="w-4 h-4" />
+                </div>
+                <span className="text-lg font-black tracking-tighter text-foreground">YOUKT</span>
+              </Link>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+              >
+                <X className="w-6 h-6 text-foreground" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-6">
               {navLinks.map((link, idx) => (
                 <motion.div
                   key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
                 >
                   <Link 
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-5xl font-black text-neutral-500 hover:text-foreground transition-all flex items-center gap-6 group"
+                    className="text-3xl font-black text-neutral-500 hover:text-foreground transition-all flex items-center gap-4 py-2"
                   >
-                    <link.icon className="w-10 h-10 group-hover:text-primary transition-colors" />
+                    <link.icon className="w-8 h-8 text-primary/50" />
                     {link.name}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                transition={{ delay: 0.5 }}
-                className="mt-12 flex flex-col gap-4"
+            </div>
+
+            <div className="mt-auto pt-8 border-t border-border flex flex-col gap-4">
+              <Link 
+                href="/signup" 
+                onClick={() => setIsOpen(false)}
+                className="w-full py-4 bg-primary text-white text-center font-black rounded-2xl shadow-lg shadow-primary/20"
               >
-                <Link href="/signup" className="text-2xl font-bold py-4 bg-foreground text-background rounded-2xl px-12">Get Started</Link>
-                <button onClick={() => setIsOpen(false)} className="text-neutral-500 font-bold">Close Menu</button>
-              </motion.div>
+                Get Started
+              </Link>
+              <p className="text-center text-xs font-bold text-neutral-500 uppercase tracking-widest">YOUKT Professional v2.0</p>
             </div>
           </motion.div>
         )}

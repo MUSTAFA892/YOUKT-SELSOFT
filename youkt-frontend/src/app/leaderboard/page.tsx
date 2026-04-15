@@ -31,7 +31,7 @@ export default function LeaderboardPage() {
               <Star className="w-3 h-3 fill-current" />
               <span>World Rankings</span>
             </div>
-            <h1 className="text-5xl font-black text-foreground tracking-tight">Global <span className="text-primary tracking-tighter">Leaderboard</span></h1>
+            <h1 className="text-3xl sm:text-5xl font-black text-foreground tracking-tight">Global <span className="text-primary tracking-tighter">Leaderboard</span></h1>
             <p className="text-neutral-500 max-w-xl font-medium">
               The ultimate arena where elite engineers compete. Climb the ranks by solving complex problems and participating in contests.
             </p>

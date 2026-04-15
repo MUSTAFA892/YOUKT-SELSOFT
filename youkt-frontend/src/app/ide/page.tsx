@@ -59,10 +59,10 @@ export default function CustomIDE() {
     <div className="flex flex-col h-screen w-full bg-background overflow-hidden relative">
       <Navbar />
       
-      <div className="flex-1 flex overflow-hidden pt-24 pb-6 px-6 gap-6 w-full max-w-[1600px] mx-auto">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden pt-24 pb-6 px-4 md:px-6 gap-6 w-full max-w-[1600px] mx-auto">
         
         {/* Left Pane: Custom Problem config */}
-        <div className="w-[45%] flex flex-col gap-6">
+        <div className="w-full lg:w-[45%] flex flex-col gap-6 shrink-0 h-[300px] lg:h-auto">
           
           {/* Problem Statement Box */}
           <div className="flex-1 flex flex-col bg-surface/50 border border-border rounded-3xl backdrop-blur-sm shadow-3d overflow-hidden">
