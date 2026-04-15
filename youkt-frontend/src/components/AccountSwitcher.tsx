@@ -1,7 +1,8 @@
 "use client";
 
 import { useAuth } from "./AuthProvider";
-import { UserCircle, Users } from "lucide-react";
+import { UserCircle, Users, ChevronDown, Trophy, Target } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export function AccountSwitcher() {
@@ -15,21 +16,47 @@ export function AccountSwitcher() {
     <div className="relative">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-border hover:border-primary/50 transition-colors"
+        className="flex items-center flex-nowrap gap-2 px-3 py-1.5 rounded-full bg-surface border border-border hover:border-primary/50 transition-colors"
       >
         <UserCircle className="w-4 h-4 text-neutral-500" />
-        <span className="text-xs font-semibold">{currentUser.name}</span>
-        <span className="text-[10px] uppercase font-bold text-primary bg-primary/10 px-1.5 rounded">
-          {currentUser.role}
-        </span>
+        <div className="flex items-center gap-2 leading-none whitespace-nowrap">
+          <span className="text-xs font-semibold">{currentUser.name}</span>
+          <span className="text-[9px] uppercase font-black text-primary/80 bg-primary/10 px-1.5 py-0.5 rounded-md border border-primary/20">
+            {currentUser.role}
+          </span>
+        </div>
+        <ChevronDown className={`w-3.5 h-3.5 text-neutral-500 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-lg shadow-xl shadow-black/10 overflow-hidden z-50">
-          <div className="px-3 py-2 border-b border-border bg-surface">
-            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">Switch Account</span>
+        <div className="absolute right-0 mt-2 w-64 bg-background border border-border rounded-xl shadow-2xl shadow-black/20 overflow-hidden z-[101]">
+          {/* Quick Nav Section */}
+          <div className="p-2 border-b border-border bg-black/5 dark:bg-white/5">
+            <div className="px-2 py-1 mb-1">
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Navigation</span>
+            </div>
+            <Link 
+              href="/leaderboard" 
+              onClick={() => setIsOpen(false)}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/10 hover:text-primary transition-all text-neutral-600 dark:text-neutral-300"
+            >
+              <Trophy className="w-4 h-4" />
+              Leaderboard
+            </Link>
+            <Link 
+              href="/progress" 
+              onClick={() => setIsOpen(false)}
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-primary/10 hover:text-primary transition-all text-neutral-600 dark:text-neutral-300"
+            >
+              <Target className="w-4 h-4" />
+              My Progress
+            </Link>
           </div>
+
           <div className="p-1 max-h-72 overflow-y-auto">
+            <div className="px-2 py-1.5">
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Switch Account</span>
+            </div>
             {/* Standard test accounts */}
             <div className="px-2 py-1">
               <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider">Test Accounts</span>

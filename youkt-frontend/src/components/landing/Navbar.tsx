@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Terminal, Menu, X, Rocket, Command, Zap, Trophy, MessageSquare, Sun, Moon, Target } from "lucide-react";
+import { Terminal, Menu, X, Rocket, Command, Zap, MessageSquare, Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
@@ -29,11 +29,9 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
+    { name: "Problems", href: "/problems", icon: Zap },
     { name: "Interviews", href: "/interviews", icon: Command },
     { name: "Custom IDE", href: "/ide", icon: Terminal },
-    { name: "Problems", href: "/problems", icon: Zap },
-    { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
-    { name: "Progress", href: "/progress", icon: Target },
     { name: "Discuss", href: "/discuss", icon: MessageSquare },
   ];
 
@@ -44,7 +42,7 @@ export default function Navbar() {
           initial={false}
           animate={{ 
             width: scrolled ? "auto" : "90%",
-            maxWidth: scrolled ? "850px" : "1200px",
+            maxWidth: scrolled ? "950px" : "1200px",
             y: scrolled ? 0 : 0,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -79,10 +77,14 @@ export default function Navbar() {
                   onMouseLeave={() => setHoveredLink(null)}
                   className="relative px-3 md:px-5 py-2 text-xs md:text-sm font-bold text-neutral-600 dark:text-neutral-400 hover:text-foreground transition-all duration-300 rounded-full"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    {scrolled && <link.icon className="w-3.5 h-3.5" />}
+                  <motion.span 
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative z-10 flex items-center gap-2 whitespace-nowrap"
+                  >
+                    {scrolled && <link.icon className="w-3.5 h-3.5 shrink-0" />}
                     {link.name}
-                  </span>
+                  </motion.span>
                   
                   {hoveredLink === link.name && (
                     <motion.div 
@@ -99,36 +101,51 @@ export default function Navbar() {
             </div>
 
             {/* Action Group */}
-            <div className="flex items-center gap-2 md:gap-4 ml-4 border-l border-black/10 dark:border-white/10 pl-4 md:pl-6">
+            <div className="flex items-center flex-nowrap gap-2 md:gap-4 ml-4 border-l border-black/10 dark:border-white/10 pl-4 md:pl-6">
               
-              {/* Theme Toggle */}
-              <button
-                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-neutral-600 dark:text-neutral-400 hover:text-foreground relative w-10 h-10 flex items-center justify-center overflow-hidden"
-                aria-label="Toggle theme"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={resolvedTheme}
-                    initial={{ y: -20, opacity: 0, rotate: -90 }}
-                    animate={{ y: 0, opacity: 1, rotate: 0 }}
-                    exit={{ y: 20, opacity: 0, rotate: 90 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="absolute"
-                  >
-                    {mounted && (resolvedTheme === "dark" ? <Sun className="w-4 h-4 md:w-5 md:h-5" /> : <Moon className="w-4 h-4 md:w-5 md:h-5" />)}
-                  </motion.div>
-                </AnimatePresence>
-              </button>
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 15 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => {
+                    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
+                    if (typeof document !== 'undefined' && (document as any).startViewTransition) {
+                      (document as any).startViewTransition(() => {
+                        setTheme(nextTheme);
+                      });
+                    } else {
+                      setTheme(nextTheme);
+                    }
+                  }}
+                  className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-neutral-600 dark:text-neutral-400 hover:text-foreground relative w-10 h-10 flex items-center justify-center overflow-hidden"
+                  aria-label="Toggle theme"
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={resolvedTheme}
+                      initial={{ scale: 0.3, opacity: 0, rotate: -180 }}
+                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                      exit={{ scale: 0.3, opacity: 0, rotate: 180 }}
+                      transition={{ type: "spring", stiffness: 250, damping: 25 }}
+                      className="absolute"
+                    >
+                      {mounted && (resolvedTheme === "dark" ? <Sun className="w-4 h-4 md:w-5 md:h-5" /> : <Moon className="w-4 h-4 md:w-5 md:h-5" />)}
+                    </motion.div>
+                  </AnimatePresence>
+                </motion.button>
 
               <AccountSwitcher />
               {!scrolled && (
-                <Link 
-                  href="/signup" 
-                  className="hidden md:flex px-5 py-2 bg-primary text-white text-xs font-black rounded-full hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20"
+                <motion.div
+                  whileHover={{ scale: 1.05, translateY: -2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  Get Started
-                </Link>
+                  <Link 
+                    href="/signup" 
+                    className="hidden md:flex px-5 py-2 bg-primary text-white text-xs font-black rounded-full hover:brightness-110 transition-all shadow-lg shadow-primary/20 whitespace-nowrap shrink-0"
+                  >
+                    Get Started
+                  </Link>
+                </motion.div>
               )}
               
               {/* Mobile Menu Toggle */}

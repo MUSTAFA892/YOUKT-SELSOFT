@@ -5,6 +5,7 @@ import Stats from "@/components/landing/Stats";
 import Features from "@/components/landing/Features";
 import ProblemList from "@/components/landing/ProblemList";
 import LanguageProgress from "@/components/LanguageProgress";
+import ScrollToTop from "@/components/landing/ScrollToTop";
 
 // Mark this route as dynamic since activity logs change with each submission
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
       <Navbar />
+      <ScrollToTop />
       
       <main>
         {/* Hero Section */}
@@ -44,7 +46,7 @@ export default async function Home() {
             </div>
             <span className="font-bold tracking-tight">YOUKT © 2026</span>
           </div>
-          <div className="flex gap-8 text-sm text-neutral-500">
+          <div className="flex gap-8 text-sm text-neutral-500 md:pr-20">
             <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
             <a href="#" className="hover:text-foreground transition-colors">Terms</a>
             <a href="#" className="hover:text-foreground transition-colors">Discord</a>

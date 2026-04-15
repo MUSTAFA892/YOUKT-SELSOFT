@@ -242,7 +242,7 @@ export default function CandidateProgressPage() {
 
       <Navbar />
       
-      <div className="max-w-6xl mx-auto p-8 pt-16 space-y-16">
+      <div className="max-w-6xl mx-auto p-8 pt-32 space-y-16 relative z-10">
         
         {/* Header Segment */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border pb-12">
@@ -252,7 +252,7 @@ export default function CandidateProgressPage() {
                <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Live Sync Alpha v2.0</span>
              </div>
             <h1 className="text-6xl font-black text-foreground tracking-tighter">
-              Personal <span className="text-amber-500 italic drop-shadow-[0_0_15px_rgba(245,158,11,0.2)]">Analytics</span>
+              Personal <span className="animate-flowing-text italic drop-shadow-[0_0_15px_rgba(245,158,11,0.2)]">Analytics</span>
             </h1>
             <p className="text-neutral-500 font-medium max-w-lg leading-relaxed">Your real-time performance matrix across labs, assessments, and coding domains.</p>
           </div>
@@ -377,7 +377,7 @@ export default function CandidateProgressPage() {
                  <h4 className="text-xs font-black text-black/40 uppercase tracking-[0.3em] mb-4">Jump Matrix</h4>
                  <p className="text-3xl font-black text-black leading-none tracking-tighter">Expand your<br/>mastery gap.</p>
                </div>
-               <div className="relative z-10 w-fit p-4 bg-black rounded-3xl flex items-center justify-center group-hover:px-10 transition-all duration-500">
+               <div className="relative z-10 w-fit p-4 bg-black rounded-3xl flex items-center justify-center group-hover:px-10 transition-all duration-500 mt-8">
                   <ArrowUpRight className="w-6 h-6 text-white group-hover:rotate-45 transition-transform" />
                </div>
             </Link>

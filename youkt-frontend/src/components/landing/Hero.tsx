@@ -31,19 +31,23 @@ export default function Hero() {
             Master complex algorithms, compete in global contests, and build a world-class developer profile with our high-performance execution engine.
           </p>
           <div className="flex flex-wrap gap-4 font-medium">
-            <Link 
-              href="#problems" 
-              className="px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 active:scale-95 transition-all shadow-lg shadow-primary/25 flex items-center gap-2 group"
-            >
-              Start Solving
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link 
-              href="/problems" 
-              className="px-8 py-4 glass text-foreground rounded-xl hover:bg-foreground/5 active:scale-95 transition-all flex items-center gap-2"
-            >
-              Explore Archive
-            </Link>
+            <motion.div whileHover={{ scale: 1.05, translateY: -2 }} whileTap={{ scale: 0.95 }}>
+              <Link 
+                href="#problems" 
+                className="px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 hover:shadow-primary/40 flex items-center gap-2 group"
+              >
+                Start Solving
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05, translateY: -2 }} whileTap={{ scale: 0.95 }}>
+              <Link 
+                href="/problems" 
+                className="px-8 py-4 glass text-foreground rounded-xl hover:bg-foreground/5 transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                Explore Archive
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
 

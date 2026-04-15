@@ -51,6 +51,8 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Glassmorphism */
@@ -58,6 +60,9 @@ body {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
+  transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+              backdrop-filter 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-morphism {
@@ -79,7 +84,9 @@ body {
 
 .shadow-3d {
   box-shadow: var(--shadow-3d);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              background-color 1s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shadow-3d:hover {
@@ -127,5 +134,53 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* View Transitions API - Something New & Professional */
+/* Only works in modern browsers, falls back gracefully to CSS transitions */
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes fade-out {
+  to { opacity: 0; }
+}
+
+::view-transition-old(root) {
+  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 400ms cubic-bezier(0.4, 0, 0.2, 1) both fade-in;
+}
+
+/* Ensure no jumping during transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  height: 100%;
+}
+
+/* Flowing Text Animation */
+.animate-flowing-text {
+  background: linear-gradient(
+    90deg, 
+    #f59e0b 0%, 
+    #fbbf24 30%, 
+    #fff7ed 50%, 
+    #fbbf24 70%, 
+    #f59e0b 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: flowing-background 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes flowing-background {
+  to {
+    background-position: 200% center;
+  }
 }
 
