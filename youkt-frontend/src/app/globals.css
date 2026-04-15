@@ -5,18 +5,18 @@ html {
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #09090b;
+  --background: #fcfcfd;
+  --foreground: #020617;
   --primary: #6366f1;
-  --primary-glow: rgba(99, 102, 241, 0.2);
+  --primary-glow: rgba(99, 102, 241, 0.15);
   --secondary: #06b6d4;
   --accent: #f43f5e;
-  --surface: #f8fafc;
-  --border: rgba(0, 0, 0, 0.06);
-  --card-bg: rgba(0, 0, 0, 0.02);
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.05);
-  --shadow-3d: 0 10px 40px -10px rgba(0, 0, 0, 0.1), 0 5px 20px -10px rgba(0, 0, 0, 0.05);
+  --surface: #ffffff;
+  --border: rgba(15, 23, 42, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(15, 23, 42, 0.06);
+  --shadow-3d: 0 20px 50px -12px rgba(15, 23, 42, 0.12), 0 8px 15px -8px rgba(15, 23, 42, 0.06);
 }
 
 .dark {

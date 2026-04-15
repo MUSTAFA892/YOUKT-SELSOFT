@@ -241,29 +241,35 @@ let SubmissionsService = class SubmissionsService {
         if (language === 'java') {
             const javaDir = (0, path_1.join)(tmp, `java_${uid}`);
             const javaFile = (0, path_1.join)(javaDir, 'Solution.java');
-            const classDir = javaDir;
             try {
-                await execAsync(`mkdir "${javaDir}"`);
+                await (0, promises_1.mkdir)(javaDir, { recursive: true });
                 await (0, promises_1.writeFile)(javaFile, code, 'utf8');
                 const compile = await execAsync(`javac "${javaFile}"`, { timeout: 10000 });
                 if (compile.stderr?.trim()) {
                     return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
                 }
-                const { stdout, stderr } = await execAsync(`java -cp "${classDir}" Solution`, { timeout: 5000 });
+                const start = process.hrtime();
+                const { stdout, stderr } = await execAsync(`java -cp "${javaDir}" Solution`, { timeout: 5000 });
+                const [s, ns] = process.hrtime(start);
+                const timeMs = s * 1000 + ns / 1e6;
                 if (stderr?.trim())
-                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
             }
             catch (e) {
+                if (e.message && (e.message.includes('not recognized') || e.message.includes('not found'))) {
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'Java compiler (javac) not found. Please install JDK.');
+                }
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
             }
             finally {
-                await execAsync(`rmdir /s /q "${javaDir}"`).catch(() => execAsync(`rm -rf "${javaDir}"`).catch(() => { }));
+                await (0, promises_1.rm)(javaDir, { recursive: true, force: true }).catch(() => { });
             }
         }
         if (language === 'c') {
             const cFile = (0, path_1.join)(tmp, `sol_${uid}.c`);
             const outFile = (0, path_1.join)(tmp, `sol_${uid}_out`);
+            const logFile = (0, path_1.join)(tmp, `sol_${uid}_log.txt`);
             try {
                 await (0, promises_1.writeFile)(cFile, code, 'utf8');
                 const compile = await execAsync(`gcc "${cFile}" -o "${outFile}"`, { timeout: 10000 });
@@ -273,12 +279,18 @@ let SubmissionsService = class SubmissionsService {
                 const runCmd = process.platform === 'win32'
                     ? `"${outFile}.exe"`
                     : `"${outFile}"`;
+                const start = process.hrtime();
                 const { stdout, stderr } = await execAsync(runCmd, { timeout: 5000 });
+                const [s, ns] = process.hrtime(start);
+                const timeMs = s * 1000 + ns / 1e6;
                 if (stderr?.trim())
-                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+                return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
             }
             catch (e) {
+                if (e.message && (e.message.includes('not recognized') || e.message.includes('not found'))) {
+                    return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'C compiler (gcc) not found. Please install MinGW or similar.');
+                }
                 return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
             }
             finally {
@@ -331,7 +343,7 @@ let SubmissionsService = class SubmissionsService {
                 const javaDir = (0, path_1.join)(tmp, `java_${uid}`);
                 const javaFile = (0, path_1.join)(javaDir, 'Solution.java');
                 try {
-                    await execAsync(`mkdir "${javaDir}"`);
+                    await (0, promises_1.mkdir)(javaDir, { recursive: true });
                     await (0, promises_1.writeFile)(javaFile, code, 'utf8');
                     const compile = await execAsync(`javac "${javaFile}"`, { timeout: 10000 });
                     if (compile.stderr?.trim())
@@ -345,7 +357,7 @@ let SubmissionsService = class SubmissionsService {
                     return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
                 }
                 finally {
-                    await execAsync(`rmdir /s /q "${javaDir}"`).catch(() => execAsync(`rm -rf "${javaDir}"`).catch(() => { }));
+                    await (0, promises_1.rm)(javaDir, { recursive: true, force: true }).catch(() => { });
                 }
             }
             if (language === 'c') {
@@ -379,7 +391,7 @@ let SubmissionsService = class SubmissionsService {
     }
     compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId) {
         const actual = (stdout || '').trim();
-        if (problemId) {
+        if (problemId && this.validationService) {
             const validationResult = this.validationService.validateOutput(problemId, input, expectedOutput, actual);
             const passed = validationResult.passed;
             return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, validationResult.message, timeMs);

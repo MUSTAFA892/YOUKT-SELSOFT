@@ -16,7 +16,7 @@ function SkillHeatmap({ skills }: { skills: CandidateInsights['skillHeatmap'] })
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <Activity className="w-5 h-5 text-amber-500" />
-        <h4 className="text-sm font-black text-white uppercase tracking-widest">Skill Mastery</h4>
+        <h4 className="text-sm font-black text-foreground uppercase tracking-widest">Skill Mastery</h4>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {skills.map((skill, i) => (
@@ -25,17 +25,17 @@ function SkillHeatmap({ skills }: { skills: CandidateInsights['skillHeatmap'] })
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: i * 0.1 }}
             key={i} 
-            className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-5 flex flex-col gap-3 group hover:border-amber-500/50 transition-all shadow-xl"
+            className="bg-surface/50 border border-border rounded-2xl p-5 flex flex-col gap-3 group hover:border-amber-500/50 transition-all shadow-xl"
           >
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black text-neutral-500 uppercase tracking-widest">{skill.topic}</span>
               <span className="text-[10px] text-neutral-600 font-mono italic">{skill.problemsSolved} solved</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-white tracking-tighter">{skill.score}%</span>
-              <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tighter">accuracy</span>
+              <span className="text-3xl font-black text-foreground tracking-tighter">{skill.score}%</span>
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-tighter">accuracy</span>
             </div>
-            <div className="w-full h-1.5 bg-neutral-800/50 rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${skill.score}%` }}
@@ -55,19 +55,25 @@ function ContributionCalendar({ logs }: { logs: ActivityLog[] }) {
   const weeksCount = 26;
   const daysInWeek = 7;
   
+  const toLocalDateStr = (date: Date) => {
+    return date.toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+  };
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // To align correctly, find the Sunday of 26 weeks ago
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - (weeksCount * daysInWeek - 1));
-  const dayOfWeek = startDate.getDay(); // 0 is Sun
-  startDate.setDate(startDate.getDate() - dayOfWeek); // Aligns to previous Sunday
+  // Find the end date: the upcoming Saturday (to always show full current week)
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + (6 - today.getDay()));
+  
+  // Calculate start: 26 weeks ago from that Saturday (always starts on a Sunday)
+  const startDate = new Date(endDate);
+  startDate.setDate(endDate.getDate() - (weeksCount * daysInWeek - 1));
 
   const activityMap = new Map<string, number>();
   logs.forEach(log => {
     const d = new Date(log.submittedAt);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = toLocalDateStr(d);
     activityMap.set(dateStr, (activityMap.get(dateStr) || 0) + 1);
   });
 
@@ -78,7 +84,7 @@ function ContributionCalendar({ logs }: { logs: ActivityLog[] }) {
     const weekDays = Array.from({ length: daysInWeek }).map((_, dayIdx) => {
       const d = new Date(startDate);
       d.setDate(startDate.getDate() + (weekIdx * 7) + dayIdx);
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = toLocalDateStr(d);
       
       if (dayIdx === 0 && d.getMonth() !== prevMonth) {
         monthLabels.push({
@@ -98,19 +104,19 @@ function ContributionCalendar({ logs }: { logs: ActivityLog[] }) {
   });
 
   const getColor = (count: number, isFuture: boolean) => {
-    if (isFuture) return 'bg-neutral-950 opacity-20';
-    if (count === 0) return 'bg-neutral-900/40';
+    if (isFuture) return 'bg-neutral-500 opacity-[0.03]';
+    if (count === 0) return 'bg-foreground/[0.03]';
     if (count === 1) return 'bg-amber-500/20';
-    if (count === 2) return 'bg-amber-500/50';
-    return 'bg-amber-500';
+    if (count === 2) return 'bg-amber-500/50 shadow-[inset_0_0_8px_rgba(245,158,11,0.2)]';
+    return 'bg-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]';
   };
 
   return (
-    <div className="bg-neutral-900/40 border border-neutral-800 rounded-[2rem] p-8 shadow-2xl backdrop-blur-md">
+    <div className="bg-surface/30 border border-border rounded-[2rem] p-8 shadow-2xl backdrop-blur-md">
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-2">
           <Flame className="w-5 h-5 text-orange-500" />
-          <h4 className="text-sm font-black text-white uppercase tracking-widest italic">Matrix Consistency</h4>
+          <h4 className="text-sm font-black text-foreground uppercase tracking-widest italic">Matrix Consistency</h4>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-tighter">Less</span>
@@ -124,14 +130,14 @@ function ContributionCalendar({ logs }: { logs: ActivityLog[] }) {
       </div>
 
       <div className="flex gap-4">
-        {/* Day Labels */}
-        <div className="flex flex-col justify-between pt-6 text-[9px] font-black text-neutral-700 uppercase pr-2">
+        {/* Day Labels - Now aligned perfectly with a grid */}
+        <div className="grid grid-rows-7 gap-1.5 pt-[1.75rem] text-[9px] font-black text-neutral-500 uppercase pr-2">
           <span>Sun</span>
-          <span className="text-neutral-500">Mon</span>
+          <span>Mon</span>
           <span>Tue</span>
-          <span className="text-neutral-500">Wed</span>
+          <span>Wed</span>
           <span>Thu</span>
-          <span className="text-neutral-500">Fri</span>
+          <span>Fri</span>
           <span>Sat</span>
         </div>
 
@@ -159,7 +165,7 @@ function ContributionCalendar({ logs }: { logs: ActivityLog[] }) {
                   >
                     {!day.isFuture && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-50">
-                        <div className="bg-neutral-900 border border-neutral-800 text-[10px] text-white px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl">
+                        <div className="bg-surface border border-border text-[10px] text-foreground px-3 py-1.5 rounded-lg whitespace-nowrap shadow-2xl">
                           <span className="font-black text-amber-500">{day.count} hits</span> on {new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                         </div>
                       </div>
@@ -202,7 +208,7 @@ export default function CandidateProgressPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-8">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-8">
         <Loader2 className="w-12 h-12 animate-spin text-amber-500 mb-4" />
         <p className="text-neutral-500 font-mono text-xs uppercase tracking-[0.2em] animate-pulse">Syncing Matrix...</p>
       </div>
@@ -211,11 +217,11 @@ export default function CandidateProgressPage() {
 
   if (!insights) {
     return (
-      <div className="min-h-screen bg-neutral-950">
+      <div className="min-h-screen bg-background">
         <Navbar />
         <div className="h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-8 text-center">
           <Target className="w-16 h-16 text-neutral-800 mb-6" />
-          <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-tighter">Initialization Required</h2>
+          <h2 className="text-2xl font-black text-foreground mb-2 uppercase tracking-tighter">Initialization Required</h2>
           <p className="text-neutral-500 max-w-sm mb-8 font-medium">Your personal analytics matrix has not been activated. Solve your first problem to begin initialization.</p>
           <Link href="/" className="px-8 py-3 bg-amber-500 text-black font-black uppercase tracking-widest rounded-2xl hover:bg-amber-400 transition-all shadow-2xl">
             Return to Labs
@@ -226,32 +232,39 @@ export default function CandidateProgressPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-200 selection:bg-amber-500 selection:text-black">
+    <div className="min-h-screen bg-background text-foreground selection:bg-amber-500 selection:text-black relative overflow-hidden">
+      {/* Decorative Atmosphere */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-amber-500/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-5%] left-[10%] w-[35%] h-[35%] bg-secondary/5 rounded-full blur-[120px]" />
+      </div>
+
       <Navbar />
       
       <div className="max-w-6xl mx-auto p-8 pt-16 space-y-16">
         
         {/* Header Segment */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-neutral-900 pb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border pb-12">
           <div className="space-y-4">
              <div className="flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full w-fit">
                <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Live Sync Alpha v2.0</span>
              </div>
-            <h1 className="text-6xl font-black text-white tracking-tighter">
+            <h1 className="text-6xl font-black text-foreground tracking-tighter">
               Personal <span className="text-amber-500 italic drop-shadow-[0_0_15px_rgba(245,158,11,0.2)]">Analytics</span>
             </h1>
             <p className="text-neutral-500 font-medium max-w-lg leading-relaxed">Your real-time performance matrix across labs, assessments, and coding domains.</p>
           </div>
           
           <div className="flex gap-6">
-            <div className="bg-neutral-900/50 border border-neutral-800 px-8 py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all">
-              <div className="text-[10px] font-black text-neutral-600 uppercase tracking-widest mb-1">Overall Accuracy</div>
-              <div className="text-4xl font-black text-white group-hover:text-amber-500 transition-colors tracking-tighter">{insights.stats.avgScore}%</div>
+            <div className="bg-surface/50 border border-border px-8 py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all shadow-3d hover:shadow-xl">
+              <div className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-1">Overall Accuracy</div>
+              <div className="text-4xl font-black text-foreground group-hover:text-amber-500 transition-colors tracking-tighter">{insights.stats.avgScore}%</div>
             </div>
-            <div className="bg-neutral-900/50 border border-neutral-800 px-8 py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all">
-              <div className="text-[10px] font-black text-neutral-600 uppercase tracking-widest mb-1">Matrix Mastery</div>
-              <div className="text-4xl font-black text-white group-hover:text-amber-500 transition-colors tracking-tighter">{insights.stats.problemsSolved}</div>
+            <div className="bg-surface/50 border border-border px-8 py-5 rounded-[2rem] text-right group hover:border-amber-500/30 transition-all shadow-3d hover:shadow-xl">
+              <div className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-1">Matrix Mastery</div>
+              <div className="text-4xl font-black text-foreground group-hover:text-amber-500 transition-colors tracking-tighter">{insights.stats.problemsSolved}</div>
             </div>
           </div>
         </div>
@@ -264,7 +277,7 @@ export default function CandidateProgressPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-2 bg-neutral-900/30 border border-neutral-800 rounded-[3.5rem] p-12 relative overflow-hidden group shadow-2xl backdrop-blur-sm"
+            className="lg:col-span-2 bg-surface/30 border border-border rounded-[3.5rem] p-12 relative overflow-hidden group shadow-3d hover:shadow-2xl backdrop-blur-sm"
           >
             <div className="absolute -top-10 -right-10 p-8 opacity-[0.02] group-hover:opacity-10 scale-150 transition-all duration-1000">
               <BrainCircuit className="w-64 h-64 text-amber-500" />
@@ -318,7 +331,7 @@ export default function CandidateProgressPage() {
             transition={{ delay: 0.1 }}
             className="flex flex-col gap-10"
           >
-            <div className="bg-neutral-900/30 border border-neutral-800 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden backdrop-blur-sm">
+            <div className="bg-surface/30 border border-border rounded-[3rem] p-10 shadow-3d hover:shadow-2xl relative overflow-hidden backdrop-blur-sm">
                <div className="flex items-center gap-3 mb-10">
                 <BarChart3 className="w-6 h-6 text-neutral-500" />
                 <h4 className="text-[11px] font-black text-neutral-500 uppercase tracking-[0.3em]">Session History</h4>
@@ -327,8 +340,8 @@ export default function CandidateProgressPage() {
               <div className="space-y-10">
                 <div className="flex justify-between items-end">
                   <div>
-                    <div className="text-[10px] font-black text-neutral-600 uppercase tracking-widest mb-2">Practice Labs</div>
-                    <div className="text-5xl font-black text-white tracking-tighter">{insights.stats.problemsSolved}</div>
+                    <div className="text-[10px] font-black text-neutral-500 uppercase tracking-widest mb-2">Practice Labs</div>
+                    <div className="text-5xl font-black text-foreground tracking-tighter">{insights.stats.problemsSolved}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-[10px] font-black text-neutral-600 uppercase tracking-widest mb-2">Assessments</div>
@@ -336,7 +349,7 @@ export default function CandidateProgressPage() {
                   </div>
                 </div>
                 
-                <div className="pt-8 border-t border-neutral-800 space-y-5">
+                <div className="pt-8 border-t border-border space-y-5">
                    <div className="flex items-center justify-between">
                     <span className="text-[11px] font-black text-neutral-500 uppercase tracking-widest">Integrity Score</span>
                     <span className={`text-[10px] font-black uppercase px-4 py-1.5 rounded-full border border-current shadow-inner ${
@@ -380,7 +393,7 @@ export default function CandidateProgressPage() {
         >
           <div className="flex items-center gap-3">
             <Flame className="w-6 h-6 text-orange-500 group-hover:animate-bounce" />
-            <h4 className="text-sm font-black text-white uppercase tracking-[0.4em]">Active Pulse Mapping</h4>
+            <h4 className="text-sm font-black text-foreground uppercase tracking-[0.4em]">Active Pulse Mapping</h4>
           </div>
           <ContributionCalendar logs={logs} />
         </motion.section>

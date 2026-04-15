@@ -83,7 +83,7 @@ let ProblemsService = class ProblemsService {
                 wrapperCode: {
                     python: '{user_code}\nimport json\nprint(json.dumps(fizz_buzz({input})))',
                     javascript: '{user_code}\nconsole.log(JSON.stringify(fizzBuzz({input})));',
-                    java: 'import java.util.*;\npublic class Solution {\n    {user_code}\n    public static void main(String[] args) {\n        System.out.println(Arrays.toString(fizzBuzz({input})).replace(" ", ""));\n    }\n}',
+                    java: 'import java.util.*;\npublic class Solution {\n    {user_code}\n    public static void main(String[] args) {\n        String[] res = fizzBuzz({input});\n        System.out.println("[" + String.join(",", Arrays.stream(res).map(s -> "\\"" + s + "\\"").toArray(String[]::new)) + "]");\n    }\n}',
                     c: '#include <stdio.h>\n{user_code}\nint main() {\n    char res[100][10]; int n = {input}; fizz_buzz(n, res);\n    printf("[");\n    for(int i=0; i<n; i++) { printf("\\"%s\\"%s", res[i], i==n-1?"":","); }\n    printf("]\\n"); return 0;\n}'
                 }
             },

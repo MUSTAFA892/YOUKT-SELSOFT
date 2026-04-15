@@ -7,7 +7,7 @@
 
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { exec }                            from 'child_process';
-import { writeFile, unlink }               from 'fs/promises';
+import { writeFile, unlink, mkdir, rm }      from 'fs/promises';
 import { join }                            from 'path';
 import { promisify }                       from 'util';
 import { tmpdir }                          from 'os';
@@ -397,19 +397,12 @@ export class SubmissionsService {
     }
 
     // ── Java ──────────────────────────────────────────────────────────────────
-    // Java is special:
-    //   1. The filename MUST match the class name → Solution.java
-    //   2. First compile:  javac Solution.java   → creates Solution.class
-    //   3. Then run:       java  -cp <dir> Solution
-    //   4. Clean up both  .java and .class files
     if (language === 'java') {
       const javaDir  = join(tmp, `java_${uid}`);
       const javaFile = join(javaDir, 'Solution.java');
-      const classDir = javaDir; // javac outputs .class into same folder
 
       try {
-        // Create a unique temp folder for this submission
-        await execAsync(`mkdir "${javaDir}"`);
+        await mkdir(javaDir, { recursive: true });
         await writeFile(javaFile, code, 'utf8');
 
         // Step 1 — Compile
@@ -419,30 +412,31 @@ export class SubmissionsService {
         }
 
         // Step 2 — Run
+        const start = process.hrtime();
         const { stdout, stderr } = await execAsync(
-          `java -cp "${classDir}" Solution`, { timeout: 5000 }
+          `java -cp "${javaDir}" Solution`, { timeout: 5000 }
         );
-        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
+        const [s, ns] = process.hrtime(start);
+        const timeMs = s * 1000 + ns / 1e6;
 
-      } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
-      finally {
-        // Clean up the entire temp folder
-        await execAsync(`rmdir /s /q "${javaDir}"`).catch(() =>
-          execAsync(`rm -rf "${javaDir}"`).catch(() => {})
-        );
+        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
+
+      } catch (e: any) {
+        if (e.message && (e.message.includes('not recognized') || e.message.includes('not found'))) {
+          return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'Java compiler (javac) not found. Please install JDK.');
+        }
+        return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+      } finally {
+        await rm(javaDir, { recursive: true, force: true }).catch(() => {});
       }
     }
 
     // ── C ─────────────────────────────────────────────────────────────────────
-    // C is also compiled:
-    //   1. Write code to solution.c
-    //   2. Compile:  gcc solution.c -o solution_out
-    //   3. Run:      ./solution_out  (Mac/Linux) OR solution_out.exe (Windows)
-    //   4. Clean up .c and the compiled binary
     if (language === 'c') {
       const cFile  = join(tmp, `sol_${uid}.c`);
       const outFile = join(tmp, `sol_${uid}_out`);
+      const logFile = join(tmp, `sol_${uid}_log.txt`);
 
       try {
         await writeFile(cFile, code, 'utf8');
@@ -453,17 +447,25 @@ export class SubmissionsService {
           return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
         }
 
-        // Step 2 — Run (Windows uses the file directly, Mac/Linux needs ./)
+        // Step 2 — Run
         const runCmd  = process.platform === 'win32'
           ? `"${outFile}.exe"`
           : `"${outFile}"`;
 
+        const start = process.hrtime();
         const { stdout, stderr } = await execAsync(runCmd, { timeout: 5000 });
-        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim());
-        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, undefined, problemId);
+        const [s, ns] = process.hrtime(start);
+        const timeMs = s * 1000 + ns / 1e6;
 
-      } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
-      finally {
+        if (stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', stderr.trim(), timeMs);
+        return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout, timeMs, problemId);
+
+      } catch (e: any) {
+        if (e.message && (e.message.includes('not recognized') || e.message.includes('not found'))) {
+          return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', 'C compiler (gcc) not found. Please install MinGW or similar.');
+        }
+        return this.handleExecError(e, testCaseNum, description, input, expectedOutput);
+      } finally {
         await this.safeDelete(cFile);
         await this.safeDelete(outFile);
         await this.safeDelete(outFile + '.exe');
@@ -519,7 +521,7 @@ export class SubmissionsService {
         const javaDir  = join(tmp, `java_${uid}`);
         const javaFile = join(javaDir, 'Solution.java');
         try {
-          await execAsync(`mkdir "${javaDir}"`);
+          await mkdir(javaDir, { recursive: true });
           await writeFile(javaFile, code, 'utf8');
           const compile = await execAsync(`javac "${javaFile}"`, { timeout: 10000 });
           if (compile.stderr?.trim()) return this.createResult(testCaseNum, description, input, expectedOutput, 'error', '', compile.stderr.trim());
@@ -529,7 +531,7 @@ export class SubmissionsService {
           return this.compareOutput(testCaseNum, description, input, expectedOutput, stdout);
         } catch (e: any) { return this.handleExecError(e, testCaseNum, description, input, expectedOutput); }
         finally {
-          await execAsync(`rmdir /s /q "${javaDir}"`).catch(() => execAsync(`rm -rf "${javaDir}"`).catch(() => {}));
+          await rm(javaDir, { recursive: true, force: true }).catch(() => {});
         }
       }
 
@@ -566,7 +568,7 @@ export class SubmissionsService {
     const actual   = (stdout || '').trim();
     
     // Use problem-specific validation if available
-    if (problemId) {
+    if (problemId && this.validationService) {
       const validationResult = this.validationService.validateOutput(problemId, input, expectedOutput, actual);
       const passed = validationResult.passed;
       return this.createResult(testCaseNum, description, input, expectedOutput, passed ? 'pass' : 'fail', actual, validationResult.message, timeMs);

@@ -253,5 +253,52 @@
       }
     ],
     "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "45360f10-9d08-4a1e-85be-0c112db5bc1f",
+        "timestamp": "2026-04-15T12:38:16.093Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Of course! Let's break down **Two Sum**. \n\nThe goal here is to given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to the target\n\n### Key Precise Details:\n\n- **Input**: An array of integers `nums` and an integer `target`\n- **Output**: An array of two indices [i, j]\n- **Target Complexity**: O(n)\n\n### Core Strategy:\nTry thinking about how you would solve this manually with pen and paper first. For example, if you see a similar pattern, could a Sliding Window or Iterative approach be useful here?\n\nDoes this focus help you structure your code?",
+        "id": "ddf5486e-eb25-47dc-81e3-5a183febfe72",
+        "timestamp": "2026-04-15T12:38:16.094Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "ccdab337-46fa-4239-981e-4f9f9d1b9014",
+        "timestamp": "2026-04-15T12:38:32.483Z"
+      },
+      {
+        "senderId": "ai_bot",
+        "senderName": "AI Assistant",
+        "senderType": "ai",
+        "content": "Let's analyze **Example 1** to clarify the logic:\n- **Given Input**: `nums = [2,7,11,15], target = 9`\n- **Why Expected Output is**: `[0,1]`\n- **Reasoning**: Because nums[0] + nums[1] == 9, we return [0, 1].\n\nI suggest printing internal variables for this specific input to see where your logic might be diverging!",
+        "id": "81d939a2-e251-4bc7-8f69-eafc596446e0",
+        "timestamp": "2026-04-15T12:38:32.485Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Speak to a recruiter",
+        "id": "1ae1183c-28fe-4054-846e-8665334ea7ab",
+        "timestamp": "2026-04-15T12:38:54.016Z"
+      }
+    ],
+    "status": "active"
   }
 ]

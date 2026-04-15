@@ -414,5 +414,21 @@
       "totalSwitches": 2
     },
     "recordedAt": "2026-04-14T12:13:33.620Z"
+  },
+  {
+    "id": "e32b76d7-68d7-4f9e-a31f-a10dff62d629",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-04-15T12:38:02.249Z",
+      "lastSwitchAt": "2026-04-15T12:39:20.326Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-04-15T12:38:02.250Z"
   }
 ]

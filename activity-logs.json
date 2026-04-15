@@ -17,13 +17,13 @@
     "candidateName": "Alice Smith",
     "problemId": "1",
     "problemTitle": "Two Sum",
-    "language": "python",
+    "language": "javascript",
     "passed": 3,
     "totalTests": 3,
     "allPassed": true,
-    "timeSpentSeconds": 13,
+    "timeSpentSeconds": 35,
     "id": "da8f1c10-e01b-4033-bf1e-b5767f438650",
-    "submittedAt": "2026-04-14T07:23:17.799Z"
+    "submittedAt": "2026-04-15T09:45:56.049Z"
   },
   {
     "candidateId": "c1",

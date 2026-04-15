@@ -1,8 +1,8 @@
 import { Controller, Post, Get, Body, Param, Query } from '@nestjs/common';
-import { CodeReviewService } from '../code-review/code-review.service';
-import { PlagiarismDetectionService } from '../plagiarism/plagiarism-detection.service';
-import { AdaptiveDifficultyService } from '../adaptive-difficulty/adaptive-difficulty.service';
-import { QuestionLibraryService } from '../question-library/question-library.service';
+import { CodeReviewService, CodeReviewResult } from '../code-review/code-review.service';
+import { PlagiarismDetectionService, PlagiarismReport } from '../plagiarism/plagiarism-detection.service';
+import { AdaptiveDifficultyService, DifficultyPrediction, DifficultyMetrics, Question } from '../adaptive-difficulty/adaptive-difficulty.service';
+import { QuestionLibraryService, QuestionPack } from '../question-library/question-library.service';
 
 @Controller('advanced-features')
 export class AdvancedFeaturesController {

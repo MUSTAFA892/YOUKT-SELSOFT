@@ -1,7 +1,7 @@
-import { CodeReviewService } from '../code-review/code-review.service';
-import { PlagiarismDetectionService } from '../plagiarism/plagiarism-detection.service';
-import { AdaptiveDifficultyService } from '../adaptive-difficulty/adaptive-difficulty.service';
-import { QuestionLibraryService } from '../question-library/question-library.service';
+import { CodeReviewService, CodeReviewResult } from '../code-review/code-review.service';
+import { PlagiarismDetectionService, PlagiarismReport } from '../plagiarism/plagiarism-detection.service';
+import { AdaptiveDifficultyService, DifficultyPrediction, DifficultyMetrics, Question } from '../adaptive-difficulty/adaptive-difficulty.service';
+import { QuestionLibraryService, QuestionPack } from '../question-library/question-library.service';
 export declare class AdvancedFeaturesController {
     private codeReviewService;
     private plagiarismService;
@@ -13,7 +13,7 @@ export declare class AdvancedFeaturesController {
         language: string;
     }): {
         success: boolean;
-        data: import("../code-review/code-review.service").CodeReviewResult;
+        data: CodeReviewResult;
     };
     checkPlagiarism(body: {
         code: string;
@@ -25,11 +25,11 @@ export declare class AdvancedFeaturesController {
         pasteDetected?: boolean;
     }): {
         success: boolean;
-        data: import("../plagiarism/plagiarism-detection.service").PlagiarismReport;
+        data: PlagiarismReport;
     };
     getPlagiarismReport(submissionId: string): {
         success: boolean;
-        data: import("../plagiarism/plagiarism-detection.service").PlagiarismReport | {
+        data: PlagiarismReport | {
             error: string;
         };
     };
@@ -45,15 +45,15 @@ export declare class AdvancedFeaturesController {
     };
     getPrediction(candidateId: string, difficulty: 'easy' | 'medium' | 'hard' | 'expert'): {
         success: boolean;
-        data: import("../adaptive-difficulty/adaptive-difficulty.service").DifficultyPrediction;
+        data: DifficultyPrediction;
     };
     getMetrics(candidateId: string): {
         success: boolean;
-        data: import("../adaptive-difficulty/adaptive-difficulty.service").DifficultyMetrics;
+        data: DifficultyMetrics;
     };
     getRecommendations(candidateId: string, difficulty?: 'easy' | 'medium' | 'hard' | 'expert', language?: string, count?: string): {
         success: boolean;
-        data: import("../adaptive-difficulty/adaptive-difficulty.service").Question[];
+        data: Question[];
     };
     getAllQuestions(): {
         success: boolean;
@@ -96,12 +96,12 @@ export declare class AdvancedFeaturesController {
     };
     getAllPacks(): {
         success: boolean;
-        data: import("../question-library/question-library.service").QuestionPack[];
+        data: QuestionPack[];
         count: number;
     };
     getFreePacks(): {
         success: boolean;
-        data: import("../question-library/question-library.service").QuestionPack[];
+        data: QuestionPack[];
         count: number;
     };
     getPack(id: string): {

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useAuth } from "@/components/AuthProvider";
+import { getCandidateActivityLogs, type ActivityLog } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, 
@@ -21,10 +23,46 @@ import Link from "next/link";
 import { type Problem } from "@/lib/api";
 
 export default function ProblemsClient({ initialProblems }: { initialProblems: Problem[] }) {
+  const { currentUser } = useAuth();
+  const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [search, setSearch] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState<string>("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [sortBy, setSortBy] = useState<"id" | "difficulty">("id");
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      getCandidateActivityLogs(currentUser.id).then(setLogs).catch(console.error);
+    }
+  }, [currentUser]);
+
+  const solvedProblemIds = useMemo(() => {
+    return new Set(logs.filter(l => l.allPassed).map(l => l.problemId));
+  }, [logs]);
+
+  const stats = useMemo(() => {
+    const total = initialProblems.length;
+    const solved = initialProblems.filter(p => solvedProblemIds.has(p.id)).length;
+    
+    const easyTotal = initialProblems.filter(p => p.difficulty === "Easy").length;
+    const easySolved = initialProblems.filter(p => p.difficulty === "Easy" && solvedProblemIds.has(p.id)).length;
+    
+    const medTotal = initialProblems.filter(p => p.difficulty === "Medium").length;
+    const medSolved = initialProblems.filter(p => p.difficulty === "Medium" && solvedProblemIds.has(p.id)).length;
+    
+    const hardTotal = initialProblems.filter(p => p.difficulty === "Hard").length;
+    const hardSolved = initialProblems.filter(p => p.difficulty === "Hard" && solvedProblemIds.has(p.id)).length;
+
+    return {
+      All: { solved, total },
+      Easy: { solved: easySolved, total: easyTotal },
+      Medium: { solved: medSolved, total: medTotal },
+      Hard: { solved: hardSolved, total: hardTotal }
+    };
+  }, [initialProblems, solvedProblemIds]);
+
+  const currentStats = stats[difficultyFilter as keyof typeof stats] || stats.All;
+
 
   const filteredProblems = useMemo(() => {
     return initialProblems
@@ -60,10 +98,17 @@ export default function ProblemsClient({ initialProblems }: { initialProblems: P
             </p>
           </div>
 
-          <div className="flex gap-4">
-            <StatCard label="Total Problems" value={initialProblems.length} icon={Zap} color="text-amber-500" />
-            <StatCard label="Solved" value="12" icon={CheckCircle2} color="text-emerald-500" />
-            <StatCard label="Rank" value="#124" icon={Trophy} color="text-primary" />
+          <div className="flex items-center gap-8">
+            <SolvedStatsCircle 
+              solved={currentStats.solved} 
+              total={currentStats.total} 
+              label={difficultyFilter === "All" ? "Overall" : difficultyFilter} 
+            />
+            <div className="flex gap-4">
+              <StatCard label="Total Problems" value={initialProblems.length} icon={Zap} color="text-amber-500" />
+              <StatCard label="Solved" value={stats.All.solved} icon={CheckCircle2} color="text-emerald-500" />
+              <StatCard label="Rank" value="#124" icon={Trophy} color="text-primary" />
+            </div>
           </div>
         </div>
       </div>
@@ -265,6 +310,53 @@ function ProblemGridItem({ problem, index }: { problem: Problem; index: number }
         </div>
       </Link>
     </motion.div>
+  );
+}
+
+function SolvedStatsCircle({ solved, total, label }: { solved: number; total: number; label: string }) {
+  const percentage = total > 0 ? (solved / total) * 100 : 0;
+  const radius = 35;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percentage / 100) * circumference;
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <div className="relative w-24 h-24">
+        {/* Background Circle */}
+        <svg className="w-full h-full -rotate-90">
+          <circle
+            cx="48"
+            cy="48"
+            r={radius}
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="8"
+            className="text-border"
+          />
+          {/* Progress Circle */}
+          <motion.circle
+            cx="48"
+            cy="48"
+            r={radius}
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth="8"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset: offset }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            strokeLinecap="round"
+            className="text-primary shadow-lg"
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xl font-black text-foreground leading-none">{solved}</span>
+          <div className="h-[1px] w-4 bg-neutral-500/30 my-0.5" />
+          <span className="text-[10px] font-bold text-neutral-500 leading-none">{total}</span>
+        </div>
+      </div>
+      <span className="mt-2 text-[10px] font-black uppercase tracking-widest text-primary/70">{label}</span>
+    </div>
   );
 }
 
