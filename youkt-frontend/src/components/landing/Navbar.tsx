@@ -2,10 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Terminal, Menu, X, Rocket, Command, Zap, MessageSquare, Sun, Moon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Terminal, Menu, X, Rocket, Command, Zap, MessageSquare, Sun, Moon, Search, Bell, Flame, Trophy, Award } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { AccountSwitcher } from "@/components/AccountSwitcher";
+import { fetchProblems, getCandidateInterviews } from "@/lib/api";
+import { useAuth } from "@/components/AuthProvider";
+import { useRouter } from "next/navigation";
 
 /**
  * A "Dynamic Dock" style Navbar. 
@@ -17,7 +20,16 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const { theme, setTheme, resolvedTheme } = useTheme();
+  const { currentUser } = useAuth();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  // Search data states
+  const [allData, setAllData] = useState<any[]>([]);
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   // Avoid hydration mismatch
   useEffect(() => setMounted(true), []);
@@ -25,13 +37,60 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    
+    // Fetch search data
+    const loadSearchData = async () => {
+      const problems = await fetchProblems();
+      const interviews = currentUser ? await getCandidateInterviews(currentUser.id) : [];
+      
+      const certs = [
+        { id: "python-essentials", title: "Python Developer Essentials", type: "cert" },
+        { id: "java-professional", title: "Java Professional Certification", type: "cert" },
+        { id: "frontend-mastery", title: "Frontend Mastery (React/Next.js)", type: "cert" },
+        { id: "data-structures-expert", title: "Data Structures & Algorithms Expert", type: "cert" }
+      ];
+
+      setAllData([
+        ...problems.map(p => ({ ...p, type: "problem" })),
+        ...interviews.map(i => ({ ...i, title: `Interview with Questions: ${i.questions.length}`, type: "interview" })),
+        ...certs
+      ]);
+    };
+
+    loadSearchData();
+
+    // Click outside handler
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [currentUser]);
+
+  // Filter results
+  useEffect(() => {
+    if (searchQuery.trim().length > 1) {
+      const filtered = allData.filter(item => 
+        (item.title || item.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 8); // Limit results
+      setFilteredResults(filtered);
+      setIsDropdownOpen(true);
+    } else {
+      setFilteredResults([]);
+      setIsDropdownOpen(false);
+    }
+  }, [searchQuery, allData]);
 
   const navLinks = [
     { name: "Problems", href: "/problems", icon: Zap },
-    { name: "Interviews", href: "/interviews", icon: Command },
-    { name: "Custom IDE", href: "/ide", icon: Terminal },
+    { name: "Certify", href: "/certified", icon: Award },
+    { name: "Contest", href: "/leaderboard", icon: Trophy },
     { name: "Discuss", href: "/discuss", icon: MessageSquare },
   ];
 
@@ -98,6 +157,94 @@ export default function Navbar() {
                   )}
                 </Link>
               ))}
+            </div>
+
+            {/* Utilities (Search, Interview, Notifications, Progress) */}
+            <div className="hidden xl:flex items-center gap-3 mx-4 flex-1 max-w-[300px] relative" ref={searchRef}>
+              <div className="relative w-full group">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500 group-focus-within:text-primary transition-colors" />
+                <input 
+                  type="text" 
+                  placeholder="Search problems, certs..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => searchQuery.length > 1 && setIsDropdownOpen(true)}
+                  className="w-full bg-black/5 dark:bg-white/5 border border-border rounded-full py-1.5 pl-8 pr-4 text-xs focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all font-medium"
+                />
+              </div>
+
+              {/* Search Results Dropdown */}
+              <AnimatePresence>
+                {isDropdownOpen && filteredResults.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-background border border-border rounded-2xl shadow-2xl overflow-hidden z-[110] glass backdrop-blur-xl"
+                  >
+                    <div className="max-h-[400px] overflow-y-auto p-2">
+                      {filteredResults.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            const path = item.type === "problem" 
+                              ? `/problems/${item.id}` 
+                              : item.type === "cert" 
+                                ? `/certified/${item.id}` 
+                                : `/interview/${item.id}`;
+                            router.push(path);
+                            setIsDropdownOpen(false);
+                            setSearchQuery("");
+                          }}
+                          className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all group text-left"
+                        >
+                          <div className={`p-2 rounded-lg ${
+                            item.type === "problem" ? "bg-primary/10 text-primary" :
+                            item.type === "cert" ? "bg-amber-500/10 text-amber-500" :
+                            "bg-emerald-500/10 text-emerald-500"
+                          }`}>
+                            {item.type === "problem" ? <Zap className="w-4 h-4" /> :
+                             item.type === "cert" ? <Award className="w-4 h-4" /> :
+                             <MessageSquare className="w-4 h-4" />}
+                          </div>
+                          <div>
+                            <div className="text-xs font-black text-foreground group-hover:text-primary transition-colors">
+                              {item.title || item.name}
+                            </div>
+                            <div className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest mt-0.5">
+                              {item.type} • {item.difficulty || "Assess"}
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              <div className="flex items-center gap-0.5 border-l border-border pl-2 h-6">
+                <Link 
+                  href="/interviews" 
+                  className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-neutral-500 hover:text-foreground transition-colors"
+                  title="Interviews"
+                >
+                  <Command className="w-4 h-4" />
+                </Link>
+                <button 
+                  className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-neutral-500 hover:text-foreground transition-colors relative"
+                  title="Notifications"
+                >
+                  <Bell className="w-4 h-4" />
+                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full border border-background"></span>
+                </button>
+                <Link 
+                  href="/progress" 
+                  className="p-1.5 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-orange-500 hover:text-orange-600 transition-colors"
+                  title="My Progress"
+                >
+                  <Flame className="w-4 h-4 fill-orange-500/10" />
+                </Link>
+              </div>
             </div>
 
             {/* Action Group */}
@@ -215,6 +362,34 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.05 }}
+              >
+                <Link 
+                  href="/interviews"
+                  onClick={() => setIsOpen(false)}
+                  className="text-3xl font-black text-neutral-500 hover:text-foreground transition-all flex items-center gap-4 py-2"
+                >
+                  <Command className="w-8 h-8 text-primary/50" />
+                  Interviews
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (navLinks.length + 1) * 0.05 }}
+              >
+                <Link 
+                  href="/progress"
+                  onClick={() => setIsOpen(false)}
+                  className="text-3xl font-black text-neutral-500 hover:text-foreground transition-all flex items-center gap-4 py-2"
+                >
+                  <Flame className="w-8 h-8 text-orange-500/50" />
+                  My Progress
+                </Link>
+              </motion.div>
             </div>
 
             <div className="mt-auto pt-8 border-t border-border flex flex-col gap-4">

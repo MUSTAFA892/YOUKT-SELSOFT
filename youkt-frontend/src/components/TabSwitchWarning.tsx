@@ -13,88 +13,104 @@ export default function TabSwitchWarning({ isOpen, count, onClose, onExit }: Tab
   if (!isOpen) return null;
 
   const warningLevelColor = 
-    count === 1 ? 'text-amber-500' :
-    count === 2 ? 'text-orange-500' :
+    count <= 1 ? 'text-amber-400' :
+    count <= 3 ? 'text-orange-500' :
     'text-red-500';
 
   const bgColor =
-    count === 1 ? 'bg-amber-500/10 border-amber-500/50' :
-    count === 2 ? 'bg-orange-500/10 border-orange-500/50' :
+    count <= 1 ? 'bg-amber-500/10 border-amber-500/50' :
+    count <= 3 ? 'bg-orange-500/10 border-orange-500/50' :
     'bg-red-500/10 border-red-500/50';
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className={`${bgColor} border rounded-2xl p-8 max-w-md w-full shadow-2xl`}>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+      <div className={`${bgColor} border rounded-2xl p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200`}>
         {/* Icon */}
         <div className="flex justify-center mb-6">
-          <div className={`w-16 h-16 rounded-full ${bgColor} flex items-center justify-center border`}>
+          <div className={`w-16 h-16 rounded-full ${bgColor} flex items-center justify-center border animate-pulse`}>
             <AlertTriangle className={`w-8 h-8 ${warningLevelColor}`} />
           </div>
         </div>
 
         {/* Title */}
         <h2 className="text-center text-2xl font-bold text-white mb-3">
-          {count === 1 && "⚠️ Assignment Locked"}
-          {count === 2 && "⚠️ Final Warning"}
-          {count === 3 && "🚫 Assignment Terminated"}
+          {count === 1 && "⚠️ Security Alert"}
+          {count === 2 && "⚠️ Violation Detected"}
+          {count === 3 && "⚠️ Critical Warning"}
+          {count === 4 && "🛑 Final Warning"}
+          {count === 5 && "🚫 Test Terminated"}
         </h2>
 
         {/* Message */}
-        <p className="text-center text-neutral-300 mb-6 leading-relaxed">
+        <p className="text-center text-neutral-300 mb-6 leading-relaxed text-sm">
           {count === 1 &&
-            "You've attempted to switch tabs or split screen. Your assignment is locked. Any further violations will result in immediate termination."}
+            "You've attempted to switch tabs or minimize the window. This action is logged and monitored."}
           {count === 2 &&
-            "This is your final warning! One more violation will automatically exit the assignment and report this breach."}
+            "Multiple screen violations detected. Your progress is being scrutinized. Please stay within the test window."}
           {count === 3 &&
-            "You've exceeded the maximum violations allowed. The assignment is being terminated and reported."}
+            "Warning: You are halfway through your allowed violations. Any further attempts to switch screens will be reported."}
+          {count === 4 &&
+            "THIS IS YOUR FINAL WARNING! One more violation and your test will be immediately terminated without saving progress."}
+          {count === 5 &&
+            "You've exceeded the maximum violations allowed (5/5). Your certification test has been terminated and reported for integrity breach."}
         </p>
 
         {/* Stats */}
         <div className="bg-black/30 rounded-lg p-4 mb-6 border border-white/10">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-neutral-400">Integrity Violations Detected:</span>
-            <span className="text-white font-bold text-lg">{count}/3</span>
+            <span className="text-neutral-400">Integrity Violations:</span>
+            <div className="flex items-center gap-1.5">
+              <span className={`font-bold text-xl ${count >= 4 ? 'text-red-500' : 'text-white'}`}>{count}/5</span>
+            </div>
+          </div>
+          {/* Visual Progress Bar for violations */}
+          <div className="w-full h-1.5 bg-white/10 rounded-full mt-3 overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-500 ${count >= 4 ? 'bg-red-500' : 'bg-primary'}`}
+              style={{ width: `${(count / 5) * 100}%` }}
+            />
           </div>
         </div>
 
         {/* Warning Info */}
-        {count < 3 && (
+        {count < 5 && (
           <div className="bg-black/50 rounded-lg p-4 mb-6 border border-white/10">
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              <Copy className="w-3 h-3 inline mr-2" />
-              All attempts to switch tabs or split screen are monitored and reported to your recruiter.
+            <p className="text-[10px] text-neutral-400 leading-relaxed flex items-start gap-2">
+              <span className="text-primary mt-0.5">ℹ️</span>
+              YOUKT Integrity Engine monitors all tab switches, window minimizations, and screen-sharing events during certification assessments.
             </p>
           </div>
         )}
 
         {/* Actions */}
-        <div className="flex gap-3">
-          {count < 3 ? (
+        <div className="flex flex-col gap-3">
+          {count < 5 ? (
             <button
               onClick={onClose}
-              className="flex-1 bg-neutral-800 hover:bg-neutral-700 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-primary hover:brightness-110 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-primary/20 active:scale-95"
             >
-              Continue Assignment
+              I Understand, Continue Test
             </button>
           ) : null}
 
-          {count === 3 ? (
+          {count === 5 ? (
             <button
               onClick={onExit}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-600/20"
             >
               <Heart className="w-4 h-4" />
-              Exit Assignment
+              Exit Abandoned Test
             </button>
           ) : (
             <button
               onClick={onExit}
-              className="flex-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 font-semibold py-3 rounded-lg transition-colors border border-red-600/50"
+              className="w-full py-2 text-neutral-500 hover:text-red-400 text-xs font-bold transition-colors"
             >
-              Exit Now
+              Exit Test and Forfeit Attempt
             </button>
           )}
         </div>
+
 
         {/* Footer Note */}
         {count === 3 && (
