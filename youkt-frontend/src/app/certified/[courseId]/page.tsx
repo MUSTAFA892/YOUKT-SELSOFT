@@ -99,7 +99,7 @@ export default function CertificationDetails() {
                 Skills Measured
               </div>
               <div className="flex flex-wrap gap-2">
-                {cert.skills.map(skill => (
+                {cert.skills.map((skill: string) => (
                   <span key={skill} className="px-3 py-1.5 rounded-xl bg-surface border border-border text-xs font-bold text-neutral-400">
                     {skill}
                   </span>
@@ -113,7 +113,7 @@ export default function CertificationDetails() {
                 Integrity Rules
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {cert.rules.map((rule, idx) => (
+                {cert.rules.map((rule: string, idx: number) => (
                   <div key={idx} className="flex gap-3 p-4 rounded-2xl bg-surface border border-border">
                     <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                     <span className="text-xs text-neutral-400 font-medium leading-relaxed">{rule}</span>

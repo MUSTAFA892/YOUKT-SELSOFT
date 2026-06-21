@@ -180,5 +180,18 @@
     "timeSpentSeconds": 12,
     "id": "0e28225a-ec1e-4db4-86aa-00a91e033b3d",
     "submittedAt": "2026-04-15T07:21:32.078Z"
+  },
+  {
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+    "problemTitle": "Two Sum",
+    "language": "python",
+    "passed": 0,
+    "totalTests": 2,
+    "allPassed": false,
+    "timeSpentSeconds": 171,
+    "id": "9ee8844b-8673-4c1c-8efa-f18dae1e3b2f",
+    "submittedAt": "2026-06-15T08:16:44.371Z"
   }
 ]

@@ -1,3 +1,4 @@
+import { InterviewsService } from '../interviews/interviews.service';
 export interface PlagiarismWarning {
     detected: boolean;
     similarityPercent: number;
@@ -34,9 +35,10 @@ export interface AssessmentReport {
     plagiarismWarning?: PlagiarismWarning;
 }
 export declare class ReportsService {
+    private readonly interviewsService;
     private readonly dbFilePath;
     private reports;
-    constructor();
+    constructor(interviewsService: InterviewsService);
     private loadFromDisk;
     private saveToDisk;
     createReport(dto: Omit<AssessmentReport, 'id' | 'finishedAt'>): Promise<AssessmentReport>;

@@ -26,26 +26,30 @@ let HelpCenterController = class HelpCenterController {
         return this.helpCenterService.addMessage(body.candidateId, body.interviewId, body.message);
     }
     async getAiAssist(body) {
-        const aiResponse = await this.helpCenterService.getAiResponse(body.query, body.questionContext);
+        const aiResponse = await this.helpCenterService.getAiResponse(body.query, body.candidateName, body.questionContext);
         await this.helpCenterService.addMessage(body.candidateId, body.interviewId, {
             senderId: body.candidateId,
             senderName: body.candidateName,
             senderType: 'candidate',
-            content: body.query
+            content: body.query,
         });
-        if (aiResponse === 'TRANSFORM_TO_RECRUITER_MODE') {
-            return { status: 'switching_to_recruiter' };
-        }
         const botMsg = await this.helpCenterService.addMessage(body.candidateId, body.interviewId, {
-            senderId: 'ai_bot',
-            senderName: 'AI Assistant',
+            senderId: 'ollama_ai',
+            senderName: 'YOUKT AI (Llama3)',
             senderType: 'ai',
-            content: aiResponse
+            content: aiResponse,
         });
         return { status: 'success', data: botMsg };
     }
     getAllConversations() {
         return this.helpCenterService.getAllConversations();
+    }
+    async ping(body) {
+        await this.helpCenterService.pingCandidate(body.candidateId);
+        return { success: true };
+    }
+    getActiveCandidates() {
+        return this.helpCenterService.getActiveCandidateIds();
     }
 };
 exports.HelpCenterController = HelpCenterController;
@@ -77,6 +81,19 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], HelpCenterController.prototype, "getAllConversations", null);
+__decorate([
+    (0, common_1.Post)('ping'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], HelpCenterController.prototype, "ping", null);
+__decorate([
+    (0, common_1.Get)('active-candidates'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], HelpCenterController.prototype, "getActiveCandidates", null);
 exports.HelpCenterController = HelpCenterController = __decorate([
     (0, common_1.Controller)('help-center'),
     __metadata("design:paramtypes", [help_center_service_1.HelpCenterService])

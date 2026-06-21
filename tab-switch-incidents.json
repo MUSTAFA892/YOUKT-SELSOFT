@@ -430,5 +430,437 @@
       "totalSwitches": 3
     },
     "recordedAt": "2026-04-15T12:38:02.250Z"
+  },
+  {
+    "id": "a27dbbf9-b913-4c34-964d-d767f0252419",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-11T02:33:22.945Z",
+      "lastSwitchAt": "2026-06-11T02:33:29.761Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-11T02:33:22.945Z"
+  },
+  {
+    "id": "a7d4daa9-6665-4a72-aea8-1982e47295cc",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T03:19:55.760Z",
+      "lastSwitchAt": "2026-06-12T03:37:39.590Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-12T03:19:55.760Z"
+  },
+  {
+    "id": "c28666aa-e813-4b4d-8f6c-0cab29f946b8",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T03:40:50.149Z",
+      "lastSwitchAt": "2026-06-12T03:40:50.149Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-06-12T03:40:50.149Z"
+  },
+  {
+    "id": "fb15f2b7-197e-4d8f-b0ae-add13884fd5a",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T05:28:15.961Z",
+      "lastSwitchAt": "2026-06-12T05:28:15.961Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-12T05:28:15.961Z"
+  },
+  {
+    "id": "5aac0d7c-f2d5-4014-b87b-aa88c2e46412",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T05:41:22.216Z",
+      "lastSwitchAt": "2026-06-12T05:43:37.072Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-06-12T05:41:22.216Z"
+  },
+  {
+    "id": "534af9d5-1f41-458d-8db2-623d1a7b9bbe",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "problemTitle": "Assignment: c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-12T06:07:20.784Z",
+      "lastSwitchAt": "2026-06-12T06:13:04.635Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-06-12T06:07:20.784Z"
+  },
+  {
+    "id": "5ddf202e-dd16-4c3c-a852-1f29e66958e3",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T06:31:07.094Z",
+      "lastSwitchAt": "2026-06-12T06:31:07.094Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-06-12T06:31:07.094Z"
+  },
+  {
+    "id": "da46f178-d176-4a29-b292-403094e29534",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-12T11:10:25.649Z",
+      "lastSwitchAt": "2026-06-12T11:10:26.261Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-12T11:10:25.649Z"
+  },
+  {
+    "id": "932bbc04-8a22-498c-8610-56df2406962c",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-12T11:17:41.432Z",
+      "lastSwitchAt": "2026-06-12T11:52:11.982Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-12T11:17:41.432Z"
+  },
+  {
+    "id": "7a7ad537-cd1b-4380-a65b-9ec06ddcb637",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "problemTitle": "Assignment: cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-12T11:30:50.588Z",
+      "lastSwitchAt": "2026-06-12T11:51:20.952Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-12T11:30:50.589Z"
+  },
+  {
+    "id": "3e037756-4add-4ea3-afcf-09c89fe1ea5d",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-12T11:52:40.970Z",
+      "lastSwitchAt": "2026-06-12T12:27:46.817Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-12T11:52:40.970Z"
+  },
+  {
+    "id": "7d366753-1a86-457e-901d-52e2aa5361bf",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-12T12:31:24.317Z",
+      "lastSwitchAt": "2026-06-12T13:03:28.634Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-12T12:31:24.317Z"
+  },
+  {
+    "id": "115025a6-4c4e-47cd-8946-676b18d12cab",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "problemTitle": "Assignment: 5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "switchCount": 6,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-14T17:37:58.595Z",
+      "lastSwitchAt": "2026-06-14T18:02:08.238Z",
+      "totalSwitches": 6
+    },
+    "recordedAt": "2026-06-14T17:37:58.595Z"
+  },
+  {
+    "id": "032fa1c9-5482-4eb8-9147-d15ffd9d382f",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "problemTitle": "Assignment: c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-14T18:05:27.679Z",
+      "lastSwitchAt": "2026-06-14T18:21:32.028Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-14T18:05:27.679Z"
+  },
+  {
+    "id": "4d24ece0-333f-4195-822f-f348e03bdf11",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "problemTitle": "Assignment: 80b77f76-5ec2-4910-abd1-0dd476431849",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-14T18:26:21.547Z",
+      "lastSwitchAt": "2026-06-14T19:00:40.793Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-14T18:26:21.547Z"
+  },
+  {
+    "id": "7a2a9bac-e7c4-4586-bc53-1610c4221197",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-14T19:08:26.390Z",
+      "lastSwitchAt": "2026-06-14T19:14:40.946Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-14T19:08:26.391Z"
+  },
+  {
+    "id": "a266c55b-4780-4bdf-bfcc-9a14a6750f23",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-15T01:55:32.226Z",
+      "lastSwitchAt": "2026-06-15T01:55:32.226Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-15T01:55:32.226Z"
+  },
+  {
+    "id": "cff4041b-fbf4-4a33-9e5b-18a26501d1cb",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "0abc7e17-68ef-4315-99e3-95b315857f60",
+    "problemTitle": "Assignment: 0abc7e17-68ef-4315-99e3-95b315857f60",
+    "switchCount": 1,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-15T02:26:59.398Z",
+      "lastSwitchAt": "2026-06-15T02:27:53.559Z",
+      "totalSwitches": 1
+    },
+    "recordedAt": "2026-06-15T02:26:59.398Z"
+  },
+  {
+    "id": "268a06a2-c982-41f3-8390-d0e548afd9cc",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "0abc7e17-68ef-4315-99e3-95b315857f60",
+    "problemTitle": "Assignment: 0abc7e17-68ef-4315-99e3-95b315857f60",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-15T07:01:08.470Z",
+      "lastSwitchAt": "2026-06-15T07:01:16.624Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-06-15T07:01:08.470Z"
+  },
+  {
+    "id": "392e3f4d-3af8-4edb-b428-566edd089fe6",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "problemId": "aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "problemTitle": "Assignment: aeb446e1-a015-4c26-93d4-c00822dd4a1c",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-15T07:03:27.216Z",
+      "lastSwitchAt": "2026-06-15T07:03:29.699Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-15T07:03:27.216Z"
+  },
+  {
+    "id": "f88f8641-4d78-46db-a75b-e4145c1510e4",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "problemTitle": "Assignment: 5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-15T07:06:50.612Z",
+      "lastSwitchAt": "2026-06-15T07:29:04.552Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-15T07:06:50.612Z"
+  },
+  {
+    "id": "735fc81d-5f8c-4e71-8661-b17c6108a1d5",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "638e09a8-2ff7-45c5-8287-8bfec06eec04",
+    "problemTitle": "Assignment: 638e09a8-2ff7-45c5-8287-8bfec06eec04",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-15T07:59:13.880Z",
+      "lastSwitchAt": "2026-06-15T08:09:38.767Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-15T07:59:13.880Z"
+  },
+  {
+    "id": "07c247d1-f60d-4543-bcf7-25dbb20ac9d7",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "problemTitle": "Assignment: f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-15T08:09:54.531Z",
+      "lastSwitchAt": "2026-06-15T08:12:41.826Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-15T08:09:54.531Z"
+  },
+  {
+    "id": "1c5fe15a-fef7-4b6f-8cfe-0dbec19ef6d7",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "problemTitle": "Assignment: 975ced75-a353-4579-9a7d-b4a1010007f6",
+    "switchCount": 3,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-15T08:20:31.458Z",
+      "lastSwitchAt": "2026-06-15T08:20:42.215Z",
+      "totalSwitches": 3
+    },
+    "recordedAt": "2026-06-15T08:20:31.458Z"
+  },
+  {
+    "id": "dc24683e-1072-49b2-aaac-d5f83670e9d9",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "problemTitle": "Assignment: 975ced75-a353-4579-9a7d-b4a1010007f6",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-15T10:59:35.798Z",
+      "lastSwitchAt": "2026-06-15T11:01:19.895Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-15T10:59:35.798Z"
+  },
+  {
+    "id": "8110207f-ce99-401b-9cca-d24a6318910d",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "problemTitle": "Assignment: 975ced75-a353-4579-9a7d-b4a1010007f6",
+    "switchCount": 2,
+    "maxAllowed": 3,
+    "status": "warning",
+    "details": {
+      "firstSwitchAt": "2026-06-17T17:55:10.690Z",
+      "lastSwitchAt": "2026-06-17T18:26:54.485Z",
+      "totalSwitches": 2
+    },
+    "recordedAt": "2026-06-17T17:55:10.690Z"
+  },
+  {
+    "id": "420e524a-6176-42dd-8bcc-c30d886e90c3",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "problemId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "problemTitle": "Assignment: 975ced75-a353-4579-9a7d-b4a1010007f6",
+    "switchCount": 4,
+    "maxAllowed": 3,
+    "status": "terminated",
+    "details": {
+      "firstSwitchAt": "2026-06-17T20:38:25.148Z",
+      "lastSwitchAt": "2026-06-17T20:42:07.671Z",
+      "totalSwitches": 4
+    },
+    "recordedAt": "2026-06-17T20:38:25.148Z"
   }
 ]

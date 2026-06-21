@@ -366,5 +366,541 @@
     },
     "id": "77265ae3-6479-4002-ac46-8246b94fd516",
     "finishedAt": "2026-04-14T12:14:06.567Z"
+  },
+  {
+    "interviewId": "c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 1,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "87270c10-311c-434c-9661-e2f55003b6ea",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "c99041b3-7043-4946-9dda-15ba337b4cad",
+    "finishedAt": "2026-06-12T06:13:04.767Z"
+  },
+  {
+    "interviewId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "19b1ade8-b454-491b-aa5c-3e1d33a02166",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "d40d14ab-d249-4f43-b1fd-25d7d4762ed7",
+    "finishedAt": "2026-06-12T11:36:37.682Z"
+  },
+  {
+    "interviewId": "cc60ae30-f492-461c-9e69-6de34cef60e7",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "19b1ade8-b454-491b-aa5c-3e1d33a02166",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "5e1223f9-07b1-4925-9d44-5f8d2b0a7458",
+    "finishedAt": "2026-06-12T11:51:21.034Z"
+  },
+  {
+    "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "07b1809e-d8fd-46cc-bcea-ce2ec5a4b4c8",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "ab1c7119-1703-4076-9ed5-892578bc1515",
+    "finishedAt": "2026-06-12T12:26:44.456Z"
+  },
+  {
+    "interviewId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "4445d2e6-5688-460a-986c-a9cf12c7c54b",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "3ffd1b7d-59b4-4b3b-ab43-3e69d92703e2",
+    "finishedAt": "2026-06-12T13:03:28.794Z"
+  },
+  {
+    "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "07b1809e-d8fd-46cc-bcea-ce2ec5a4b4c8",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "22b2d5f4-6693-4165-95a2-c29577762f3e",
+    "finishedAt": "2026-06-14T18:00:26.398Z"
+  },
+  {
+    "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "07b1809e-d8fd-46cc-bcea-ce2ec5a4b4c8",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "3a2c8c86-0f87-4164-8b66-165f3bda5412",
+    "finishedAt": "2026-06-14T18:00:29.288Z"
+  },
+  {
+    "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "07b1809e-d8fd-46cc-bcea-ce2ec5a4b4c8",
+        "questionTitle": "Algorithm Question 1",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "34952d8e-3f64-4da3-ae6e-ef1f77e402fa",
+    "finishedAt": "2026-06-14T18:00:33.109Z"
+  },
+  {
+    "interviewId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "4445d2e6-5688-460a-986c-a9cf12c7c54b",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "60762b0f-c121-486c-9333-899b7158b7ae",
+    "finishedAt": "2026-06-14T19:00:40.834Z"
+  },
+  {
+    "interviewId": "0abc7e17-68ef-4315-99e3-95b315857f60",
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "019efb60-a462-478e-878e-e81d42aacc4c",
+        "questionTitle": "Longest Substring Without Repeating",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "aa8668d5-b0a7-4418-b585-509faba29e44",
+    "finishedAt": "2026-06-15T07:01:10.493Z"
+  },
+  {
+    "interviewId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 1,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "3fb503b1-f077-486f-b66a-7acd3b518e78",
+        "questionTitle": "Regular Expression Matching",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "45315515-8e8a-4f6a-89e3-83049c635eaa",
+    "finishedAt": "2026-06-15T07:16:11.585Z"
+  },
+  {
+    "interviewId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 1,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "3fb503b1-f077-486f-b66a-7acd3b518e78",
+        "questionTitle": "Regular Expression Matching",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "11a83ac5-ba7e-4199-b0d3-00061e58dfe3",
+    "finishedAt": "2026-06-15T07:16:14.937Z"
+  },
+  {
+    "interviewId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 1,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "3fb503b1-f077-486f-b66a-7acd3b518e78",
+        "questionTitle": "Regular Expression Matching",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "4390c297-90f8-4455-9f0b-c1a4ecfd0d48",
+    "finishedAt": "2026-06-15T07:16:17.272Z"
+  },
+  {
+    "interviewId": "5b4cfe6c-21a1-413b-a16d-43baec778a34",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 1,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "3fb503b1-f077-486f-b66a-7acd3b518e78",
+        "questionTitle": "Regular Expression Matching",
+        "totalTests": 1,
+        "passed": 0,
+        "failed": 1,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "1ce293d0-4ea3-46b5-acee-61bba90cbbd1",
+    "finishedAt": "2026-06-15T07:29:04.606Z"
+  },
+  {
+    "interviewId": "f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "fabc8e45-fef2-4906-a4cb-f03927d5484c",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "id": "f050f0fe-1d5e-4d6d-9318-b83e098eb279",
+    "finishedAt": "2026-06-15T08:12:23.848Z"
+  },
+  {
+    "interviewId": "f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "fabc8e45-fef2-4906-a4cb-f03927d5484c",
+        "questionTitle": "Reverse a String",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "a9fb633d-e05d-4165-b3d9-2d95bb9b1147",
+    "finishedAt": "2026-06-15T08:12:24.063Z"
+  },
+  {
+    "interviewId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+        "questionTitle": "Two Sum",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "aaaf9402-0cd1-4967-8d60-5e0a70329700",
+    "finishedAt": "2026-06-15T08:20:42.255Z"
+  },
+  {
+    "interviewId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+        "questionTitle": "Two Sum",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "c7540f4e-b031-4127-8a20-81adbb0a4866",
+    "finishedAt": "2026-06-15T10:59:49.754Z"
+  },
+  {
+    "interviewId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+        "questionTitle": "Two Sum",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "ea9f820e-6786-4836-929c-a0e17a63bcd2",
+    "finishedAt": "2026-06-17T17:55:30.550Z"
+  },
+  {
+    "interviewId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "totalQuestions": 1,
+    "questionsAttempted": 0,
+    "totalTestsPassed": 0,
+    "totalTestsAvailable": 2,
+    "scorePercent": 0,
+    "questions": [
+      {
+        "questionId": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+        "questionTitle": "Two Sum",
+        "totalTests": 2,
+        "passed": 0,
+        "failed": 2,
+        "allPassed": false,
+        "language": "python"
+      }
+    ],
+    "violations": {
+      "tabSwitches": 3,
+      "terminated": true
+    },
+    "id": "7a116266-968e-4b6c-9d0c-f61bfe2b3dd7",
+    "finishedAt": "2026-06-17T20:42:02.517Z"
   }
 ]

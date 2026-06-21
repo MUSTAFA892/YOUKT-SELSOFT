@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const problems_module_1 = require("./problems/problems.module");
 const submissions_module_1 = require("./submissions/submissions.module");
 const challenges_module_1 = require("./challenges/challenges.module");
@@ -18,12 +19,14 @@ const tab_switch_module_1 = require("./tab-switch/tab-switch.module");
 const advanced_features_module_1 = require("./advanced-features/advanced-features.module");
 const help_center_module_1 = require("./help-center/help-center.module");
 const plagiarism_module_1 = require("./plagiarism/plagiarism.module");
+const pipeline_module_1 = require("./pipeline/pipeline.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
             problems_module_1.ProblemsModule,
             submissions_module_1.SubmissionsModule,
             challenges_module_1.ChallengesModule,
@@ -34,6 +37,7 @@ exports.AppModule = AppModule = __decorate([
             advanced_features_module_1.AdvancedFeaturesModule,
             help_center_module_1.HelpCenterModule,
             plagiarism_module_1.PlagiarismModule,
+            pipeline_module_1.PipelineModule,
         ],
     })
 ], AppModule);

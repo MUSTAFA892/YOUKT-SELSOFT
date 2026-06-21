@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use, useCallback } from "react";
 import Editor from "@monaco-editor/react";
-import { getInterview, submitInterviewCode, submitAssessmentReport, getNextQuestion, type Interview, type Question, type SubmissionResult, reportTabSwitch } from "@/lib/api";
+import { getInterview, submitInterviewCode, submitAssessmentReport, getNextQuestion, type Interview, type Question, type SubmissionResult, reportTabSwitch, submitActivityLog, pingCandidate } from "@/lib/api";
 import { Play, Loader2, CheckCircle2, XCircle, AlertCircle, Terminal, ArrowRight, Home, RotateCcw, Zap, Clock, Info, BookOpen, ListChecks, ChevronLeft, ChevronRight, Lock, Send } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import TabSwitchWarning from "@/components/TabSwitchWarning";
@@ -282,9 +282,58 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
     setShowTabWarning(false);
   };
 
+  const sendLeaveMessage = useCallback(() => {
+    if (!interview) return;
+    const payload = {
+      candidateId: interview.candidateId,
+      interviewId: interview.id,
+      message: {
+        senderId: "system",
+        senderName: "System",
+        senderType: "candidate",
+        content: `${interview.candidateName} has left the test.`
+      }
+    };
+    fetch("http://127.0.0.1:3001/api/help-center/message", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(err => console.error("Failed to send leave message:", err));
+  }, [interview]);
+
   const handleExitAssignment = () => {
+    if (interview && !interview.isComplete && questionIndex < interview.questions.length) {
+      sendLeaveMessage();
+    }
     window.location.href = '/interviews';
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (interview && !interview.isComplete && questionIndex < interview.questions.length) {
+        sendLeaveMessage();
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [interview, questionIndex, sendLeaveMessage]);
+
+  useEffect(() => {
+    if (!interview || interview.isComplete || questionIndex >= interview.questions.length) return;
+    
+    pingCandidate(interview.candidateId);
+    
+    const interval = setInterval(() => {
+      pingCandidate(interview.candidateId);
+    }, 5000);
+    
+    return () => {
+      clearInterval(interval);
+    };
+  }, [interview, questionIndex]);
 
   const initializeEditor = (q: Question, idx: number, startedAt: string | null) => {
     // Calculate accurate time left from server timestamp
@@ -351,6 +400,21 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
     try {
       const res = await submitInterviewCode(interview.id, currentQ.id, language, code);
       setResult(res);
+      
+      // Log candidate activity so it appears in the recruiter dashboard
+      if (res && res.results) {
+        await submitActivityLog({
+          candidateId: currentUser.id,
+          candidateName: currentUser.name,
+          problemId: currentQ.id,
+          problemTitle: currentQ.title,
+          language: language,
+          passed: res.passed,
+          totalTests: res.totalTests,
+          allPassed: res.allPassed,
+          timeSpentSeconds: (currentQ.timeLimit || 300) - timeLeft,
+        }).catch(err => console.error("Failed to submit activity log:", err));
+      }
     } catch (err: any) {
       alert("Error submitting code: " + err.message);
     } finally {
@@ -1025,13 +1089,15 @@ export default function CandidateInterviewPage({ params }: { params: Promise<{ i
         onExit={handleExitAssignment}
       />
 
-      {/* AI Help Center Widget */}
-      <AiHelpCenter 
-        candidateId={interview.candidateId}
-        candidateName={interview.candidateName}
-        interviewId={interview.id}
-        currentQuestion={currentQ}
-      />
+      {/* AI Help Center Widget - Only visible in full screen mode */}
+      {isFullscreen && (
+        <AiHelpCenter 
+          candidateId={interview.candidateId}
+          candidateName={interview.candidateName}
+          interviewId={interview.id}
+          currentQuestion={currentQ}
+        />
+      )}
       </div>
     </div>
   );

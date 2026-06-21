@@ -343,7 +343,7 @@
     ],
     "history": [],
     "completedCount": 0,
-    "currentQuestionStartedAt": null,
+    "currentQuestionStartedAt": "2026-06-12T06:06:52.450Z",
     "createdAt": "2026-04-09T22:42:31.297Z",
     "isComplete": false
   },
@@ -483,7 +483,7 @@
     ],
     "history": [],
     "completedCount": 0,
-    "currentQuestionStartedAt": null,
+    "currentQuestionStartedAt": "2026-06-15T08:09:47.696Z",
     "createdAt": "2026-04-10T09:48:02.993Z",
     "isComplete": false
   },
@@ -979,5 +979,56 @@
     "currentQuestionStartedAt": "2026-04-14T12:13:15.915Z",
     "createdAt": "2026-04-14T12:13:08.638Z",
     "isComplete": false
+  },
+  {
+    "id": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "questions": [
+      {
+        "title": "Two Sum",
+        "description": "Given an array of integers and a target, find two numbers that add up to target.",
+        "inputFormat": "An array of integers `nums` and an integer `target`",
+        "outputFormat": "An array of two indices [i, j]",
+        "examples": [
+          {
+            "input": "nums = [2,7,11,15], target = 9",
+            "output": "[0,1]",
+            "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
+          }
+        ],
+        "testCases": [
+          {
+            "input": "[2,7,11,15], target=9",
+            "expectedOutput": "[0,1]"
+          },
+          {
+            "input": "[3,2,4], target=6",
+            "expectedOutput": "[1,2]"
+          }
+        ],
+        "starterCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "wrapperCode": {
+          "python": "",
+          "javascript": "",
+          "java": "",
+          "c": ""
+        },
+        "isExamplesOpen": false,
+        "id": "5818060b-ad53-4679-a2e2-5e9006cf1894",
+        "difficulty": "Easy",
+        "timeLimit": 180
+      }
+    ],
+    "history": [],
+    "completedCount": 0,
+    "currentQuestionStartedAt": "2026-06-15T08:13:49.154Z",
+    "createdAt": "2026-06-15T08:13:36.319Z",
+    "isComplete": true
   }
 ]

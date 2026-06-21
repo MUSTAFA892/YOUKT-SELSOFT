@@ -10,16 +10,20 @@ export declare class HelpCenterController {
     }): Promise<HelpMessage>;
     getAiAssist(body: {
         query: string;
-        questionContext: any;
+        questionContext?: any;
+        questionId?: string;
         candidateId: string;
         interviewId: string;
         candidateName: string;
     }): Promise<{
         status: string;
-        data?: undefined;
-    } | {
-        status: string;
         data: HelpMessage;
     }>;
     getAllConversations(): Promise<import("./help-center.service").Conversation[]>;
+    ping(body: {
+        candidateId: string;
+    }): Promise<{
+        success: boolean;
+    }>;
+    getActiveCandidates(): string[];
 }

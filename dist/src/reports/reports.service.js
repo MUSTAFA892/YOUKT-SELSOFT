@@ -14,8 +14,10 @@ const common_1 = require("@nestjs/common");
 const fs_1 = require("fs");
 const path_1 = require("path");
 const crypto = require("crypto");
+const interviews_service_1 = require("../interviews/interviews.service");
 let ReportsService = class ReportsService {
-    constructor() {
+    constructor(interviewsService) {
+        this.interviewsService = interviewsService;
         this.dbFilePath = (0, path_1.join)(process.cwd(), 'reports.json');
         this.reports = [];
         this.loadFromDisk();
@@ -46,6 +48,7 @@ let ReportsService = class ReportsService {
         };
         this.reports.push(report);
         await this.saveToDisk();
+        await this.interviewsService.markAsComplete(dto.interviewId);
         return report;
     }
     async getAllReports() {
@@ -60,6 +63,6 @@ let ReportsService = class ReportsService {
 exports.ReportsService = ReportsService;
 exports.ReportsService = ReportsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [interviews_service_1.InterviewsService])
 ], ReportsService);
 //# sourceMappingURL=reports.service.js.map

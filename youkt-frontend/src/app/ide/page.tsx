@@ -277,6 +277,7 @@ export default function CustomIDE() {
                   code={code}
                   candidateId={currentUser?.id || "custom_user"}
                   interviewId="custom_ide"
+                  problemId="custom_problem"
                   onCheck={(report) => {
                     console.log("Plagiarism check completed:", report);
                   }}

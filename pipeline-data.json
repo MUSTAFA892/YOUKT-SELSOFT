@@ -1,0 +1,37 @@
+[
+  {
+    "candidateId": "id-11",
+    "candidateName": "Morgan",
+    "stage": "Applied",
+    "createdAt": "2026-06-15T02:40:31.872Z",
+    "updatedAt": "2026-06-15T02:40:56.917Z"
+  },
+  {
+    "candidateId": "c3",
+    "candidateName": "Charlie Brown",
+    "stage": "Applied",
+    "createdAt": "2026-06-15T02:40:31.872Z",
+    "updatedAt": "2026-06-15T02:53:15.900Z"
+  },
+  {
+    "candidateId": "c4",
+    "candidateName": "Dave Evans",
+    "stage": "Applied",
+    "createdAt": "2026-06-15T02:40:31.872Z",
+    "updatedAt": "2026-06-15T02:59:42.085Z"
+  },
+  {
+    "candidateId": "c1",
+    "candidateName": "Alice Smith",
+    "stage": "Assessed",
+    "createdAt": "2026-06-15T02:40:31.872Z",
+    "updatedAt": "2026-06-15T07:03:49.113Z"
+  },
+  {
+    "candidateId": "c2",
+    "candidateName": "Bob Jones",
+    "stage": "Interviewed",
+    "createdAt": "2026-06-15T02:40:31.872Z",
+    "updatedAt": "2026-06-15T02:41:35.332Z"
+  }
+]

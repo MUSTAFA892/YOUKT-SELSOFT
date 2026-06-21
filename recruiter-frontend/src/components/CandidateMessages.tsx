@@ -13,6 +13,7 @@ import {
   Calendar
 } from "lucide-react";
 import { HelpMessage, getConversation, sendChatMessage } from "@/lib/api";
+import { useAuth } from "@/components/AuthProvider";
 
 interface CandidateMessagesProps {
   candidateId: string;
@@ -35,6 +36,7 @@ export default function CandidateMessages({
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
+  const { unreadHelpRequests, leftTestNotifications } = useAuth();
   
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -97,8 +99,24 @@ export default function CandidateMessages({
               <h2 className="text-xl font-bold text-white leading-tight">{candidateName}</h2>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{candidateId}</span>
-                <span className="text-neutral-700 font-bold">•</span>
-                <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">Live Help Required</span>
+                {unreadHelpRequests.includes(candidateId) && (
+                  <>
+                    <span className="text-neutral-700 font-bold">•</span>
+                    <span className="text-[10px] font-bold text-rose-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-rose-500 rounded-full animate-pulse"></span>
+                      Live Help Required
+                    </span>
+                  </>
+                )}
+                {leftTestNotifications.includes(candidateId) && (
+                  <>
+                    <span className="text-neutral-700 font-bold">•</span>
+                    <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                      Left/Quit Test
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>

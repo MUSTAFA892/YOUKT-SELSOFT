@@ -28,6 +28,8 @@ export interface Interview {
     id: string;
     candidateId: string;
     candidateName: string;
+    recruiterId?: string;
+    recruiterName?: string;
     questions: Question[];
     history: QuestionPerformance[];
     completedCount: number;
@@ -40,12 +42,19 @@ export declare class InterviewsService {
     private readonly problemsService;
     private readonly dbFilePath;
     private interviews;
+    private readonly OLLAMA_BASE_URL;
+    private readonly OLLAMA_MODEL;
     constructor(problemsService: ProblemsService);
     private loadFromDisk;
     private saveToDisk;
-    createInterview(candidateId: string, candidateName: string, questions: Omit<Question, 'id'>[]): Promise<Interview>;
+    createInterview(candidateId: string, candidateName: string, questions: Omit<Question, 'id'>[], recruiterId?: string, recruiterName?: string): Promise<Interview>;
     getInterviewById(id: string): Promise<Interview>;
     getInterviewsByCandidate(candidateId: string): Promise<Interview[]>;
     getAllInterviews(): Promise<Interview[]>;
+    markAsComplete(id: string): Promise<void>;
     processQuestionResult(interviewId: string, questionId: string, passed: boolean, timeMs: number): Promise<Interview>;
+    generateTemplatesWithAI(title: string, description: string, inputFormat: string, outputFormat: string): Promise<{
+        starterCode: CodeTemplates;
+        wrapperCode: CodeTemplates;
+    }>;
 }

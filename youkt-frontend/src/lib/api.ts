@@ -77,7 +77,7 @@ export async function fetchProblems(): Promise<Problem[]> {
     }
     return res.json();
   } catch (error) {
-    console.error("Fetch Problems failed:", error);
+    console.warn("Fetch Problems failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -92,7 +92,7 @@ export async function fetchProblem(id: string, candidateId?: string): Promise<Pr
     if (!res.ok) throw new Error(`Failed to fetch problem ${id}: ${res.statusText}`);
     return res.json();
   } catch (error) {
-    console.error(`Fetch Problem ${id} failed:`, error);
+    console.warn(`Fetch Problem ${id} failed:`, error instanceof Error ? error.message : String(error));
     throw error; // Rethrow because the specific problem page needs this data to render
   }
 }
@@ -208,7 +208,7 @@ export async function getInterview(id: string): Promise<Interview> {
     if (!res.ok) throw new Error(`Failed to fetch interview ${id}: ${res.statusText}`);
     return res.json();
   } catch (error) {
-    console.error(`Get Interview ${id} failed:`, error);
+    console.warn(`Get Interview ${id} failed:`, error instanceof Error ? error.message : String(error));
     throw error;
   }
 }
@@ -219,7 +219,7 @@ export async function getCandidateInterviews(candidateId: string): Promise<Inter
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
-    console.error("Get Candidate Interviews failed:", error);
+    console.warn("Get Candidate Interviews failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -311,7 +311,7 @@ export async function getCandidateActivityLogs(candidateId: string): Promise<Act
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
-    console.error("Get Candidate Activity Logs failed:", error);
+    console.warn("Get Candidate Activity Logs failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -322,7 +322,7 @@ export async function getAllActivityLogs(): Promise<ActivityLog[]> {
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
-    console.error("Get All Activity Logs failed:", error);
+    console.warn("Get All Activity Logs failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -385,7 +385,7 @@ export async function getTabSwitchIncidents(): Promise<TabSwitchIncident[]> {
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
-    console.error("Get Tab Switch Incidents failed:", error);
+    console.warn("Get Tab Switch Incidents failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -396,7 +396,7 @@ export async function getCandidateTabSwitchIncidents(candidateId: string): Promi
     if (!res.ok) return [];
     return res.json();
   } catch (error) {
-    console.error("Get Candidate Tab Switch Incidents failed:", error);
+    console.warn("Get Candidate Tab Switch Incidents failed:", error instanceof Error ? error.message : String(error));
     return [];
   }
 }
@@ -499,6 +499,15 @@ export async function checkPlagiarism(payload: {
   if (!res.ok) throw new Error("Plagiarism check failed");
   const result = await res.json();
   return result.data;
+}
+
+export async function pingCandidate(candidateId: string): Promise<void> {
+  await fetch(`${API_BASE_URL}/help-center/ping`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ candidateId }),
+    keepalive: true
+  }).catch(() => {});
 }
 
 

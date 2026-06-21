@@ -55,9 +55,11 @@ export default function AiHelpCenter({
       const conv = await getConversation(candidateId, interviewId);
       setMessages(conv.messages);
       
-      // If there are existing messages that aren't from AI, switch to recruiter mode
+      // If there are existing messages that aren't from AI, suggest switching to recruiter mode
+      // But we let the user manually switch via the toggle now
       const hasRecruiterInvolvement = conv.messages.some(m => m.senderType === 'recruiter');
-      if (hasRecruiterInvolvement) {
+      if (hasRecruiterInvolvement && mode === 'ai') {
+        // Only auto-switch if they just opened it, otherwise respect their toggle choice
         setMode('recruiter');
       }
     } catch (e) {
@@ -67,64 +69,68 @@ export default function AiHelpCenter({
     }
   };
 
-  const handleSend = async () => {
+  const handleAiAction = async (actionText: string) => {
+    if (actionText === "Speak to recruiter") {
+      setMode('recruiter');
+      return;
+    }
+
+    setIsTyping(true);
+    try {
+      const result = await getAiAssistance({
+        query: actionText,
+        questionContext: currentQuestion,
+        candidateId,
+        interviewId,
+        candidateName
+      });
+
+      if (result.status === 'switching_to_recruiter') {
+        setMode('recruiter');
+        // Add a system message locally to show transition
+        const transitionMsg: HelpMessage = {
+          id: 'system_' + Date.now(),
+          senderId: 'system',
+          senderName: 'System',
+          senderType: 'ai',
+          content: "I'm connecting you with a recruiter now as this requires human assistance. Please wait...",
+          timestamp: new Date().toISOString()
+        };
+        setMessages(prev => [...prev, {
+          id: 'user_' + Date.now(),
+          senderId: candidateId,
+          senderName: candidateName,
+          senderType: 'candidate',
+          content: actionText,
+          timestamp: new Date().toISOString()
+        }, transitionMsg]);
+      } else if (result.data) {
+        // Re-load to get the actual IDs from backend
+        await loadConversation();
+      }
+    } catch (e) {
+      console.error("AI Assist failed", e);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const handleRecruiterSend = async () => {
     if (!inputValue.trim()) return;
 
     const userQuery = inputValue;
     setInputValue("");
 
-    if (mode === 'ai') {
-      setIsTyping(true);
-      try {
-        const result = await getAiAssistance({
-          query: userQuery,
-          questionContext: currentQuestion,
-          candidateId,
-          interviewId,
-          candidateName
-        });
-
-        if (result.status === 'switching_to_recruiter') {
-          setMode('recruiter');
-          // Add a system message locally to show transition
-          const transitionMsg: HelpMessage = {
-            id: 'system_' + Date.now(),
-            senderId: 'system',
-            senderName: 'System',
-            senderType: 'ai',
-            content: "I'm connecting you with a recruiter now as this requires human assistance. Please wait...",
-            timestamp: new Date().toISOString()
-          };
-          setMessages(prev => [...prev, {
-            id: 'user_' + Date.now(),
-            senderId: candidateId,
-            senderName: candidateName,
-            senderType: 'candidate',
-            content: userQuery,
-            timestamp: new Date().toISOString()
-          }, transitionMsg]);
-        } else if (result.data) {
-          // Re-load to get the actual IDs from backend
-          await loadConversation();
-        }
-      } catch (e) {
-        console.error("AI Assist failed", e);
-      } finally {
-        setIsTyping(false);
-      }
-    } else {
-      // Recruiter mode - direct message
-      try {
-        await sendChatMessage(candidateId, interviewId, {
-          senderId: candidateId,
-          senderName: candidateName,
-          senderType: 'candidate',
-          content: userQuery
-        });
-        await loadConversation();
-      } catch (e) {
-        console.error("Send message failed", e);
-      }
+    try {
+      await sendChatMessage(candidateId, interviewId, {
+        senderId: candidateId,
+        senderName: candidateName,
+        senderType: 'candidate',
+        content: userQuery
+      });
+      await loadConversation();
+    } catch (e) {
+      console.error("Send message failed", e);
     }
   };
 
@@ -176,9 +182,20 @@ export default function AiHelpCenter({
               </div>
             </div>
             
-            <div className="flex bg-neutral-800/50 p-1 rounded-xl border border-white/5">
-              <div className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase transition-all ${mode === 'ai' ? 'bg-indigo-500 text-white shadow-md' : 'text-neutral-500'}`}>AI</div>
-              <div className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase transition-all ${mode === 'recruiter' ? 'bg-purple-500 text-white shadow-md' : 'text-neutral-500'}`}>Human</div>
+            {/* Clickable Switcher */}
+            <div className="flex bg-neutral-800/50 p-1 rounded-xl border border-white/5 cursor-pointer">
+              <div 
+                onClick={() => setMode('ai')}
+                className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all ${mode === 'ai' ? 'bg-indigo-500 text-white shadow-md' : 'text-neutral-500 hover:text-white'}`}
+              >
+                AI
+              </div>
+              <div 
+                onClick={() => setMode('recruiter')}
+                className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all ${mode === 'recruiter' ? 'bg-purple-500 text-white shadow-md' : 'text-neutral-500 hover:text-white'}`}
+              >
+                Human
+              </div>
             </div>
           </div>
 
@@ -236,46 +253,51 @@ export default function AiHelpCenter({
             )}
           </div>
 
-          {/* Tips Section (AI Mode Only) */}
-          {mode === 'ai' && (
-            <div className="px-5 py-3 bg-white/5 border-t border-white/10 flex gap-2 overflow-x-auto no-scrollbar">
-              {[
-                "Clarify the question",
-                "Find errors in question",
-                "Help with test cases",
-                "Speak to a recruiter"
-              ].map(tip => (
-                <button
-                  key={tip}
-                  onClick={() => setInputValue(tip)}
-                  className="shrink-0 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/5 text-[10px] text-neutral-400 font-bold hover:text-white transition-all active:scale-95"
-                >
-                  {tip}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Footer Input */}
+          {/* Footer Area */}
           <div className="p-5 bg-white/5 border-t border-white/10">
-            <div className="relative group">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder={mode === 'ai' ? "What's on your mind?..." : "Send a message to recruiter..."}
-                className="w-full bg-neutral-950/50 border border-white/10 rounded-2xl py-3.5 pl-5 pr-12 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/10 transition-all"
-              />
-              <button
-                onClick={handleSend}
-                disabled={!inputValue.trim()}
-                className="absolute right-2 top-1.5 p-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-20 transition-all active:scale-90 shadow-lg"
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="mt-3 flex items-center justify-center gap-2">
+            {mode === 'ai' ? (
+              // AI Mode: No input box, just preset action buttons
+              <div className="flex flex-col gap-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <button onClick={() => handleAiAction("Clarify question")} disabled={isTyping} className="px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/30 border border-indigo-500/20 rounded-xl text-[11px] font-bold text-indigo-300 transition-colors text-left shadow-sm">
+                    Clarify question
+                  </button>
+                  <button onClick={() => handleAiAction("Clarify the question like to a kid")} disabled={isTyping} className="px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/30 border border-indigo-500/20 rounded-xl text-[11px] font-bold text-indigo-300 transition-colors text-left shadow-sm">
+                    Clarify like to a kid
+                  </button>
+                  <button onClick={() => handleAiAction("Find errors in questions")} disabled={isTyping} className="px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/30 border border-indigo-500/20 rounded-xl text-[11px] font-bold text-indigo-300 transition-colors text-left shadow-sm">
+                    Find errors in questions
+                  </button>
+                  <button onClick={() => handleAiAction("Help with testcases")} disabled={isTyping} className="px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/30 border border-indigo-500/20 rounded-xl text-[11px] font-bold text-indigo-300 transition-colors text-left shadow-sm">
+                    Help with testcases
+                  </button>
+                </div>
+                <button onClick={() => handleAiAction("Speak to recruiter")} className="w-full px-3 py-2.5 mt-1 bg-purple-500/20 hover:bg-purple-500/40 border border-purple-500/30 rounded-xl text-xs font-black text-purple-300 transition-colors text-center shadow-sm flex items-center justify-center gap-2 uppercase tracking-widest">
+                  <HeadphonesIcon className="w-4 h-4" /> Speak to recruiter
+                </button>
+              </div>
+            ) : (
+              // Recruiter Mode: Free text input
+              <div className="relative group">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleRecruiterSend()}
+                  placeholder="Send a message to recruiter..."
+                  className="w-full bg-neutral-950/50 border border-white/10 rounded-2xl py-3.5 pl-5 pr-12 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 transition-all"
+                />
+                <button
+                  onClick={handleRecruiterSend}
+                  disabled={!inputValue.trim()}
+                  className="absolute right-2 top-1.5 p-2 rounded-xl bg-purple-600 text-white hover:bg-purple-500 disabled:opacity-20 transition-all active:scale-90 shadow-lg"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+
+            <div className="mt-4 flex items-center justify-center gap-2">
               <Info className="w-3 h-3 text-neutral-600" />
               <p className="text-[9px] text-neutral-600 font-bold uppercase tracking-widest">Your conversation is strictly private</p>
             </div>

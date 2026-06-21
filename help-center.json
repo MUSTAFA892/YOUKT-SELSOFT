@@ -50,6 +50,86 @@
         "content": "Try walking through your code with a simple edge case, like empty input or very large values, to see if it behaves as expected.",
         "id": "aa5c2a9e-26ac-4b6f-a15e-085fa11946ce",
         "timestamp": "2026-04-12T09:37:20.765Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "dda10032-60d7-44c5-92a2-295aa9b6d89c",
+        "timestamp": "2026-06-12T11:30:53.147Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification on Question\n\"Hi ${firstName}! The current problem is asking you to [RESTATE THE CURRENT PROBLEM IN SIMPLER TERMS]. Can you tell me what input and output are expected for this problem? Is there any specific constraint or requirement that needs to be met?\"",
+        "id": "8d945053-e1f0-44fd-b618-0e02484cec34",
+        "timestamp": "2026-06-12T11:30:53.150Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "f92a94a9-51e7-4c0b-8e48-e5feba1a0717",
+        "timestamp": "2026-06-12T11:36:03.494Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Question\n\"Hi ${firstName}! Can you please explain what is being asked? I want to make sure I understand the problem correctly before moving forward.\"",
+        "id": "8885dc2a-dba3-4fe1-95bb-10f03fde7172",
+        "timestamp": "2026-06-12T11:36:03.504Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "545ba74a-0132-4cf2-83a3-b3e3cd1a5ab1",
+        "timestamp": "2026-06-12T11:41:23.892Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarifying the Question\n\nYou have a function `maxSumSubarray` that takes an array of integers as input and returns the maximum sum of a subarray within that array.\n\nThe array is guaranteed to contain at least one element. The elements in the array are either positive or zero, but not negative. You can use any valid data structure to solve this problem.\n\nIs that correct?",
+        "id": "b23e7317-8379-406e-b4f3-8702a7bfe43f",
+        "timestamp": "2026-06-12T11:41:23.897Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "464db89a-2397-4f5c-8de4-1e4b2f56b228",
+        "timestamp": "2026-06-12T11:46:54.479Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Problem\nYou are given N integers on separate lines.\nRead all N numbers and print their sum.\n\nThe first line contains N (the count of numbers).\nThe next N lines each contain one integer.\n\nExample:\n  Input:\n    3\n    10\n    20\n    30",
+        "id": "fa3e7a4e-19c0-4f07-a500-b6358307eb67",
+        "timestamp": "2026-06-12T11:46:54.488Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "0520236d-2d54-4618-b9dd-9cf428f5893a",
+        "timestamp": "2026-06-12T11:50:52.312Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Problem\nThe problem is asking you to take an array of integers and calculate their sum.\n\nTo be more specific, the input will consist of N integers on separate lines, where each line contains a single integer.\n\nThe goal is to write a program that takes this input, calculates the sum of all the numbers in the array, and outputs the result.",
+        "id": "2d850817-75ef-4235-bb03-5126a4c40b8b",
+        "timestamp": "2026-06-12T11:50:52.319Z"
       }
     ],
     "status": "active"
@@ -135,13 +215,263 @@
   {
     "candidateId": "c1",
     "interviewId": "5ee435c1-d0c8-4a1f-a4c2-2cb564c27ace",
-    "messages": [],
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "hey",
+        "id": "28e733e2-e306-4d63-b47e-e8f625e6efca",
+        "timestamp": "2026-06-12T03:19:06.629Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm having trouble processing your request right now. Please try rephrasing your question or switch to the Human tab to reach a recruiter.",
+        "id": "890704ea-2f2a-44e5-867f-c7a66c6b7202",
+        "timestamp": "2026-06-12T03:19:06.632Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "0a49fb52-1473-4f81-bc52-6a27aa160816",
+        "timestamp": "2026-06-12T03:19:40.431Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm having trouble processing your request right now. Please try rephrasing your question or switch to the Human tab to reach a recruiter.",
+        "id": "0e6252a2-9ae3-4cd3-980f-4f9ae090a4b2",
+        "timestamp": "2026-06-12T03:19:40.433Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "hey",
+        "id": "b412f896-229a-4060-87c8-0c7cf0351d62",
+        "timestamp": "2026-06-12T03:29:53.468Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm having trouble processing your request right now. Please try rephrasing your question or switch to the Human tab to reach a recruiter.",
+        "id": "24b1434c-1243-4034-a2e7-1ca2512d2123",
+        "timestamp": "2026-06-12T03:29:53.471Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "fc37c15a-e0ad-4296-bb21-ddbad7550afc",
+        "timestamp": "2026-06-12T03:30:06.561Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm having trouble processing your request right now. Please try rephrasing your question or switch to the Human tab to reach a recruiter.",
+        "id": "bb234585-d07c-473a-a87e-6eb36498e5ad",
+        "timestamp": "2026-06-12T03:30:06.562Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "191ca716-76a4-4172-b52d-709268cfed93",
+        "timestamp": "2026-06-12T05:38:38.419Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hi Alice! I'd be happy to help clarify your algorithm question. Can you tell me what's being asked? What do we need to sum up in this problem?",
+        "id": "31a7271c-fd9e-4713-94c0-905984b48645",
+        "timestamp": "2026-06-12T05:38:38.426Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explain me this question, I dont understand",
+        "id": "df1620a9-77fd-4e4a-bced-ce6b17767b48",
+        "timestamp": "2026-06-12T05:39:24.965Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "That's a great question, Alice! However, answering it directly might give away too much about the solution. Try re-reading the problem description — it usually contains all the information you need to understand the expected input and output. Is there a specific part of the problem statement that's confusing? 😊",
+        "id": "ff03fe66-15c1-4505-82df-268797a58d9c",
+        "timestamp": "2026-06-12T05:39:24.967Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "f4a7f925-316d-417f-9329-70441c72a167",
+        "timestamp": "2026-06-12T11:52:54.409Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "That's a great question, Alice! However, answering it directly might give away too much about the solution. Try re-reading the problem description — it usually contains all the information you need to understand the expected input and output. Is there a specific part of the problem statement that's confusing? 😊",
+        "id": "afe535b0-1153-4629-8583-91c2b0668f34",
+        "timestamp": "2026-06-12T11:52:54.414Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "213708ea-bf1b-4271-a00b-7bb9318fc52c",
+        "timestamp": "2026-06-12T11:53:14.299Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Problem\nThe problem is asking for the sum of all integers provided on separate lines.\n\nExample:\n  Input:\n    3\n    10\n    20\n    30\n\nOutput:\n    ? (Not applicable in this case)\n\nIs that correct?",
+        "id": "91b26ff9-65c4-478f-9a6b-ad1f6ca7f924",
+        "timestamp": "2026-06-12T11:53:14.306Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "fc57b0c5-345a-486f-b533-61ac96cdea9d",
+        "timestamp": "2026-06-12T11:59:35.073Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification on Algorithm Question 1\nYou are given N integers on separate lines.\nRead all N numbers and print their sum.\n\nThe first line contains N (the count of numbers).\nThe next N lines each contain one integer.\n\nExample:\n Input:\n   3\n   10\n   20\n   30\n\nOutput:\n  60",
+        "id": "be9b5882-bca1-44b2-9a07-d476fc62102b",
+        "timestamp": "2026-06-12T11:59:35.081Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "06ae14c9-d014-473e-a924-660ebbe339cc",
+        "timestamp": "2026-06-12T12:26:34.519Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification\n\nYou are given N integers on separate lines.\nRead all N numbers and print their sum.\n\nThe first line contains N (the count of numbers).\nThe next N lines each contain one integer.\n\nExample:\nInput:\n3\n10\n20\n30\n\nOutput:\n60",
+        "id": "d6b23707-28f6-472d-87cd-426a1691b035",
+        "timestamp": "2026-06-12T12:26:34.526Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "2224bb4e-8da7-452f-bc83-045ee510f70f",
+        "timestamp": "2026-06-12T12:27:06.897Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Problem\nThe problem presented is a straightforward one. Given N integers on separate lines, read all N numbers and print their sum.\n\nThis means you will need to:\n- Read each line containing an integer.\n- Sum up all the integers from those lines.\n- Print out the total sum.\n\nThat's it.",
+        "id": "e35886aa-7b96-42ae-b58c-2e89d53fcff3",
+        "timestamp": "2026-06-12T12:27:06.900Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "116f0238-244f-47c3-9a3f-353c6281a31c",
+        "timestamp": "2026-06-14T17:37:48.099Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Ollama is not running. Please start Ollama and try again.",
+        "id": "b9738415-aeee-4e4e-8fce-32a5c2a81586",
+        "timestamp": "2026-06-14T17:37:48.104Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "ce434208-7fb0-4da4-a8c1-ed697e40879c",
+        "timestamp": "2026-06-14T17:47:39.671Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hello Alice,\n\nThe problem here is asking you to take a list of numbers read from standard input and print their sum.\n\nIn other words, you need to add up all the integers provided on separate lines in the input.",
+        "id": "5d50fc00-1c5d-4b75-bdea-e340f11f790b",
+        "timestamp": "2026-06-14T17:47:39.683Z"
+      }
+    ],
     "status": "active"
   },
   {
     "candidateId": "c2",
     "interviewId": "638e09a8-2ff7-45c5-8287-8bfec06eec04",
-    "messages": [],
+    "messages": [
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Find errors in questions",
+        "id": "1e6cc4b2-b8ca-4edc-b07e-4e9de82317f9",
+        "timestamp": "2026-06-15T07:58:12.130Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I cannot provide information about potential problems with this question or suggest ways to identify errors. Can I help you with anything else?",
+        "id": "5b979080-4dd5-4de9-b52d-a89fc4b02344",
+        "timestamp": "2026-06-15T07:58:12.145Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "e30188c0-48af-4a0d-a13e-f5dbb6dc725d",
+        "timestamp": "2026-06-15T07:58:46.009Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I will provide a clear explanation of the algorithm. \n\nThe problem is asking you to read all N numbers and print their sum. The input format is already provided in the example you gave me, where I see three lines with integers on them. Each line contains one integer, and there are N such lines.\n\nThe question seems straightforward and simple. It asks for the sum of all the numbers you read from the given inputs.",
+        "id": "de2d167d-0460-4516-95b9-77fb0deb34a3",
+        "timestamp": "2026-06-15T07:58:46.027Z"
+      },
+      {
+        "senderId": "recruiter1",
+        "senderName": "Recruiter 1",
+        "senderType": "recruiter",
+        "content": "what happened bob",
+        "id": "4d59863e-b645-4eb4-a99d-dc3cf67084ed",
+        "timestamp": "2026-06-15T11:00:51.894Z"
+      }
+    ],
     "status": "active"
   },
   {
@@ -163,6 +493,38 @@
         "content": "Sure! The problem \"Longest Substring Without Repeating\" requires you to find the length of the longest substring without repeating characters. \n\nKey constraints to keep in mind:\n- Input Format: \n- Output Format: \n\nDoes that help clear things up?",
         "id": "46a04176-da54-4e2e-b78e-0755547bf830",
         "timestamp": "2026-04-13T12:02:33.606Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "there is a issue in exam, the website is crashing in between",
+        "id": "01280be2-e2a3-46c1-a51e-0c051d00c8b7",
+        "timestamp": "2026-06-15T02:26:46.943Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "${firstName} Alice, it seems like there might be an issue with the current problem you're working on, specifically related to how the website is handling data or possibly timing out. Could you tell me more about what's happening when the website crashes?",
+        "id": "e0198b53-fb41-45ae-9c2b-48c6d885a283",
+        "timestamp": "2026-06-15T02:26:46.951Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "I face a network problem",
+        "id": "b5cc2476-7348-4524-bb90-0d2649e531c6",
+        "timestamp": "2026-06-15T02:27:27.852Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "${firstName}, it seems like you're experiencing an issue with your coding environment or tools that's preventing you from running your current code successfully. Can you please switch to human mode so we can help resolve this?",
+        "id": "8024ed79-e91c-4cce-bf3d-4667f36c2b35",
+        "timestamp": "2026-06-15T02:27:27.855Z"
       }
     ],
     "status": "active"
@@ -250,6 +612,110 @@
         "content": "I recommend creating a simple test case for yourself:\n- **Input**: Use the simplest possible valid value.\n- **Expected**: Manually calculate the result.\nDoes your code return that value correctly?",
         "id": "774f00b6-76ec-4ffe-a05d-da57d75cd6d0",
         "timestamp": "2026-04-14T10:35:25.224Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "I face a pfoblem in network connection",
+        "id": "7e4ce726-58a7-481a-9886-77893ebd4ac5",
+        "timestamp": "2026-06-15T07:06:08.833Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm here to help Bob with his issue. It sounds like you're experiencing problems with your network connection, which means you might not be able to access certain resources or communicate with other devices. Is that correct?",
+        "id": "f19dd4d5-d94b-4691-acad-9457db7a54bb",
+        "timestamp": "2026-06-15T07:06:08.841Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "yes",
+        "id": "e262f455-c3cb-4bb9-875b-4d6eae39476c",
+        "timestamp": "2026-06-15T07:06:33.865Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "You're confirming whether a string matches the pattern of an empty string or not. In other words, you want to know if there's any input that doesn't match this specific pattern. Is that correct?",
+        "id": "de9726fe-279a-40e5-9354-c0c5f2e88f36",
+        "timestamp": "2026-06-15T07:06:33.870Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "hello",
+        "id": "493516fd-9008-4ee8-b918-2efea3c6e0d6",
+        "timestamp": "2026-06-15T07:16:07.562Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "061960e5-4d58-4664-ad9c-4aad401e0136",
+        "timestamp": "2026-06-15T07:17:28.577Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Let's break down the regular expression matching with support for \".\" and \"*\". This means we need to match any single character (except a newline) followed by zero or more occurrences of the same character, or one or more occurrences of any character except a newline.\n\nThink of it like a line where you can put as many dots as you want, but only if they're consecutive. You can also put an empty string between each dot, and that's fine too.",
+        "id": "318fb865-6eea-4516-ac51-5483e8d80f89",
+        "timestamp": "2026-06-15T07:17:28.583Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question like to a kid",
+        "id": "fdb32a97-d1e0-4ac8-8ece-958c40357200",
+        "timestamp": "2026-06-15T07:18:26.794Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "So you want to match two strings using special characters? Like \"ab\" and \"ba\"? And you want to know if it's possible to match them in different ways?",
+        "id": "096b31d1-3e58-450a-a5c2-b98cb9c16f5a",
+        "timestamp": "2026-06-15T07:18:26.812Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Find errors in questions",
+        "id": "719e8d1a-1058-4222-9993-e235b2449ad4",
+        "timestamp": "2026-06-15T07:21:35.581Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I'm here to help Bob identify any potential issues with his questions. Can you please tell me what specifically doesn't feel quite right about a question? What's causing Bob to think there might be an error in the question?",
+        "id": "57e5f1fc-448c-4ca0-b795-04c848c263fc",
+        "timestamp": "2026-06-15T07:21:35.590Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Find errors in questions",
+        "id": "3b454250-7054-4af0-bed5-1137d85f5025",
+        "timestamp": "2026-06-15T07:28:37.447Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "No errors exist in the CURRENT PROBLEM. Bob can proceed with explaining the question properly and clearly to the candidate.",
+        "id": "c38ff1b6-03d8-4108-80f7-917f49bf4144",
+        "timestamp": "2026-06-15T07:28:37.462Z"
       }
     ],
     "status": "active"
@@ -297,6 +763,761 @@
         "content": "Speak to a recruiter",
         "id": "1ae1183c-28fe-4054-846e-8665334ea7ab",
         "timestamp": "2026-04-15T12:38:54.016Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "bc602e32-838c-447d-abce-c40b7d25f64a",
+        "timestamp": "2026-06-12T06:29:52.918Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification on Question\n\n### What is the purpose of the function `calculate_total_cost`?\n\nThis function appears to be designed to calculate the total cost of a shopping list based on various items and their respective prices.\n\nCan you please provide more context or information about what specific aspects of this function you're having trouble understanding?",
+        "id": "6c29f143-9df7-46b4-ab9a-74f0362f549e",
+        "timestamp": "2026-06-12T06:29:52.923Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explain me this questions",
+        "id": "2e07beca-61c4-4e3d-8a3f-1b8ca52475ac",
+        "timestamp": "2026-06-12T06:30:45.235Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification on the Problem\n\nYou are working with a simple text-based chat system where users can type messages and you need to process these messages in real-time. The messages are stored in a database and can be retrieved by their unique ID.\n\nThe problem is that the user's input is not being properly matched with the corresponding message in the database, resulting in incorrect or missing messages being displayed to the user.\n\n## Clarification on the Problem\n\nCan you tell me more about what you're trying to achieve? Are there any specific requirements or constraints you'd like to discuss?",
+        "id": "44e83fb0-b61d-48bd-afce-936c2861aa70",
+        "timestamp": "2026-06-12T06:30:45.239Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "4a8455a7-7568-418b-900c-a08b13bcd252",
+        "timestamp": "2026-06-14T19:07:35.328Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Two Sum\n================\n\nGiven an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to the target.",
+        "id": "d7b00c99-626b-4c14-8941-34aee8ec3b33",
+        "timestamp": "2026-06-14T19:07:35.333Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "abef23be-a172-467b-b2aa-c619619bfb58",
+        "timestamp": "2026-06-14T19:07:58.088Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Dear Alice,\n\nThe question seems to be about finding two numbers in an array that add up to a certain value. In this case, it's asking for the indices of those two numbers.\n\nCan you tell me more about what specifically concerns you when it comes to this problem?",
+        "id": "d66c8b2a-b7ed-4ed4-a24a-ea048782c158",
+        "timestamp": "2026-06-14T19:07:58.096Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "734a3669-6d71-47b8-9022-6b19f8483e3f",
+        "timestamp": "2026-06-14T19:14:05.718Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I cannot find an error in the question because it is clear, concise, and accurately describes the problem. Is there anything else I can help you with?",
+        "id": "b1cb1ff0-aa2e-4490-baa3-5fc1f79a2072",
+        "timestamp": "2026-06-14T19:14:05.726Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "the website is crashing",
+        "id": "9eaf7ebe-70e6-4b2b-9c7c-fff9f2df62b8",
+        "timestamp": "2026-06-15T01:52:59.684Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Dear ${Alice}.\n\nIt sounds like you're experiencing an issue with the website. Can you tell me more about what happens when you try to access it? Specifically, what exactly crashes or stops functioning?\n\nBest,\n${YourName}",
+        "id": "df7f968f-a405-4367-9082-67571f58d68c",
+        "timestamp": "2026-06-15T01:52:59.718Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "the website is flickering frequently and not allowing me to attend the test properly",
+        "id": "b7aa346f-2f61-42a7-bbdf-9c06bdd152e3",
+        "timestamp": "2026-06-15T01:55:05.865Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "${firstName}, I think there might be a problem with your question. It seems like you're asking for feedback on your interview experience, but it's phrased in a way that suggests an issue with the website itself rather than your performance or preparation for the test. Can you clarify what you mean by \"flickering frequently\" and how you think this might be affecting your ability to attend the test properly?",
+        "id": "f1823582-2ba2-4001-a870-22ec4f69a1da",
+        "timestamp": "2026-06-15T01:55:05.875Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "ccec6764-8660-4d9e-a53d-57a4c3d6798f",
+        "timestamp": "2026-06-15T07:01:56.734Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Two Sum\n================\n\nGiven an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to the target.\n\nWhat specifically would you like me to explain about this problem?",
+        "id": "871fce27-f691-4815-89a0-2000bef72543",
+        "timestamp": "2026-06-15T07:01:56.754Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explpain it like to a kid",
+        "id": "b1ca40ec-139b-4d46-8c9b-6bf5e788eacd",
+        "timestamp": "2026-06-15T07:02:15.129Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I cannot provide an explanation of the problem as it is a complex algorithm. Can I help you with anything else?",
+        "id": "24157334-e24f-40be-a508-c830a27d305c",
+        "timestamp": "2026-06-15T07:02:15.132Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "clarify this question like to a kid",
+        "id": "5c0bf5f9-a3f2-4a9a-85af-5107df875491",
+        "timestamp": "2026-06-15T07:02:43.493Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Two Sum is a simple math puzzle where you have an array of numbers and a target number. You need to find two numbers in the array that add up to the target number.\n\nThink of it like this: Imagine you have a bunch of cookies, and each cookie has a certain amount of sugar on it. If you want to make a special treat, you need to find two types of cookies that together have just the right amount of sugar.",
+        "id": "762402c1-0ffc-4f88-986c-712a0e8cf432",
+        "timestamp": "2026-06-15T07:02:43.501Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "f5001f8d-4af6-47c8-9f22-3dcf1026ed90",
+        "timestamp": "2026-06-15T07:03:11.041Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "There doesn't appear to be an error in the current problem as presented by Alice. The CURRENT PROBLEM is:\n\nTitle: Two Sum\nDifficulty: Easy\nDescription: Given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to the target.\n\nLet's review the question again, shall we?",
+        "id": "e0d89c57-2190-47ef-b8c6-18f7f65cfcc3",
+        "timestamp": "2026-06-15T07:03:11.048Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "80b77f76-5ec2-4910-abd1-0dd476431849",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "30635ae8-8877-4f79-bc28-5a1793bf4a14",
+        "timestamp": "2026-06-12T03:38:11.287Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "It seems like you want me to help clarify or expand on the problem statement. In this case, I'll do my best to provide more context and clarity on what you're trying to accomplish.\n\nYou have a string `s` that needs to be reversed. To reverse a string means to read it from left to right and then write it back in reverse order. For example, if you have the string \"hello\", writing it out is: h-e-l-l-o, and reversing it gives us: o-l-l-e-h.\n\nIs that correct?",
+        "id": "3f1e42f7-14d4-44e5-8ea6-46bc9c199b51",
+        "timestamp": "2026-06-12T03:38:11.290Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "0447adee-22c7-4138-a254-84eb582d1bf5",
+        "timestamp": "2026-06-12T03:38:53.111Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Your candidate might think that to reverse a string, they need to start from the end of the string and move backwards. However, this approach would actually result in a string with all characters reversed.\n\nA better approach is to use two pointers, one starting from the beginning of the string and one at the end. As you increment the first pointer, decrement the second pointer until they meet in the middle. This way, you can effectively reverse the string.",
+        "id": "8df1388e-b791-461c-b75c-f7bf15a28b7b",
+        "timestamp": "2026-06-12T03:38:53.113Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Help with test cases",
+        "id": "cb1ea3e4-d29b-4256-b7ba-1d0e90e9cc6d",
+        "timestamp": "2026-06-12T03:39:48.172Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "I can help explain the concept, but I'm not able to write code for you. Ask me about the requirements or approach instead!",
+        "id": "4b0283d6-634d-4ed9-a993-bb48288cbcbf",
+        "timestamp": "2026-06-12T03:39:48.174Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Speak to a recruiter",
+        "id": "06400528-2304-49ce-9611-23486807cc08",
+        "timestamp": "2026-06-12T03:40:13.308Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Don't worry about your problem statement - it's not supposed to be related to coding or the assessment yet! You can focus on understanding the concept and asking questions like \"What is reversing a string?\" or \"Why would I want to reverse a string?\". Let's get started with some simple exploration.",
+        "id": "e4c3b8aa-c482-4101-bb0e-8e876cf20d9d",
+        "timestamp": "2026-06-12T03:40:13.310Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "hey hi",
+        "id": "57f88b7a-0fa7-482b-88f2-cfedf1a2fe53",
+        "timestamp": "2026-06-12T03:40:39.339Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "This is a classic problem that can be easily solved with a simple loop. You just need to iterate through the input string and move each character to its opposite position. Does that make sense?",
+        "id": "4feabad7-1695-4774-81cc-32a880524d19",
+        "timestamp": "2026-06-12T03:40:39.341Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "ae3592f4-afde-444e-bbd7-1b5fbdbdfd6c",
+        "timestamp": "2026-06-12T11:16:53.669Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of the Problem\n\n### What is the purpose of this function?\n\nIs it supposed to take in a list and return a new list with only unique elements? If so, what does \"unique\" mean in this context (i.e., are there duplicates allowed or not)?\n\n### How would you define the concept of \"unique\"?\n\nDoes it include cases where two elements have the same value but different indices?\n\n## Explanation\n\n* What is the expected input type?\n* Are there any specific edge cases to consider (e.g. empty lists, single-element lists)?\n* Can we assume that the input list contains only hashable types?",
+        "id": "f6b5fdbc-86fa-4646-b5c4-ead39ecb7e31",
+        "timestamp": "2026-06-12T11:16:53.674Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "b848abc7-3d0b-4352-9395-6a04d453f958",
+        "timestamp": "2026-06-12T11:17:31.213Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification of Question\n\nThe question seems to be about understanding how to process a specific type of data or perform a particular task within a given context.\n\nCould you please provide more details about what exactly you're trying to accomplish? What is the input format, expected output, and any constraints that apply?\n\nIs there anything else I can help with in clarifying this question for you?",
+        "id": "725a60a7-c061-44ac-9e69-717bac4e5e21",
+        "timestamp": "2026-06-12T11:17:31.216Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "834cfeed-7feb-4a35-9e6a-8c1c88a378ae",
+        "timestamp": "2026-06-12T12:28:21.549Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## Clarification on the Problem\nYou are given a string s and asked to reverse it. The input is expected to be a single string containing only alphanumeric characters.\n\n## What Specifically Do You Need Help with?\n- Is your understanding of the task clear?",
+        "id": "178aa3d6-aeb9-411c-9c6c-3a65d239969d",
+        "timestamp": "2026-06-12T12:28:21.557Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "clarify this sum like to a kid",
+        "id": "de15d5aa-bc7e-451e-be80-b64458594212",
+        "timestamp": "2026-06-12T12:29:01.438Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "## 📝 Clarification of the Sum\nHey Alice! So, you want me to explain what that sum means?\n\nThink about it like this:\n\n* You have some numbers (let's say 2 + 3)\n* And then you add another set of numbers (4 + 5)\n\nThe sum is like adding all those numbers together.\n\nYou can think of it like counting: if you have 2 toys and your friend gives you 3 more, how many toys do you have now?\n\nThat's kind of what the sum is – a way to count everything together.",
+        "id": "c2cdace2-a0a3-4857-8214-b9bdb02ec7a2",
+        "timestamp": "2026-06-12T12:29:01.447Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "9459241c-6329-44e3-a3be-b393ee846937",
+        "timestamp": "2026-06-14T18:21:55.921Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "To reverse a string, we need to rearrange its characters so that they form another string. For example, if you have the string \"hello\", you would want it to become \"olleh\".",
+        "id": "f8fa2dfe-d7e3-422f-aa83-b034f5c8870f",
+        "timestamp": "2026-06-14T18:21:55.925Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Find errors in question",
+        "id": "0c052be1-f334-4e01-bc01-f62fc2401ded",
+        "timestamp": "2026-06-14T18:22:21.109Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "To identify any potential issues with the given string reversal function, we need to consider a few key aspects:\n\n1. Handling edge cases: What happens if the input is an empty string? A string with only one character?\n2. Non-string inputs: Could the function be designed to work with other types of data (e.g., integers, floats)?\n3. Error handling: How would the function handle invalid or unexpected user input?\n\nCan you think of any potential errors that might arise from reversing a non-string value?",
+        "id": "c80b3a5f-e367-4c48-9336-0d174e18609a",
+        "timestamp": "2026-06-14T18:22:21.112Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explain me the question like to a kid'",
+        "id": "5ab81a92-036e-43df-9df2-fd1156124287",
+        "timestamp": "2026-06-14T18:23:13.716Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hello Alice! So, you want to know about this thing called \"reverse a string\". \n\nImagine you have a toy box with some toys inside it. The toys are all jumbled up and you don't know which one is which. Now, you need to put the toys back in their original order so they can play nicely together.\n\nIn this case, the \"string\" is like the toy box, and the \"reversed string\" is like the toys that were inside it. We want to take all the toys out of the box (the string), put them in a different order (the reversed string), and then put everything back in the box.\n\nDoes that make sense?",
+        "id": "e9b2c110-6c6b-4a14-a690-c07492408763",
+        "timestamp": "2026-06-14T18:23:13.718Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "c08c52ea-cfde-4626-afef-71215bd2dd31",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "e0affc94-e911-4b46-9fee-46d7ad22c31f",
+        "timestamp": "2026-06-12T06:07:14.618Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "That's a great question, Alice! However, answering it directly might give away too much about the solution. Try re-reading the problem description — it usually contains all the information you need to understand the expected input and output. Is there a specific part of the problem statement that's confusing? 😊",
+        "id": "a4fd76ed-3941-40f5-9fbc-bc412246e4c7",
+        "timestamp": "2026-06-12T06:07:14.621Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explain the question",
+        "id": "6f3d4f62-aff7-4d18-ae50-4470d960ef0f",
+        "timestamp": "2026-06-12T06:07:46.994Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "That's a great question, Alice! However, answering it directly might give away too much about the solution. Try re-reading the problem description — it usually contains all the information you need to understand the expected input and output. Is there a specific part of the problem statement that's confusing? 😊",
+        "id": "c0fd3106-7750-4738-bc36-bf23576cffd3",
+        "timestamp": "2026-06-12T06:07:46.997Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "5a6d34f9-ea51-4cfc-82a2-ba2bf4368d80",
+        "timestamp": "2026-06-12T06:10:10.956Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hi Alice! I'd be happy to help clarify the algorithm for this problem.\n\nSo, you're given a series of numbers on separate lines, and you need to print their sum at the end. Does that make sense? 😊",
+        "id": "5da34b03-cc87-49fd-8224-b3f868384b77",
+        "timestamp": "2026-06-12T06:10:10.960Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "explain it with an example",
+        "id": "476bfcf9-bc60-4fe0-9664-faac54d4d38c",
+        "timestamp": "2026-06-12T06:10:58.461Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hi Alice! 😊\n\nLet me explain what you're getting at. You want to know how to sum up all the numbers given on separate lines. For example, if I give you the following input:\n\n  Input:\n    3\n    10\n    20\n    30\n\nYou would need to read each line separately and then add those numbers together. Is that correct?",
+        "id": "0358942c-f277-45fc-bc48-9fe323868872",
+        "timestamp": "2026-06-12T06:10:58.463Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Alice Smith",
+        "senderType": "candidate",
+        "content": "Clarify the question",
+        "id": "c49ede2d-e3aa-484c-9577-524e9ffeec61",
+        "timestamp": "2026-06-14T18:02:40.091Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "To solve this problem, Alice needs to add up all the numbers provided on separate lines, which are given as input by the user. The input is expected to be a series of integers, where each integer represents a value that will be added together later.",
+        "id": "39a54e09-1777-4b44-a553-fd36955e26ac",
+        "timestamp": "2026-06-14T18:02:40.096Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c2",
+    "interviewId": "f1f2fa67-d7bc-457b-bd43-151b02bdab28",
+    "messages": [
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Find errors in questions",
+        "id": "a9284031-1351-4b3e-b383-0326be13a9d1",
+        "timestamp": "2026-06-15T08:10:38.033Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "There are no errors in the current problem. You're working on a simple string reversal task and you've got it down to a point where you just need to reverse the input string. Is that correct?",
+        "id": "2dab3a82-6dc5-4db8-b7e5-7eae91e25d84",
+        "timestamp": "2026-06-15T08:10:38.039Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "83b39261-720d-4d8c-b4bc-63200133e24c",
+        "timestamp": "2026-06-15T08:10:56.209Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hi Bob, \n\nThe current problem is about reversing a string. You're given a string s and you need to return the reversed string.\n\nIn other words, take this: \"hello\" and return \"olleh\".",
+        "id": "e65e129c-073c-4950-bf77-b72c2b8b3aa2",
+        "timestamp": "2026-06-15T08:10:56.213Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question like to a kid",
+        "id": "18772a0a-4200-4d58-9942-e391e204780e",
+        "timestamp": "2026-06-15T08:11:16.469Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "So you want to know how to reverse a string? A string is just a bunch of characters like \"hello\" or \"world\". When we say \"reverse a string\", we mean take all those characters and put them in the opposite order.\n\nFor example, if you have the string \"hello\", it would be \"olleh\". If you want to get that back, you need to start from the end of the string and move backwards.",
+        "id": "25e32907-b892-4329-883f-fdee49c4a3f7",
+        "timestamp": "2026-06-15T08:11:16.472Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c2",
+    "interviewId": "975ced75-a353-4579-9a7d-b4a1010007f6",
+    "messages": [
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Help with testcases",
+        "id": "0c3c2025-008d-4e60-858e-b94589de455d",
+        "timestamp": "2026-06-15T08:17:14.899Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hi Bob, \n\nClarification on Two Sum is that you're looking for two numbers in an array of integers that add up to a specific target value. For example, if you have the array [2, 7, 11, 15] and the target is 9, you would want to find indices i and j such that nums[i] + nums[j] = 9.\n\nTest cases for this problem might include:\n\n* An empty array\n* An array with one element\n* An array with two elements that add up to a specific value\n* An array with multiple pairs of numbers that add up to the target\n\nWhat are some common test cases you'd like to see in your Two Sum implementation?",
+        "id": "562d84dc-c52b-4815-8c38-5f69fa7a986e",
+        "timestamp": "2026-06-15T08:17:14.901Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "please help me",
+        "id": "b2bb0acc-7a0f-4d3d-8bed-b3349fb723c8",
+        "timestamp": "2026-06-15T10:59:34.318Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "no network",
+        "id": "bfe2ba21-de98-40f3-94db-a0cf9aaa119c",
+        "timestamp": "2026-06-15T11:01:12.927Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "e76f7607-723a-4d04-aae6-c5b0fa7abd93",
+        "timestamp": "2026-06-17T17:55:04.292Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "c20704bc-0ead-4b79-8db6-352645332c33",
+        "timestamp": "2026-06-17T17:55:04.298Z"
+      },
+      {
+        "senderId": "system",
+        "senderName": "System",
+        "senderType": "candidate",
+        "content": "Bob Jones has left the test.",
+        "id": "d7b75da9-cdb6-477e-8b09-6376ae287df8",
+        "timestamp": "2026-06-17T17:55:32.662Z"
+      },
+      {
+        "senderId": "system",
+        "senderName": "System",
+        "senderType": "candidate",
+        "content": "Bob Jones has left the test.",
+        "id": "f1f0c25f-061a-44bb-b47a-00abff0736f0",
+        "timestamp": "2026-06-17T17:55:32.664Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "3a0b8f5a-4124-4337-832c-e7ac1654ef0f",
+        "timestamp": "2026-06-17T18:26:15.716Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "1cf3bb4f-2378-4083-a528-4811a3822ebb",
+        "timestamp": "2026-06-17T18:26:15.723Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "da4aa962-6887-4f46-a169-d125e9aad61d",
+        "timestamp": "2026-06-17T18:26:37.973Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "07db8de6-d2f1-4eb9-b20d-200b21d6c3d3",
+        "timestamp": "2026-06-17T18:26:37.978Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "3c411ad1-6283-4747-9fed-d47fa7ddba85",
+        "timestamp": "2026-06-17T20:37:50.157Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Certainly, Bob! Let's clarify the \"Two Sum\" problem.\n\nYou'll be given two things:\n1.  An array of integers, which we'll call `nums`.\n2.  A single integer, which we'll call `target`.\n\nYour task is to look through the `nums` array and find two different numbers",
+        "id": "cb3c75dc-acc6-4d29-bde1-fdbceaccf858",
+        "timestamp": "2026-06-17T20:37:50.161Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question like to a kid",
+        "id": "b605ae4c-35a3-4076-9544-e343d5a6f8c0",
+        "timestamp": "2026-06-17T20:38:10.666Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hey Bob! Imagine you have a bunch of toy blocks, and each block has a number on it.\n\nYour job is to find two of these blocks that, when you put their numbers together, they make a special \"target\" number that I tell you.\n\nOnce you find those two blocks, you just need to tell me where they were in the line of blocks – like saying \"the first block and the third block!\" instead of \"block number 5 and block number 7.\" That's it!",
+        "id": "266913d8-1648-4147-aa77-176825909227",
+        "timestamp": "2026-06-17T20:38:10.669Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify question",
+        "id": "4dd97386-882e-457b-931b-3bd2c44b8055",
+        "timestamp": "2026-06-17T20:40:56.670Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Certainly, Bob!\n\nThe problem asks you to look at a list of numbers (an array of integers) and a specific target number. Your goal is to find two different numbers within that list that, when added together, equal the target number.\n\nOnce you find those two numbers, you need to return their positions (their indices) in the original list. For example, if the first number in the list is at index 0 and the second is at",
+        "id": "c10dc353-7399-4790-9be2-a467faf275ec",
+        "timestamp": "2026-06-17T20:40:56.675Z"
+      },
+      {
+        "senderId": "c2",
+        "senderName": "Bob Jones",
+        "senderType": "candidate",
+        "content": "Clarify the question like to a kid",
+        "id": "d411c1ea-b706-4e8c-819b-70a075d009b3",
+        "timestamp": "2026-06-17T20:41:29.792Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hey Bob! Imagine you have a bunch of toy blocks, and each block has a number on it.\n\nNow, someone gives you a special \"magic number.\" Your job is to look at all your blocks and find *two* of them that, when you add their numbers together, make exactly that magic number!\n\nOnce you find those two special blocks, you just need to remember which spot they were in your pile of blocks. That's it",
+        "id": "7124b333-9406-4a0f-850c-d4e8af7cf1c5",
+        "timestamp": "2026-06-17T20:41:29.798Z"
+      }
+    ],
+    "status": "active"
+  },
+  {
+    "candidateId": "c1",
+    "interviewId": "i1",
+    "messages": [
+      {
+        "senderId": "c1",
+        "senderName": "Bob",
+        "senderType": "candidate",
+        "content": "Hello AI",
+        "id": "021d4df5-575e-4223-920b-3dd48486e2a5",
+        "timestamp": "2026-06-17T19:33:26.450Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "151723d2-232b-4341-97ec-0ef331a99b33",
+        "timestamp": "2026-06-17T19:33:26.468Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Bob",
+        "senderType": "candidate",
+        "content": "Hello AI",
+        "id": "a8a445e4-1f87-431d-9180-3a0b4f453a68",
+        "timestamp": "2026-06-17T19:34:23.354Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "71bcd3eb-ebe0-411f-90a2-907821970aa7",
+        "timestamp": "2026-06-17T19:34:23.358Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Bob",
+        "senderType": "candidate",
+        "content": "Hello AI",
+        "id": "ed1be41b-aeda-4bda-ab6e-56dd4c803155",
+        "timestamp": "2026-06-17T20:19:54.680Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Something went wrong on my end, Bob. Please try again in a moment! 🙏",
+        "id": "a1aff34f-3ed3-43ef-aa7a-35f5998b6b23",
+        "timestamp": "2026-06-17T20:19:54.695Z"
+      },
+      {
+        "senderId": "c1",
+        "senderName": "Bob",
+        "senderType": "candidate",
+        "content": "Hello AI",
+        "id": "e0b28c9d-7f14-4c1b-b2ee-a8be10c431df",
+        "timestamp": "2026-06-17T20:32:27.188Z"
+      },
+      {
+        "senderId": "ollama_ai",
+        "senderName": "YOUKT AI (Llama3)",
+        "senderType": "ai",
+        "content": "Hello Bob! How can I help you with the problem today?",
+        "id": "03ac41fc-8792-4318-b04a-b5d1939cf2c1",
+        "timestamp": "2026-06-17T20:32:27.194Z"
       }
     ],
     "status": "active"

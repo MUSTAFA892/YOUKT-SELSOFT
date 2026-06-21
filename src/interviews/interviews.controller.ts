@@ -5,6 +5,8 @@ interface CreateInterviewDto {
   candidateId: string;
   candidateName: string;
   questions: Omit<Question, 'id'>[];
+  recruiterId?: string;
+  recruiterName?: string;
 }
 
 interface NextQuestionDto {
@@ -19,7 +21,13 @@ export class InterviewsController {
 
   @Post()
   async create(@Body() dto: CreateInterviewDto) {
-    return this.interviewsService.createInterview(dto.candidateId, dto.candidateName, dto.questions);
+    return this.interviewsService.createInterview(
+      dto.candidateId, 
+      dto.candidateName, 
+      dto.questions,
+      dto.recruiterId,
+      dto.recruiterName
+    );
   }
 
   @Get()
@@ -40,5 +48,10 @@ export class InterviewsController {
   @Post(':id/next')
   async getNextQuestion(@Param('id') id: string, @Body() dto: NextQuestionDto) {
     return this.interviewsService.processQuestionResult(id, dto.questionId, dto.passed, dto.timeMs);
+  }
+
+  @Post('generate-templates')
+  async generateTemplates(@Body() dto: { title: string; description: string; inputFormat: string; outputFormat: string }) {
+    return this.interviewsService.generateTemplatesWithAI(dto.title, dto.description, dto.inputFormat, dto.outputFormat);
   }
 }

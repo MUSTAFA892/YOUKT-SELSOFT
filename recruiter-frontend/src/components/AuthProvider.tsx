@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode, useEffect, useCallback, useMemo } from "react";
+import { getAllConversations, getAllInterviews, getActiveCandidates } from "@/lib/api";
 
 export type User = {
   id: string;
@@ -40,6 +41,8 @@ interface AuthContextType {
   allCandidates: User[];
   registerCandidate: (id: string, name: string) => void;
   getRecruiterCandidates: (recruiterId: string) => User[];
+  unreadHelpRequests: string[];
+  leftTestNotifications: string[];
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +50,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User>(RECRUITER_USERS[0]);
   const [allCandidates, setAllCandidates] = useState<User[]>(CANDIDATE_USERS);
+  const [unreadHelpRequests, setUnreadHelpRequests] = useState<string[]>([]);
+  const [leftTestNotifications, setLeftTestNotifications] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -111,13 +116,73 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, [currentUser]);
 
+  const checkHelpRequests = useCallback(async () => {
+    if (currentUser.role !== "recruiter") return;
+    try {
+      const [convs, interviews, activeCandidatesArray] = await Promise.all([
+        getAllConversations(),
+        getAllInterviews(),
+        getActiveCandidates()
+      ]);
+      const myCandidates = new Set(allCandidates.filter(c => c.recruiterId === currentUser.id).map(c => c.id));
+      const onlineCandidates = new Set(activeCandidatesArray);
+      
+      // Filter to only candidates with active (incomplete) interviews
+      const activeCandidateIds = new Set(
+        interviews
+          .filter(i => !i.isComplete)
+          .map(i => i.candidateId)
+      );
+      
+      const pendingCandidateIds: string[] = [];
+      const leftTestCandidateIds: string[] = [];
+      
+      for (const candidateId of activeCandidateIds) {
+        if (myCandidates.has(candidateId)) {
+          const conv = convs.find(c => c.candidateId === candidateId);
+          const msgs = conv ? conv.messages || [] : [];
+          const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1] : null;
+          
+          const hasLeftMessage = lastMsg ? (
+            lastMsg.content.includes("left the test") || 
+            lastMsg.content.includes("exited the test") || 
+            lastMsg.content.includes("quit the test")
+          ) : false;
+
+          const isOffline = !onlineCandidates.has(candidateId);
+          
+          if (hasLeftMessage || isOffline) {
+            leftTestCandidateIds.push(candidateId);
+          } else if (lastMsg && lastMsg.senderType === 'candidate') {
+            pendingCandidateIds.push(candidateId);
+          }
+        }
+      }
+
+      setUnreadHelpRequests(pendingCandidateIds);
+      setLeftTestNotifications(leftTestCandidateIds);
+    } catch (e) {
+      console.error("Failed to check help requests", e);
+    }
+  }, [currentUser, allCandidates]);
+
+  useEffect(() => {
+    if (currentUser.role === "recruiter") {
+      checkHelpRequests();
+      const interval = setInterval(checkHelpRequests, 6000);
+      return () => clearInterval(interval);
+    }
+  }, [currentUser, checkHelpRequests]);
+
   const contextValue = useMemo(() => ({
     currentUser,
     setCurrentUser: handleSetUser,
     allCandidates,
     registerCandidate,
-    getRecruiterCandidates
-  }), [currentUser, handleSetUser, allCandidates, registerCandidate, getRecruiterCandidates]);
+    getRecruiterCandidates,
+    unreadHelpRequests,
+    leftTestNotifications
+  }), [currentUser, handleSetUser, allCandidates, registerCandidate, getRecruiterCandidates, unreadHelpRequests, leftTestNotifications]);
 
   if (!mounted) return null; // Avoid hydration mismatch
 

@@ -116,17 +116,20 @@ export interface Interview {
   candidateName: string;
   questions: Question[];
   createdAt: string;
+  isComplete: boolean;
 }
 
 export async function createInterview(
   candidateId: string,
   candidateName: string,
-  questions: Omit<Question, 'id'>[]
+  questions: Omit<Question, 'id'>[],
+  recruiterId?: string,
+  recruiterName?: string
 ): Promise<Interview> {
   const res = await fetch(`${API_BASE_URL}/interviews`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ candidateId, candidateName, questions }),
+    body: JSON.stringify({ candidateId, candidateName, questions, recruiterId, recruiterName }),
   });
   if (!res.ok) throw new Error("Failed to create interview");
   return res.json();
@@ -288,6 +291,126 @@ export interface CandidateInsights {
 export async function getCandidateInsights(candidateId: string): Promise<CandidateInsights> {
   const res = await fetch(`${API_BASE_URL}/reports/candidate/${candidateId}/insights`, { cache: "no-store" });
   if (!res.ok) throw new Error("Failed to fetch candidate insights");
+  return res.json();
+}
+
+// ==================== PIPELINE ====================
+
+export enum PipelineStage {
+  APPLIED = 'Applied',
+  ASSESSED = 'Assessed',
+  INTERVIEWED = 'Interviewed',
+  OFFER = 'Offer',
+  REJECTED = 'Rejected'
+}
+
+export interface CandidatePipeline {
+  candidateId: string;
+  candidateName: string;
+  stage: PipelineStage;
+  recruiterId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function fetchPipeline(): Promise<CandidatePipeline[]> {
+  const res = await fetch(`${API_BASE_URL}/pipeline`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch pipeline");
+  return res.json();
+}
+
+export async function updatePipelineStage(candidateId: string, stage: PipelineStage): Promise<CandidatePipeline> {
+  const res = await fetch(`${API_BASE_URL}/pipeline/${candidateId}/stage`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ stage }),
+  });
+  if (!res.ok) throw new Error("Failed to update pipeline stage");
+  return res.json();
+}
+
+export async function bulkUpdatePipelineStage(candidateIds: string[], stage: PipelineStage): Promise<CandidatePipeline[]> {
+  const res = await fetch(`${API_BASE_URL}/pipeline/bulk-update`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ candidateIds, stage }),
+  });
+  if (!res.ok) throw new Error("Failed to bulk update pipeline");
+  return res.json();
+}
+
+export async function bulkSendEmail(candidateIds: string[], subject: string, body: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/pipeline/bulk-email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ candidateIds, subject, body }),
+  });
+  if (!res.ok) throw new Error("Failed to send bulk emails");
+}
+
+// ==================== REPORTS ====================
+
+export interface PlagiarismWarning {
+  detected: boolean;
+  similarityPercent: number;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  matchCount?: number;
+}
+
+export interface QuestionReport {
+  questionId: string;
+  questionTitle: string;
+  totalTests: number;
+  passed: number;
+  failed: number;
+  allPassed: boolean;
+  language: string;
+  plagiarismWarning?: PlagiarismWarning;
+}
+
+export interface AssessmentReport {
+  id: string;
+  interviewId: string;
+  candidateId: string;
+  candidateName: string;
+  finishedAt: string;
+  totalQuestions: number;
+  questionsAttempted: number;
+  totalTestsPassed: number;
+  totalTestsAvailable: number;
+  scorePercent: number;
+  questions: QuestionReport[];
+  violations?: {
+    tabSwitches: number;
+    terminated: boolean;
+  };
+  plagiarismWarning?: PlagiarismWarning;
+}
+
+export async function fetchReports(): Promise<AssessmentReport[]> {
+  const res = await fetch(`${API_BASE_URL}/reports`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch reports");
+  return res.json();
+}
+
+export async function getActiveCandidates(): Promise<string[]> {
+  const res = await fetch(`${API_BASE_URL}/help-center/active-candidates`, { cache: "no-store" });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export async function generateTemplatesWithAI(
+  title: string,
+  description: string,
+  inputFormat: string,
+  outputFormat: string
+): Promise<{ starterCode: CodeTemplates, wrapperCode: CodeTemplates }> {
+  const res = await fetch(`${API_BASE_URL}/interviews/generate-templates`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, description, inputFormat, outputFormat }),
+  });
+  if (!res.ok) throw new Error("AI Template generation failed");
   return res.json();
 }
 

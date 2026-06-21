@@ -3,10 +3,15 @@
 import { useState, useEffect } from "react";
 import { Search, BookOpen, Star, Eye, Clock, Zap, Heart } from "lucide-react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001/api";
+
 interface Question {
   id: string;
   title: string;
   description: string;
+  inputFormat?: string;
+  outputFormat?: string;
+  examples?: Array<{ input: string; output: string; explanation?: string }>;
   difficulty: 'easy' | 'medium' | 'hard' | 'expert';
   topic: string;
   tags: string[];
@@ -56,8 +61,8 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
     setError(null);
     try {
       const endpoint = sortBy === 'trending'
-        ? `${process.env.NEXT_PUBLIC_API_URL}/advanced-features/questions/trending`
-        : `${process.env.NEXT_PUBLIC_API_URL}/advanced-features/questions/top-rated`;
+        ? `${API_BASE_URL}/advanced-features/questions/trending`
+        : `${API_BASE_URL}/advanced-features/questions/top-rated`;
 
       const response = await fetch(endpoint);
       if (!response.ok) {
@@ -66,9 +71,8 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
       const result = await response.json();
       setQuestions(result.data || []);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
-      console.error('Failed to load questions:', errorMessage);
-      setError('Could not connect to the question library server. Please try again later.');
+      // Suppress console.error for network failures to keep the browser console clean
+      setError('Could not connect to the question library server. Please ensure the backend is running.');
       setQuestions([]);
     } finally {
       setIsLoading(false);
@@ -102,7 +106,7 @@ export default function QuestionLibraryBrowser({ userId, onSelectQuestion }: Que
     const endpoint = isFav ? 'remove-favorite' : 'add-favorite';
 
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/advanced-features/questions/${endpoint}`, {
+      await fetch(`${API_BASE_URL}/advanced-features/questions/${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, questionId })

@@ -20,7 +20,7 @@ let InterviewsController = class InterviewsController {
         this.interviewsService = interviewsService;
     }
     async create(dto) {
-        return this.interviewsService.createInterview(dto.candidateId, dto.candidateName, dto.questions);
+        return this.interviewsService.createInterview(dto.candidateId, dto.candidateName, dto.questions, dto.recruiterId, dto.recruiterName);
     }
     async getAll() {
         return this.interviewsService.getAllInterviews();
@@ -33,6 +33,9 @@ let InterviewsController = class InterviewsController {
     }
     async getNextQuestion(id, dto) {
         return this.interviewsService.processQuestionResult(id, dto.questionId, dto.passed, dto.timeMs);
+    }
+    async generateTemplates(dto) {
+        return this.interviewsService.generateTemplatesWithAI(dto.title, dto.description, dto.inputFormat, dto.outputFormat);
     }
 };
 exports.InterviewsController = InterviewsController;
@@ -71,6 +74,13 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], InterviewsController.prototype, "getNextQuestion", null);
+__decorate([
+    (0, common_1.Post)('generate-templates'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], InterviewsController.prototype, "generateTemplates", null);
 exports.InterviewsController = InterviewsController = __decorate([
     (0, common_1.Controller)('interviews'),
     __metadata("design:paramtypes", [interviews_service_1.InterviewsService])

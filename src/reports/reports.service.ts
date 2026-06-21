@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import * as crypto from 'crypto';
+import { InterviewsService } from '../interviews/interviews.service';
 
 export interface PlagiarismWarning {
   detected: boolean;
@@ -46,7 +47,7 @@ export class ReportsService {
   private readonly dbFilePath = join(process.cwd(), 'reports.json');
   private reports: AssessmentReport[] = [];
 
-  constructor() {
+  constructor(private readonly interviewsService: InterviewsService) {
     this.loadFromDisk();
   }
 
@@ -76,6 +77,7 @@ export class ReportsService {
     };
     this.reports.push(report);
     await this.saveToDisk();
+    await this.interviewsService.markAsComplete(dto.interviewId);
     return report;
   }
 
